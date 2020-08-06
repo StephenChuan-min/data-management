@@ -37,7 +37,7 @@ const sideList = [
 ]
 
 const MainContent = <React.Fragment>
-    <Route path="/main" component={(props: any) => <Side location={props.location} sideList={sideList} />} key="main" />
+    <Route path="/main" component={(props: any) => <Side {...props} sideList={sideList} />} key="main" />
     <div className="yc-content">
         <Route path="/main/abnormalMonitoring/developmentAbnormal" key="developmentAbnormal" component={DevelopmentAbnormal} />
         <Route path="/main/abnormalMonitoring/addedMapping" key="addedMapping" component={AddedMapping} />

@@ -7,6 +7,7 @@ import React, {Component} from 'react';
  */
 class AddedMapping extends Component {
     render() {
+        console.log(this.props)
         return (
             <div>
                 新增映射值

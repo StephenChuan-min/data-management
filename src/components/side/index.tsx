@@ -25,7 +25,7 @@ export default class Side extends Component<Props, {}>{
             <Menu
                 defaultOpenKeys={sideList.map(v => v.subMenu)}
                 mode="inline"
-                defaultSelectedKeys={[pathname]}
+                selectedKeys={[pathname]}
             >
                 {
                     sideList.map(v => (

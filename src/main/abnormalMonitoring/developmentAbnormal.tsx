@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
+import React, { useState, useEffect } from 'react';
 import {Button, Input} from 'antd';
 import { connect } from 'react-redux';
 import {addUser} from "../../store/action";
+import { inputTarget } from '../../common/schemas';
 
 /**
  * @author czq
@@ -12,35 +13,42 @@ import {addUser} from "../../store/action";
 interface Props {
     userName: string,
     setUserName: (a: string) => void,
+    history: any,
 }
 
-interface State {
-    inputValue: string,
-}
+function DevelopmentAbnormal(props: Props) {
 
-class DevelopmentAbnormal extends Component<Props, State> {
+    const [inputValue, setValue] = useState('')
+    const [a, setA] = useState(true)
 
-    state: State = {
-        inputValue: ''
-    };
+    useEffect(() => {
+        console.log('加载完成')
+    })
 
-    setName():void{
-        const { setUserName, userName } = this.props;
-        const { inputValue } = this.state;
+    useEffect(() => {
+        console.log('发起请求')
+    }, [a])
+
+    const setName = ():void => {
+        const { setUserName, userName } = props;
+        // 路由跳转方式
+        // history.push({
+        //     pathname: '/main/abnormalMonitoring/addedMapping',
+        //     params: {a: 9898}
+        // })
         if (inputValue !== userName) {
+            setA(!a)
             setUserName(inputValue)
         }
     }
 
-    handleChange(val: any):void {
-        this.setState({
-            inputValue: val.target.value
-        })
+    const handleChange = (val: inputTarget):void => {
+        setValue(
+            val.target.value
+        )
     };
 
-    render() {
-        const { userName } = this.props;
-        const { inputValue } = this.state
+        const { userName } = props;
         return (
             <div>
                 开发异常
@@ -48,15 +56,14 @@ class DevelopmentAbnormal extends Component<Props, State> {
                     hi，{userName}
                 </div>
                 <div>
-                    <Input placeholder="请输入用户名" value={inputValue} onChange={(val: any) => this.handleChange(val)} />
-                    <Button onClick={this.setName.bind(this)}>
+                    <Input placeholder="请输入用户名" value={inputValue} onChange={(val: any) => handleChange(val)} />
+                    <Button onClick={setName}>
                         更换用户名
                     </Button>
                 </div>
 
             </div>
         );
-    }
 }
 
 const mapDispatchToProps = (dispatch: any) => {

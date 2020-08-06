@@ -3,8 +3,8 @@
  * @date 2020/8/6
  * @Description: 通用接口存放
 */
-interface a {
-
+export interface inputTarget {
+    target: {
+        value: string
+    }
 }
-
-export default a
