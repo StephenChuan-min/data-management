@@ -6,7 +6,7 @@ import store from "../store/store";
 let path = '';
 
 // 声明一个数组用于存储每个ajax请求的取消函数和ajax表示
-let pending: {u: string, f: (a?: string | object) => {}}[] = [];
+let pending: {u: string, f(a?: string | object):any }[] = [];
 
 interface Pending {
     u: string,

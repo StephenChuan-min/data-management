@@ -1,7 +1,13 @@
 .yc-main-side {
   float: left;
+  width: 355px;
   height: 100%;
   .ant-menu.ant-menu-light.ant-menu-root.ant-menu-inline {
     height: 100%;
   }
+}
+.yc-content {
+  float: right;
+  width: calc(100% - 355px);
+  min-height: 100%;
 }

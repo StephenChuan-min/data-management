@@ -36,13 +36,15 @@ const sideList = [
     },
 ]
 
-const MainContent = [
-    <Route path="/main" component={(props: any) => <Side location={props.location} sideList={sideList} />} key="main" />,
-    <Route path="/main/abnormalMonitoring/developmentAbnormal" key="developmentAbnormal" component={DevelopmentAbnormal} />,
-    <Route path="/main/abnormalMonitoring/addedMapping" key="addedMapping" component={AddedMapping} />,
-    <Route path="/main/judicialAuction/grabSituation" key="grabSituation" component={GrabSituation} />,
-    <Route path="/main/judicialAuction/otherIndicator" key="otherIndicator" component={OtherIndicator} />,
-]
+const MainContent = <React.Fragment>
+    <Route path="/main" component={(props: any) => <Side location={props.location} sideList={sideList} />} key="main" />
+    <div className="yc-content">
+        <Route path="/main/abnormalMonitoring/developmentAbnormal" key="developmentAbnormal" component={DevelopmentAbnormal} />
+        <Route path="/main/abnormalMonitoring/addedMapping" key="addedMapping" component={AddedMapping} />
+        <Route path="/main/judicialAuction/grabSituation" key="grabSituation" component={GrabSituation} />
+        <Route path="/main/judicialAuction/otherIndicator" key="otherIndicator" component={OtherIndicator} />
+    </div>
+</React.Fragment>
 
 
 class Main extends Component {
