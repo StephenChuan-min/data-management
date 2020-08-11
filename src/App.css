@@ -1,6 +1,10 @@
 @import '~antd/dist/antd.css';
+@import "assets/css/public.scss";
 .App {
-  text-align: center;
+  background: #EDEFF3;
+  min-width: 1280px;
+  min-height: 680px;
+  color: #293038;
 }
 #root, .App {
   height: 100%;

@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import {Button, Input} from 'antd';
+import React, {useEffect, useState} from 'react';
 import { connect } from 'react-redux';
-import {addUser} from "../../store/action";
-import { inputTarget } from '../../common/schemas';
+import {addUser, setFresh, clearParams} from "../../store/action";
+import {BtnType} from '../../common/schemas';
+import TableWithSearch from '../../components/table-with-search'
+import { typeEnum, typeEnum1 } from '../../components/table-with-search/schemas'
+import './style.scss';
+import TopSelect from './components/top-select';
 
 /**
  * @author czq
@@ -14,54 +17,99 @@ interface Props {
     userName: string,
     setUserName: (a: string) => void,
     history: any,
+    setFresh(bol: boolean):void,
+    clearParams():void,
 }
 
 function DevelopmentAbnormal(props: Props) {
 
-    const [inputValue, setValue] = useState('')
-    const [a, setA] = useState(true)
+    const [type, setType] = useState(0)
 
-    useEffect(() => {
-        console.log('加载完成')
-    })
+    const configList = [
+        {
+            type: typeEnum.input,
+            placeholder: '请输入source_id',
+            label: 'source_id',
+            field: 'source_id',
+        },
+        {
+            type: typeEnum.input,
+            placeholder: '请输入网站名称',
+            label: '网站名称',
+            field: 'name',
+        },
+        {
+            type: typeEnum.select,
+            placeholder: '请选择错误类型',
+            label: '错误类型：',
+            field: 'type',
+            option: [
+                {
+                    value: 1,
+                    label: '1'
+                },
+                {
+                    value: 2,
+                    label: '2'
+                },
+            ],
+        },
+        {
+            type: typeEnum.select,
+            label: '处理状态',
+            placeholder: '请选择处理状态',
+            field: 'status',
+        },
+        {
+            type: typeEnum1.rangePicker,
+            label: '发布日期：',
+            placeholder: ['起始日期', '截止日期'],
+            field: 'date',
+        },
+    ];
 
-    useEffect(() => {
-        console.log('发起请求')
-    }, [a])
+    const btnList = [
+        {
+            label: '查询',
+            type: BtnType.primary,
+            onClick: () => {
+                props.setFresh(true)
+            }
+        },
+        {
+            label: '重置',
+            type: BtnType.ghost,
+            onClick: () => {
+                props.setFresh(true)
+                props.clearParams()
+            }
+        },
+    ];
 
-    const setName = ():void => {
-        const { setUserName, userName } = props;
-        // 路由跳转方式
-        // history.push({
-        //     pathname: '/main/abnormalMonitoring/addedMapping',
-        //     params: {a: 9898}
-        // })
-        if (inputValue !== userName) {
-            setA(!a)
-            setUserName(inputValue)
-        }
-    }
+    const dataType = [
+        {
+            value: 0,
+            label: '全部',
+        },
+        {
+            value: 1,
+            label: '555',
+        },
+    ]
 
-    const handleChange = (val: inputTarget):void => {
-        setValue(
-            val.target.value
-        )
-    };
-
-        const { userName } = props;
         return (
-            <div>
-                开发异常
+            <div className="developmentAbnormal">
+                <TopSelect option={dataType} getValue={setType} />
                 <div>
-                    hi，{userName}
+                    <TableWithSearch
+                        config={configList}
+                        btnList={btnList}
+                        type={type}
+                        apiFun={() => {}}
+                    />
                 </div>
                 <div>
-                    <Input placeholder="请输入用户名" value={inputValue} onChange={(val: any) => handleChange(val)} />
-                    <Button onClick={setName}>
-                        更换用户名
-                    </Button>
                 </div>
-
             </div>
         );
 }
@@ -71,6 +119,12 @@ const mapDispatchToProps = (dispatch: any) => {
         setUserName: (name: string) => {
             dispatch(addUser(name))
         },
+        setFresh: (is: boolean) => {
+            dispatch(setFresh(is))
+        },
+        clearParams: () => {
+            dispatch(clearParams())
+        },
     }
 }
 
@@ -78,4 +132,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(
     (state: any ) => ({ userName: state.user.userName }),
     mapDispatchToProps,
-)(DevelopmentAbnormal);
+)(DevelopmentAbnormal)

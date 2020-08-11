@@ -1,13 +1,25 @@
 .yc-main-side {
   float: left;
   width: 300px;
-  height: 100%;
-  .ant-menu.ant-menu-light.ant-menu-root.ant-menu-inline {
+  height: calc(100% - 50px);
+  .ant-menu.ant-menu-dark.ant-menu-root.ant-menu-inline {
     height: 100%;
+  }
+  .ant-menu.ant-menu-dark {
+    background: #37424F;
+    .ant-menu-inline.ant-menu-sub {
+      background: #293038;
+    }
+  }
+  .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background: #016AA9;
   }
 }
 .yc-content {
   float: right;
-  width: calc(100% - 300px);
-  min-height: 100%;
+  margin: 20px;
+  padding: 0 20px;
+  width: calc(100% - 340px);
+  min-height: calc(100% - 90px);
+  background: #fff;
 }

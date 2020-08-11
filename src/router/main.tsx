@@ -6,53 +6,58 @@ import GrabSituation from '../main/judicialAuction/grabSituation';
 import OtherIndicator from '../main/judicialAuction/otherIndicator';
 import './style.scss';
 import Side from '../components/side/index';
+import { getRouter } from './router-with-role-fun';
+import Header from "../components/header";
 
 const sideList = [
     {
         subMenu: '异常监控',
+        role: true,
+        icon: 'iconyichangjiankong',
         children: [
             {
                 path: '/main/abnormalMonitoring/developmentAbnormal',
                 name: '开发异常',
+                role: true,
+                component: DevelopmentAbnormal,
             },
             {
                 path: '/main/abnormalMonitoring/addedMapping',
                 name: '新增映射值',
+                role: true,
+                component: AddedMapping,
             },
         ]
     },
     {
         subMenu: '司法拍卖数据监控',
+        role: true,
+        icon: 'iconsifapaimaishujujiankong',
         children: [
             {
                 path: '/main/judicialAuction/grabSituation',
                 name: '抓取情况监控',
+                role: true,
+                component: GrabSituation,
             },
             {
                 path: '/main/judicialAuction/otherIndicator',
                 name: '其他指标监控',
+                role: true,
+                component: OtherIndicator,
             },
         ]
     },
-]
-
-const MainContent = <React.Fragment>
-    <Route path="/main" component={(props: any) => <Side {...props} sideList={sideList} />} key="main" />
-    <div className="yc-content">
-        <Route path="/main/abnormalMonitoring/developmentAbnormal" key="developmentAbnormal" component={DevelopmentAbnormal} />
-        <Route path="/main/abnormalMonitoring/addedMapping" key="addedMapping" component={AddedMapping} />
-        <Route path="/main/judicialAuction/grabSituation" key="grabSituation" component={GrabSituation} />
-        <Route path="/main/judicialAuction/otherIndicator" key="otherIndicator" component={OtherIndicator} />
-    </div>
-</React.Fragment>
-
+];
 
 class Main extends Component {
     render() {
         return (
             <React.Fragment>
+                <Route path="/main" component={(props: any) => <Header {...props} sideList={sideList} header="/main" />}  />
+                <Route path="/main" component={(props: any) => <Side {...props} sideList={sideList} header="/main" />}  />
                 {
-                    MainContent
+                    getRouter(sideList)
                 }
             </React.Fragment>
         );
