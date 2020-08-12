@@ -5,10 +5,19 @@ import * as schemas from '../schemas'
 import { Button } from 'antd';
 import { BtnProps } from '../index'
 
+
+/**
+ * @author czq
+ * @date 2020/8/11
+ * @Description: 搜索栏
+*/
+
+// 自定义类型保护
 function isRange(props: schemas.Props1 | schemas.Props): props is schemas.Props1 {
     return props.type === schemas.typeEnum1.rangePicker
 }
 
+// 获取类型对应的type类型组件
 function renderFun(item: schemas.Props1 | schemas.Props) {
     if (isRange(item)) {
         return typeMap.rangePicker(item)

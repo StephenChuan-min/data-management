@@ -18,6 +18,7 @@ interface commonProps {
 
 interface selectProps extends commonProps{
     option?: labelValue[],
+    onChange?(val: object):void,
 }
 
 interface rangePickerProps{
@@ -35,7 +36,12 @@ const typeMap = {
             placeholder={props.placeholder || '请选择'}
             className={`yc-search-select ${props.className}`}
             getPopupContainer={(t) => t.parentNode}
-            onChange={(val) => handleChange({val, field: props.field})}
+            onChange={(val) => {
+                if (props.onChange) {
+                    props.onChange({[props.field]: val})
+                }
+                handleChange({val, field: props.field})
+            }}
         >
         {props.option ? props.option.map(v => (
                 <Select.Option value={v.value}>{v.label}</Select.Option>

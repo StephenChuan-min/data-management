@@ -25,10 +25,11 @@ function TopSelect(props: Props) {
 
     const { option } = props
     return (<div className="abnormal-monitoring-top-select">
-        <i className="iconfont iconshujuleixing"/>
-            <span className="label">当前的数据类型：</span>
+            <p className="label">
+                <i className="iconfont iconshujuleixing"/>
+                当前的数据类型：
+            </p>
             <Select
-                style={{ width: 240 }}
                 value={type}
                 getPopupContainer={(t) => t.parentNode}
                 onChange={handleChange}

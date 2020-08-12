@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Route} from "react-router-dom";
+import OtherIndicator from '../main/judicialAuction/otherIndicator';
+import GrabSituation from '../main/judicialAuction/grabSituation';
 import DevelopmentAbnormal from '../main/abnormalMonitoring/developmentAbnormal';
 import AddedMapping from '../main/abnormalMonitoring/addedMapping';
-import GrabSituation from '../main/judicialAuction/grabSituation';
-import OtherIndicator from '../main/judicialAuction/otherIndicator';
 import './style.scss';
 import Side from '../components/side/index';
 import { getRouter } from './router-with-role-fun';

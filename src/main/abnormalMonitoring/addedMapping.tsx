@@ -59,18 +59,19 @@ function AddedMapping () {
     }
 
         return (
-            <div>
-                    <TopSelect option={dataType} getValue={setType} />
-                    <div>
-                        <TableWithSearch
-                            config={configList}
-                            btnList={btnList}
-                            type={type}
-                            apiFun={() => {}}
-                        />
-                    </div>
-                    <div>
-                    </div>
+            <div className="addedMapping">
+                <div className="content-title">新增映射值</div>
+                <TopSelect option={dataType} getValue={setType} />
+                <div>
+                    <TableWithSearch
+                        config={configList}
+                        btnList={btnList}
+                        type={type}
+                        apiFun={() => {}}
+                    />
+                </div>
+                <div>
+                </div>
             </div>
         );
 }

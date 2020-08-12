@@ -17,7 +17,7 @@ interface TableProps {
     btnList: BtnProps[],
     type: number,
     params: object,
-    clearParams(key: number): void,
+    clearParams(key?: number): void,
     apiFun(params: object):void,
     setFresh(bol: boolean):void,
     isFresh: boolean,
@@ -31,7 +31,7 @@ function TableWithSearch(props: TableProps) {
 
     useEffect(() => {
         // 初始化时清空查询条件
-        props.clearParams(1)
+        props.clearParams()
     }, []);
 
     useEffect(() => {
@@ -128,7 +128,7 @@ function TableWithSearch(props: TableProps) {
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        clearParams: (key: 1) => {
+        clearParams: (key?: number) => {
             dispatch(clearParams(key))
         },
         setFresh: (is: boolean) => {

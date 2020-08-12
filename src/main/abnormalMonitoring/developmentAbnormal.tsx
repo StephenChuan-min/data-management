@@ -99,6 +99,7 @@ function DevelopmentAbnormal(props: Props) {
 
         return (
             <div className="developmentAbnormal">
+                <div className="content-title">开发异常</div>
                 <TopSelect option={dataType} getValue={setType} />
                 <div>
                     <TableWithSearch
