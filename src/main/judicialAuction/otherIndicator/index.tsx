@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import LeftWrapper from './left-wrapper';
+import RightWrapper from './right-wrapper';
 
 /**
  * @author czq
@@ -8,8 +10,9 @@ import React, {Component} from 'react';
 class GrabSituation extends Component {
     render() {
         return (
-            <div>
-                其他指标监控
+            <div className="otherIndicator">
+                <LeftWrapper />
+                <RightWrapper />
             </div>
         );
     }

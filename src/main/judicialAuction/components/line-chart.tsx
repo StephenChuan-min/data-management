@@ -2,15 +2,27 @@ import React, {useEffect} from "react";
 
 const echart = require('echarts');
 
+export const emphasisStyle = {
+    itemStyle: {
+        barBorderWidth: 1,
+        shadowBlur: 10,
+        shadowOffsetX: 0,
+        shadowOffsetY: 0,
+        shadowColor: 'rgba(0,0,0,0.5)',
+    },
+};
+
 
 interface Props {
     xAxisData: string[],
-    yAxis: object,
     series: object,
     legend: object,
+    tooltip: {formatter(val: any): string},
+    yAxis?: object,
     height?: number,
-    tooltip?: object,
     color?: string[],
+    xAxisConfig?: object
+    gridTop?: number,
 }
 
 function LineChart(props: Props) {
@@ -19,25 +31,41 @@ function LineChart(props: Props) {
 
     useEffect(() => {
         const option = {
-            tooltip: props.tooltip,
-            toolbox: {
-                show: true,
-                feature: {
-                    saveAsImage: { show: true },
+            tooltip: {
+                trigger: 'axis',
+                backgroundColor: 'rgba(0,0,0,0.7)',
+                extraCssText: 'line-height: 24px',
+                axisPointer: {
+                    z: 2,
                 },
+                padding: 12,
+                formatter: props.tooltip.formatter,
+            },
+            // toolbox: {
+            //     show: true,
+            //     feature: {
+            //         saveAsImage: { show: true },
+            //     },
+            // },
+            grid: {
+                top: props.gridTop || 40
             },
             color: props.color,
             legend: props.legend,
             xAxis: [
                 {
+                    nameTextStyle: {
+                        color: '#4F5358',
+                        fontSize: 12,
+                    },
                     type: 'category',
                     axisLabel: {
-                        color: '#333333',
+                        color: '#4F5358',
                     },
                     axisLine: {// 坐标轴样式
                         onZero: false,
                         lineStyle: {
-                            color: '#CCCCCC',
+                            color: '#E2E4E9',
                             width: 1,
                         },
 
@@ -45,11 +73,13 @@ function LineChart(props: Props) {
                     axisTick: {
                         show: true,
                         alignWithLabel: true,
+                        color: '#E2E4E9',
                     },
                     splitLine: {
                         show: false,
                     },
                     data: props.xAxisData,
+                    ...props.xAxisConfig,
                 },
             ],
             axisPointer: {
@@ -58,7 +88,32 @@ function LineChart(props: Props) {
                     color: '#333',
                 },
             },
-            yAxis: props.yAxis,
+            yAxis: [{
+                type: 'value',
+                name: '',
+                axisLabel: {
+                    color: '#4F5358',
+                    formatter: '{value}',
+                },
+                axisTick: {
+                    show: false,
+                },
+                axisLine: {
+                    onZero: false,
+                    lineStyle: {
+                        color: '#E2E4E9',
+                        width: 1,
+                    },
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        width: 1,
+                        type: 'dashed',
+                    },
+                },
+                ...props.yAxis
+            }],
             series: props.series,
         };
         const lineChart = echart.init(ref);
@@ -66,7 +121,7 @@ function LineChart(props: Props) {
     }, [])
 
     return (
-        <div style={{ height: props.height || 780 }} ref={dom => ref = dom}/>
+        <div className="yc-line-chart" style={{ height: props.height || 780 }} ref={dom => ref = dom}/>
     )
 }
 

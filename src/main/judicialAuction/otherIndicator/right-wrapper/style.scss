@@ -1,0 +1,15 @@
+.right-one, .right-two, .right-three {
+  background: white;
+  margin-top: 16px;
+  .second-title {
+    .title-right {
+      top: -8px !important;
+    }
+  }
+  > .content {
+    padding: 0 20px;
+  }
+}
+.right-one {
+  margin-top: 0;
+}

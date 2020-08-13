@@ -1,41 +1,8 @@
 import React, {useState} from "react";
-import LineChart from '../components/line-chart';
+import LineChart, { emphasisStyle } from '../components/line-chart';
 import { getDateArray } from '../../../utils/some-time-utils';
 
-const emphasisStyle = {
-    itemStyle: {
-        barBorderWidth: 1,
-        shadowBlur: 10,
-        shadowOffsetX: 0,
-        shadowOffsetY: 0,
-        shadowColor: 'rgba(0,0,0,0.5)',
-    },
-};
-
 const initData = getDateArray(31);
-const yAxis = [{
-    type: 'value',
-    name: '',
-    axisLabel: {
-        color: '#333333',
-        formatter: '{value}',
-    },
-    axisLine: {
-        onZero: false,
-        lineStyle: {
-            color: '#CCCCCC',
-            width: 1,
-        },
-
-    },
-    splitLine: {
-        show: true,
-        lineStyle: {
-            width: 1,
-            type: 'dashed',
-        },
-    },
-}];
 
 const series = [
     {
@@ -53,6 +20,7 @@ const series = [
         barWidth: 10,
         emphasis: emphasisStyle,
         barGap: '30%',
+        z: 1,
     },
     {
         data: [1320, 1330, 1290, 934, 901, 932, 820],
@@ -68,13 +36,6 @@ const series = [
 ];
 
 const tooltip = {
-    trigger: 'axis',
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    extraCssText: 'line-height: 24px',
-    axisPointer: {
-        z: 2,
-    },
-    padding: 12,
     formatter: (params: any) => {
         const tipArray:string[] = [];
         let tip = '';
@@ -117,7 +78,7 @@ function BottomRight() {
     };
 
     return (
-        <LineChart xAxisData={xAxisData} legend={legend} series={series} yAxis={yAxis} color={color} tooltip={tooltip} height={362} />
+        <LineChart xAxisData={xAxisData} legend={legend} series={series} color={color} tooltip={tooltip} height={362} />
     )
 }
 

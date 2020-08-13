@@ -4,6 +4,8 @@ import BottomLeft from './bottom-left-chart';
 import BottomRight from './bottom-right-chart';
 import { typeEnum } from "../../../components/table-with-search/schemas";
 import TitleRight from '../components/title-right';
+import getAxisByType from '../common/get-axis-by-type';
+import { getDateArray } from '../../../utils/some-time-utils';
 const echart =  require('echarts');
 
 /**
@@ -95,6 +97,9 @@ const initData = [
 function Index(prop: Props) {
     let pie:any = null;
 
+    // 源网站增量与数据抓取量的key
+    let [xAxis, setXAxis] = useState(getDateArray(31))
+
     const [sumData, setSumData] = useState({ yesterday: 0, less: 0, more: 0 });
 
     const [data, setData] = useState(initData)
@@ -114,7 +119,13 @@ function Index(prop: Props) {
         },
         tooltip: {
             trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
+            backgroundColor: 'rgba(0,0,0,0.7)',
+            extraCssText: 'line-height: 24px',
+            axisPointer: {
+                z: 2,
+            },
+            padding: 12,
+            formatter: '{b}<br/>{c}<br/> {d}%'
         },
         legend: {
             orient: 'vertical',
@@ -155,7 +166,7 @@ function Index(prop: Props) {
         },
         series: [
             {
-                name: '访问来源',
+                name: '数据源分布',
                 type: 'pie',
                 radius: '55%',
                 center: ['78%', '41%'],
@@ -197,7 +208,9 @@ function Index(prop: Props) {
     ];
 
     const handleRadioChange = (val: any) => {
-        console.log(val)
+       xAxis = getAxisByType(val.target.value);
+       console.log(xAxis)
+        setXAxis(xAxis)
     }
 
     useEffect(
@@ -246,7 +259,7 @@ function Index(prop: Props) {
                         <TitleRight configList={configList} handleRadioChange={handleRadioChange} />
                     </p>
                     <div className="chart">
-                        <BottomLeft />
+                        <BottomLeft xAxisData={xAxis} key={String(xAxis)} />
                     </div>
                 </div>
                 <div className="bottom-right">
