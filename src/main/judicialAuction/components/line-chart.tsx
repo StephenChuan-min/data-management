@@ -23,6 +23,7 @@ interface Props {
     color?: string[],
     xAxisConfig?: object
     gridTop?: number,
+    grid?: {},
 }
 
 function LineChart(props: Props) {
@@ -48,7 +49,10 @@ function LineChart(props: Props) {
             //     },
             // },
             grid: {
-                top: props.gridTop || 40
+                top: props.gridTop || 40,
+                bottom: 50,
+                right: 10,
+                ...props.grid,
             },
             color: props.color,
             legend: props.legend,

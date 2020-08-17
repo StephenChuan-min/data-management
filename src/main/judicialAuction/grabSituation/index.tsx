@@ -14,8 +14,9 @@ const echart =  require('echarts');
  * @Description: 司法拍卖数据监控-抓取情况监控
 */
 
-interface Props {
-
+enum Type {
+    left = 1, // 源网站增量与数据抓取量
+    right = 2, // 数据抓取量与源网站增量差值
 }
 
 const initData = [
@@ -94,15 +95,20 @@ const initData = [
 ]
 
 
-function Index(prop: Props) {
+function Index() {
     let pie:any = null;
 
-    // 源网站增量与数据抓取量的key
+    // 源网站增量与数据抓取量的xAix
     let [xAxis, setXAxis] = useState(getDateArray(31))
+
+    // 数据抓取量与源网站增量差值xAix
+    let [xAxis1, setXAxis1] = useState(getDateArray(31))
 
     const [sumData, setSumData] = useState({ yesterday: 0, less: 0, more: 0 });
 
-    const [data, setData] = useState(initData)
+    const [data, setData] = useState(initData);
+
+    const [params, setParams] = useState({ status: 0 });
 
     const col = Math.ceil(data.length / 3);
 
@@ -197,34 +203,45 @@ function Index(prop: Props) {
             placeholder: '请选择映射字段名',
             label: '数据源',
             field: 'status',
-            option: [{
-                value: 0,
-                label: '请选择'
-            }],
-            onChange: (params: object) => {
-                console.log(params)
+            defaultValue: 0,
+            option: [
+                {
+                    value: 0,
+                    label: 'label-0'
+                },
+                {
+                    value: 1,
+                    label: 'label-1'
+                },
+            ],
+            onChange: (params: { status: number }) => {
+                setParams(params)
             }
         },
     ];
 
-    const handleRadioChange = (val: any) => {
+    const handleRadioChange = (val: any, type: Type) => {
        xAxis = getAxisByType(val.target.value);
-       console.log(xAxis)
-        setXAxis(xAxis)
+       if (type === Type.left) {
+           setXAxis(xAxis)
+       }
+       if (type === Type.right) {
+           setXAxis1(xAxis)
+       }
     }
 
     useEffect(
         () => {
             const myPie = echart.init(pie);
             myPie.setOption(option)
-        }, [option, pie]
+        }, [data]
     )
         return (
             <div className="grab-situation-monitor">
                 <div className="header">
                     <p className="header-title">抓取数据分布概览</p>
                     <div className="header-content-top">
-                        <p className="left">
+                        <div className="left">
                             <div style={{ display: 'inline-block'}}>
                                 <span className="title">昨日抓取总量</span>
                                 <div className="bottom">
@@ -232,8 +249,8 @@ function Index(prop: Props) {
                                     <span>条</span>
                                 </div>
                             </div>
-                        </p>
-                        <p className="right">
+                        </div>
+                        <div className="right">
                             <span className="title">与源网站增量（区分数据源）差值</span>
                             <div>
                                 <span className="right-bottom-left">
@@ -247,28 +264,28 @@ function Index(prop: Props) {
                                     <span>条</span>
                                 </span>
                             </div>
-                        </p>
+                        </div>
                     </div>
                     <div style={{ padding: '0 20px'}}>
                         <div id="pie" ref={dom => pie = dom} style={{ width: '100%', marginTop: 22, height: col > 4 ? col * 36 : 180 }} />
                     </div>
                 </div>
                 <div className="bottom-left">
-                    <p className="header-title">
+                    <div className="header-title">
                         源网站增量与数据抓取量
-                        <TitleRight configList={configList} handleRadioChange={handleRadioChange} />
-                    </p>
+                        <TitleRight configList={configList} handleRadioChange={(val: any) => handleRadioChange(val, Type.left)} />
+                    </div>
                     <div className="chart">
-                        <BottomLeft xAxisData={xAxis} key={String(xAxis)} />
+                        <BottomLeft xAxisData={xAxis} key={String(xAxis)} params={params} />
                     </div>
                 </div>
                 <div className="bottom-right">
-                    <p className="header-title">
+                    <div className="header-title">
                         数据抓取量与源网站增量差值
-                        <TitleRight configList={configList} handleRadioChange={handleRadioChange} />
-                    </p>
+                        <TitleRight configList={configList} handleRadioChange={(val: any) => handleRadioChange(val, Type.right)} />
+                    </div>
                     <div className="chart">
-                        <BottomRight />
+                        <BottomRight key={String(xAxis1)} xAxisData={xAxis1} />
                     </div>
                 </div>
             </div>

@@ -1,7 +1,9 @@
 import * as type from "./actionTypes";
 import { handleLocal } from '../utils/localStorage'
+import { labelValue } from '../common/schemas';
 
 export function addUser(text: string) {
+    handleLocal('nickName', text)
     return {
         type: type.ADD_USER,
         text,
@@ -41,5 +43,12 @@ export function setFresh(is: boolean) {
     return {
         type: type.SET_FRESH,
         is,
+    }
+}
+
+export function setDataTypeList(list: labelValue[]) {
+    return {
+        type: type.SET_DATA_TYPE,
+        list,
     }
 }

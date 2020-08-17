@@ -12,17 +12,20 @@ export enum typeEnum1 {
 
 interface commonProps {
     label: string,
-    field: string,
 }
 
 export interface Props extends commonProps{
     type: typeEnum,
     placeholder?: string,
+    field: string,
     option?: labelValue[],
+    defaultValue? : string | number,
 }
 
 export interface Props1 extends commonProps{
     type: typeEnum1,
+    field: string[],
     placeholder?: string[],
-    conjunctions?: string
+    conjunctions?: string,
+    defaultValue? : (string | number)[],
 }

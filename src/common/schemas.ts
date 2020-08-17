@@ -1,3 +1,5 @@
+import React from "react";
+
 /**
  * @author czq
  * @date 2020/8/6
@@ -7,6 +9,11 @@ export interface inputTarget {
     target: {
         value: string
     }
+}
+// 列表公共分页参数
+export interface Table {
+    page: number,
+    num: number,
 }
 
 export interface labelValue {
@@ -22,4 +29,11 @@ export enum BtnType {
     ghost = 'ghost',
     default = "default",
     dashed = "dashed"
+}
+
+export interface Columns {
+    title: string,
+    dataIndex?: string,
+    key: string,
+    render?(text: any, r: object): any,
 }

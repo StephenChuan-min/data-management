@@ -8,7 +8,7 @@ interface Action {
 }
 
 const initialState = {
-    userName: 'czq',
+    userName: handleLocal('nickName'),
     token: handleLocal('token'),
 };
 
@@ -17,7 +17,7 @@ const initialState1 = {
 };
 
 const initParams = {
-    key: 1,
+    key: 0, // 搜索选项重置使用的key
 }
 
 function user(state = initialState, action: Action) {
@@ -58,10 +58,19 @@ function params(state = initParams, action: { type: string, params: object, key?
     }
 }
 
-function isFresh(state = true, action: { type: string, is: boolean}) {
+function isFresh(state = false, action: { type: string, is: boolean}) {
     switch(action.type) {
         case actionTypes.SET_FRESH: // 添加请求条件
             return action.is;
+        default:
+            return state;
+    }
+}
+
+function dataTypeList(state = [], action: { type: string, list: boolean}) {
+    switch(action.type) {
+        case actionTypes.SET_DATA_TYPE: // 设置数据类型
+            return action.list
         default:
             return state;
     }
@@ -73,4 +82,5 @@ export const reducers = combineReducers({
     axios,
     params,
     isFresh,
+    dataTypeList,
 })

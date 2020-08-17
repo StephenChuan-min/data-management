@@ -59,7 +59,8 @@ const tooltip = {
 const color = ['#FD9C26', '#0386D5'];
 
 interface Props {
-    xAxisData: string[]
+    xAxisData: string[],
+    params: { status: number },
 }
 
 function BottomLeft(props: Props) {

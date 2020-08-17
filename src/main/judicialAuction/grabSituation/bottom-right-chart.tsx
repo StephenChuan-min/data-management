@@ -1,8 +1,5 @@
 import React, {useState} from "react";
 import LineChart, { emphasisStyle } from '../components/line-chart';
-import { getDateArray } from '../../../utils/some-time-utils';
-
-const initData = getDateArray(31);
 
 const series = [
     {
@@ -65,9 +62,7 @@ const tooltip = {
 
 const color = ['#0386D5', '#FD9C26', '#F03733']
 
-function BottomRight() {
-
-    const [xAxisData, setData] = useState(initData)
+function BottomRight(props: { xAxisData: string[] }) {
 
     const legend = {
         selectedMode: 'multiple',
@@ -78,7 +73,7 @@ function BottomRight() {
     };
 
     return (
-        <LineChart xAxisData={xAxisData} legend={legend} series={series} color={color} tooltip={tooltip} height={362} />
+        <LineChart xAxisData={props.xAxisData} legend={legend} series={series} color={color} tooltip={tooltip} height={362} />
     )
 }
 

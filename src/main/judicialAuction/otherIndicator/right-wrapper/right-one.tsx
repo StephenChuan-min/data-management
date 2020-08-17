@@ -77,6 +77,7 @@ function RightOne() {
             label: '监控字段',
             field: 'status',
             option: option,
+            defaultValue: 0,
             onChange: (params: { status: any }) => {
                 const item = option.filter(v => v.value === params.status)[0]
                 console.log(item)
@@ -97,7 +98,7 @@ function RightOne() {
                         </div>
                     </div>
                 </div>
-                <LineChart gridTop={20} xAxisData={initData} legend={legend} series={series(name)} color={['#0386D5']} tooltip={tooltip(name)} height={197} />
+                <LineChart gridTop={30} xAxisData={initData} legend={legend} series={series(name)} color={['#0386D5']} tooltip={tooltip(name)} height={180} />
             </div>
         </div>
     )

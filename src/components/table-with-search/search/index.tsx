@@ -31,7 +31,7 @@ function Search(props: {config: (schemas.Props | schemas.Props1)[], btnList?: Bt
    return <React.Fragment>
        <div className="yc-search-line">
            {props.config.map(v => {
-               return <div className={v.type === schemas.typeEnum1.rangePicker ? 'yc-search-line-item-range' :"yc-search-line-item"}>
+               return <div key={v.label} className={v.type === schemas.typeEnum1.rangePicker ? 'yc-search-line-item-range' :"yc-search-line-item"}>
                    <span className="yc-search-line-item_label">{v.label}</span>
                    <span className="yc-search-line-item_value">
                        {
@@ -43,7 +43,7 @@ function Search(props: {config: (schemas.Props | schemas.Props1)[], btnList?: Bt
            {props.btnList ? <div className="yc-search-line-btn-wrapper">
                {
                    props.btnList.map(v => {
-                       return <Button type={v.type} onClick={v.onClick}>{v.label}</Button>
+                       return <Button key={v.label} type={v.type} onClick={v.onClick}>{v.label}</Button>
                    })
                }
            </div> : null}

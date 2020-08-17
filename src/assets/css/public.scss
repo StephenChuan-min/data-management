@@ -1,4 +1,3 @@
-.App {
   .header-title {
     border-bottom: 1px solid #EDEFF3;
     height: 54px;
@@ -37,5 +36,41 @@
       }
     }
   }
-}
+  .yc-table-wrapper {
+    .ant-table-wrapper {
+      .ant-table {
+        color: #293038;
+        .ant-table-thead > tr > th {
+          background: #EDEFF3;
+          color: #4E5566;
+        }
+      }
+    }
+  }
+  .ant-btn-primary {
+      background: #016AA9;
+      border-color: #016AA9;
+  }
+  .ant-btn-primary:hover {
+      background: #017AC2;
+      border-color: #017AC2;
+    }
+    .ant-btn-ghost {
+      color: #016AA9;
+      border-color: #016AA9;
+    }
+    .ant-btn-ghost:hover {
+      background-color: #016AA9;
+      border-color: #016AA9;
+      color: white;
+    }
+  .ant-btn-primary:focus {
+    background: #016AA9;
+    border-color: #016AA9;
+  }
+  .ant-btn-ghost:focus {
+    background: white;
+    border-color: #016AA9;
+    color: #016AA9;
+  }
 

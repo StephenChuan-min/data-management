@@ -311,7 +311,15 @@ function Left() {
                             </Radio.Group>
                         </div>
                     </div>
-                    <LineChart gridTop={70} xAxisData={initData} legend={legend} series={series} color={color} tooltip={tooltip('各表数据总量')} height={320} />
+                    <LineChart
+                        gridTop={70}
+                        xAxisData={initData}
+                        legend={legend}
+                        series={series}
+                        color={color}
+                        tooltip={tooltip('各表数据总量')}
+                        height={265}
+                    />
                 </div>
                 <div className="fourth-content" style={{ marginTop: 29 }}>
                     <div className="second-title">
@@ -320,7 +328,17 @@ function Left() {
                             <Search config={configList1} />
                         </div>
                     </div>
-                    <LineChart xAxisData={xAxis} xAxisConfig={xAxisConfig} legend={legend1} series={series1} yAxis={yAxis} color={['#0386D5', '#FD9C26']} tooltip={tooltip('数据增量时间段分布')} height={240} />
+                    <LineChart
+                        gridTop={70}
+                        xAxisData={xAxis}
+                        xAxisConfig={xAxisConfig}
+                        legend={legend1}
+                        series={series1}
+                        yAxis={yAxis}
+                        color={['#0386D5', '#FD9C26']}
+                        tooltip={tooltip('数据增量时间段分布')}
+                        height={286}
+                    />
                 </div>
             </div>
         </div>

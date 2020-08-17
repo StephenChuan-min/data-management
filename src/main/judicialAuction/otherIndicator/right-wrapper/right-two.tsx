@@ -77,7 +77,7 @@ function RightOne() {
                         状态更新异常率折线图
                     </div>
                 </div>
-                <LineChart gridTop={20} xAxisData={initData} legend={legend} series={series('状态更新异常率')} color={['#F03733']} tooltip={tooltip('状态更新异常率')} height={197} />
+                <LineChart gridTop={30} xAxisData={initData} legend={legend} series={series('状态更新异常率')} color={['#F03733']} tooltip={tooltip('状态更新异常率')} height={180} />
             </div>
         </div>
     )

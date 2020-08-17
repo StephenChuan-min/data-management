@@ -124,7 +124,15 @@ function RightOne() {
                         附件抓取量与附件解析量
                     </div>
                 </div>
-                <LineChart xAxisData={initData} legend={legend} series={series} color={['#0386D5', '#FD9C26', '#F03733', '#16B45C']} tooltip={tooltip('附件解析')} height={240} />
+                <LineChart
+                    gridTop={70}
+                    xAxisData={initData}
+                    legend={legend}
+                    series={series}
+                    color={['#0386D5', '#FD9C26', '#F03733', '#16B45C']}
+                    tooltip={tooltip('附件解析')}
+                    height={265}
+                />
             </div>
         </div>
     )

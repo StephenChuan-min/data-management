@@ -64,14 +64,6 @@
     .ant-btn:last-of-type {
       margin-right: 0;
     }
-    .ant-btn-primary {
-      background: #016AA9;
-      border-color: #016AA9;
-    }
-    .ant-btn-primary:hover {
-      background: #017AC2;
-      border-color: #017AC2;
-    }
     .ant-btn-ghost {
       color: #293038;
       border-color: #EDEFF3;
@@ -79,6 +71,7 @@
     .ant-btn-ghost:hover {
       color: #016AA9;
       border-color: #016AA9;
+      background: white;
     }
   }
 }

@@ -4,6 +4,14 @@
       width: 83px;
     }
   }
+  .ant-table-cell {
+    .ant-btn {
+      width: 80px;
+    }
+    .ant-btn-ghost {
+      padding: 0 11px;
+    }
+  }
 }
 .addedMapping, .developmentAbnormal {
   .content-title {
