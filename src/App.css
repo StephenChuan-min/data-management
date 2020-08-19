@@ -2,8 +2,8 @@
 .App {
   background: #EDEFF3;
   min-width: 1280px;
-  min-height: 680px;
   color: #293038;
+  overflow: auto;
 }
 #root, .App {
   height: 100%;
