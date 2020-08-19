@@ -1,19 +1,21 @@
 import React, {useEffect, useState} from "react";
-import { Modal } from 'antd';
+import { Modal, Button } from 'antd';
 import './style.scss'
 
 interface Props {
     visible: boolean, // 显隐状态
     title: string,
     children: any,
+    loading?: boolean,
     okButtonProps?: object,
     cancelButtonProps?: object,
-    okText?: string,
+    okText?: any,
     okType?: string,
     cancelText?: string,
     maskClosable?: boolean,
-    onOk?(): void,
+    onOk?(callback: () => void): void,
     onCancel?(): void,
+    className?: string,
 }
 
 function RemarkModal(props: Props) {
@@ -31,9 +33,12 @@ function RemarkModal(props: Props) {
 
     const handleOk = () => {
         if (props.onOk) {
-            props.onOk()
+            props.onOk(() => {
+                setVisible(false)
+            })
+        } else {
+            setVisible(false)
         }
-        setVisible(false)
     }
 
     const handleCancel = () => {
@@ -43,14 +48,18 @@ function RemarkModal(props: Props) {
 
     return (
         <Modal
-            okText={props.okText}
-            cancelText={props.cancelText}
-            okButtonProps={props.okButtonProps}
-            cancelButtonProps={props.cancelButtonProps}
+            className={props.className}
             title={props.title}
             visible={visible}
-            onOk={handleOk}
             onCancel={handleCancel}
+            footer={<>
+                {props.cancelText && <Button key="back" {...props.cancelButtonProps} onClick={handleCancel}>
+                    {props.cancelText}
+                </Button>}
+                {props.okText && <Button key="submit" {...props.okButtonProps} type="primary" loading={props.loading} onClick={handleOk}>
+                    {props.okText}
+                </Button>}
+            </>}
         >
             {props.children}
         </Modal>

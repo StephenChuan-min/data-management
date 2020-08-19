@@ -20,7 +20,7 @@ function Remark(props: Props) {
                 <div>{
                     props.value
                 }</div> :
-                <Input.TextArea rows={8} onChange={handleChange} />}
+                <Input.TextArea rows={8} onChange={handleChange} defaultValue={props.value} />}
         </div>
     )
 }

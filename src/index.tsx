@@ -7,6 +7,8 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { Provider } from 'react-redux'
 import store from "./store/store";
 import './assets/css/public.scss';
+// import 'default-passive-events'; // chrome 优化时间监听，使滑动更平滑
+import 'moment';
 
 ReactDOM.render(
     <BrowserRouter>

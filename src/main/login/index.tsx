@@ -116,7 +116,7 @@ function Index(props: Props) {
                             >
                                 <Input
                                     onChange={(val:any) => handleChange(val, Type.user)}
-                                    prefix={<UserOutlined className="site-form-item-icon" />}
+                                    prefix={<i className="iconfont iconzhanghao" />}
                                     placeholder="请输入11位账号"
                                 />
                             </Form.Item>
@@ -128,7 +128,7 @@ function Index(props: Props) {
                             >
                                 <Input.Password
                                     onChange={(val:any) => handleChange(val, Type.password)}
-                                    prefix={<UserOutlined className="site-form-item-icon" />}
+                                    prefix={<i className="iconfont iconmima" />}
                                     placeholder="请输入密码"
                                 />
                             </Form.Item>

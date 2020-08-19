@@ -1,4 +1,5 @@
 import {labelValue} from "../../common/schemas";
+import {Moment} from "moment";
 
 export enum typeEnum {
     select = 'select',
@@ -12,6 +13,7 @@ export enum typeEnum1 {
 
 interface commonProps {
     label: string,
+    allowClear?: boolean,
 }
 
 export interface Props extends commonProps{
@@ -19,7 +21,9 @@ export interface Props extends commonProps{
     placeholder?: string,
     field: string,
     option?: labelValue[],
-    defaultValue? : string | number,
+    timeDefault?: Moment,
+    defaultValue?: string | number,
+    disabledDate?(c: Moment): boolean,
 }
 
 export interface Props1 extends commonProps{
@@ -27,5 +31,5 @@ export interface Props1 extends commonProps{
     field: string[],
     placeholder?: string[],
     conjunctions?: string,
-    defaultValue? : (string | number)[],
+    defaultValue? : Moment[],
 }

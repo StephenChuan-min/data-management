@@ -1,13 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import LineChart from "../../components/line-chart";
 import {getDateArray} from "../../../../utils/some-time-utils";
+import api from '../../../../api/otherIndicator';
+import { message, Spin } from 'antd';
+import {dataToSeries} from "../../common/get-axis-by-type";
 
-const option = [{
-    value: 0,
-    label: '开拍时间（start_time)'
-}]
-
-function tooltip(str: string) {
+function tooltip(str: string, data: {currentCount: number, abnormalCount: number, countDate: string }[]) {
     return (
         {
             formatter: (params: any) => {
@@ -24,7 +22,7 @@ function tooltip(str: string) {
                     const { value } = e;
                     let tempName = name;
 
-                    let itemLabel = `${value || value === 0 ? value : '--'}`
+                    let itemLabel = `${value || value === 0 ? `${(value * 100000) / 1000} %` : '--'}`
                     tipArray[index] = `${regMarker}${tempName}：${itemLabel}`;
                     return e;
                 });
@@ -35,17 +33,23 @@ function tooltip(str: string) {
                     }
                     return e;
                 });
-                tip = `${str}<br />${params[0].name}<br>${tip}`;
+
+                const item = data.find((v) => v.countDate === params[0].name)
+                let middleLabel = ''
+                if (item) {
+                    middleLabel = `<br />当前数据量：${item.currentCount}<br />异常数据量：${item.abnormalCount}`
+                }
+
+                tip = `${str}<br />${params[0].name}${middleLabel}<br />${tip}`;
                 return tip;
             }})
 }
 
-function series(str: string): {}[] {
-    return [
+const initSeries = [
         {
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            data: [],
             type: 'line',
-            name: str,
+            name: '状态更新异常率',
             symbol: 'emptyCircle',
             showSymbol: false,
             symbolSize: 2,
@@ -54,8 +58,7 @@ function series(str: string): {}[] {
                 width: 1,
             },
         },
-    ]
-}
+    ];
 
 const initData = getDateArray(31);
 
@@ -66,19 +69,59 @@ function RightOne() {
         data: ['状态更新异常率'],
     };
 
+    const [series, setSeries] = useState(initSeries);
+    const [spin, setSpin] = useState(false);
+    const [data, setData] = useState([{abnormalCount: 0, currentCount: 0, countDate: '' }]);
+
+    useEffect(() => {
+        getData()
+    }, [])
+
+    const getData = () => {
+        setSpin(true)
+        api.apiGetDataModifiedList().then((res) => {
+            if (res.code === 200) {
+                const r = dataToSeries.call(series, '状态更新异常率', res.data, 'rate', initData);
+                setData(res.data);
+                setSeries(r);
+            } else {
+                message.error(res.message)
+            }
+        }).finally(() => {
+            setSpin(false)
+        })
+    }
+
     return (
         <div className="right-two">
             <p className="header-title">
                 数据更新情况监控（日）
             </p>
-            <div className="content">
-                <div className="third-content" style={{ marginTop: 29 }}>
-                    <div className="second-title">
-                        状态更新异常率折线图
-                    </div>
+                <div className="content">
+                    <Spin spinning={spin}>
+                        <div className="third-content" style={{ marginTop: 29 }}>
+                            <div className="second-title">
+                                状态更新异常率折线图
+                            </div>
+                        </div>
+                        <LineChart
+                            key={JSON.stringify(series)}
+                            gridTop={30}
+                            xAxisData={initData}
+                            legend={legend}
+                            series={series}
+                            color={['#F03733']}
+                            tooltip={tooltip('状态更新异常率', data)}
+                            height={177}
+                            yAxis={{
+                                axisLabel: {
+                                    color: '#4F5358',
+                                    formatter: (v: number) => `${(v * 100000) / 1000} %`
+                                }
+                            }}
+                        />
+                    </Spin>
                 </div>
-                <LineChart gridTop={30} xAxisData={initData} legend={legend} series={series('状态更新异常率')} color={['#F03733']} tooltip={tooltip('状态更新异常率')} height={180} />
-            </div>
         </div>
     )
 }

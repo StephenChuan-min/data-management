@@ -6,11 +6,12 @@ import TableWithSearch from '../../components/table-with-search'
 import { typeEnum, typeEnum1 } from '../../components/table-with-search/schemas'
 import './style.scss';
 import TopSelect from './components/top-select';
-import {Space, Button, message} from "antd";
+import {Button, message} from "antd";
 import Modal from '../../components/modal';
 import Remark from './components/remark-modal';
 import api from '../../api/developmentAbnormal';
 import { getItemInArray } from '../../utils/utils';
+import { EditOutlined } from '@ant-design/icons';
 
 /**
  * @author czq
@@ -19,9 +20,9 @@ import { getItemInArray } from '../../utils/utils';
 */
 
 export enum ClickType {
-    handle = '添加备注',
+    handle = '处理',
     check = '备注',
-    edit = '备注'
+    edit = '编辑备注'
 }
 
 
@@ -64,13 +65,11 @@ function DevelopmentAbnormal(props: Props) {
     })
     const [type, setType] = useState(0);
 
-    const [record, setRecord] = useState({ id: '', remarks: '' })
+    const [record, setRecord] = useState({ id: '', remarks: '' });
 
-    const [remark, setRemark] = useState('')
+    const [remark, setRemark] = useState('');
 
-    useEffect(() => {
-        console.log(props)
-    }, [])
+    const [loading, setLoading] = useState(false); // 弹窗按钮加载状态
 
     const configList = [
         {
@@ -143,9 +142,22 @@ function DevelopmentAbnormal(props: Props) {
         }
     }
 
-    const handleAddRemark = () => {
+    const handleAddRemark = (resolve: () => void) => {
+        // 当是查看时 点击编辑按钮
+        if (modalState.clickType === ClickType.check) {
+            setModalState({
+                ...modalState,
+                clickType: ClickType.edit
+            });
+            return
+        }
+        setLoading(true)
         api.apiEditRemarkContent({ id: record.id, content: remark }).then((res) => {
             if (res.code === 200) {
+                props.setFresh(true);
+                setLoading(false)
+                resolve();
+                message.success('编辑成功')
             } else {
                 message.error(res.message)
             }
@@ -202,7 +214,7 @@ function DevelopmentAbnormal(props: Props) {
                 <div>
                     {record.dealStatus === 0 && <Button type="ghost" onClick={() => handleClick(record, ClickType.handle)}>处理</Button>}
                     {record.dealStatus === 1 && record.remarks &&  <Button type="ghost" onClick={() => handleClick(record, ClickType.check)}>查看备注</Button>}
-                    {record.dealStatus === 1 && <Button type="ghost" onClick={() => handleClick(record, ClickType.edit)}>编辑备注</Button>}
+                    {record.dealStatus === 1 && !record.remarks && <Button type="ghost" onClick={() => handleClick(record, ClickType.edit)}>编辑备注</Button>}
                 </div>
             ),
         },
@@ -224,9 +236,11 @@ function DevelopmentAbnormal(props: Props) {
                 <div>
                 </div>
                 <Modal
+                    className="developmentAbnormal-remark-modal"
+                    loading={loading}
                     onOk={handleAddRemark}
-                    okText="确认"
-                    cancelText="取消"
+                    okText={modalState.clickType === ClickType.check ? <span><EditOutlined />编辑</span> : "保存"}
+                    cancelText={modalState.clickType === ClickType.check ? '' :"取消"}
                     title={modalState.clickType}
                     visible={modalState.visible}
                 >

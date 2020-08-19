@@ -46,4 +46,44 @@ function getAxisByType(type: string): string[] {
     return r;
 }
 
+export function dataToSeries(this: any, name: string, data: { countDate: string, [propName: string]: any }[], field: string, date: string[]){
+    let index = 0;
+    let that = [...this];
+    const item = this.filter((v: { name: string, index: number, data: any[] }) => {
+        if (v.name === name) {
+            index = v.index;
+            return true
+        }
+        return false
+    })[0];
+
+
+    item.data = [];
+    date.forEach(e => {
+        data.map(v => {
+            if (v.countDate === e) {
+                // field = 'different' 特殊处理 name 为 差值 和 -差值
+                if (field === 'different') {
+                    if (name === '差值' && v[field] >= 0) {
+                        item.data.push(v[field])
+                    } else if (name === '-差值' && v[field] < 0) {
+                        item.data.push(v[field])
+                    } else {
+                        item.data.push(null)
+                    }
+                } else {
+                    item.data.push(v[field])
+                }
+            }
+        })
+    });
+
+    console.log(item)
+
+    if (item) {
+        that[index] = item;
+    }
+    return that;
+}
+
 export default getAxisByType

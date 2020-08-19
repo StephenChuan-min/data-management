@@ -1,6 +1,8 @@
 import * as type from "./actionTypes";
 import { handleLocal } from '../utils/localStorage'
 import { labelValue } from '../common/schemas';
+import api from "../api/developmentAbnormal";
+import {message} from "antd";
 
 export function addUser(text: string) {
     handleLocal('nickName', text)
@@ -50,5 +52,21 @@ export function setDataTypeList(list: labelValue[]) {
     return {
         type: type.SET_DATA_TYPE,
         list,
+    }
+}
+
+export function getDataTypeList() {
+    return (dispatch: any) => {
+        const fun = () => {
+            api.apiGetDataTypeList().then((res) => {
+                if (res.code === 200) {
+                    const val = res.data.map((v: any) => ({ value: v.id, label: v.typeName }));
+                    dispatch(setDataTypeList(val))
+                } else {
+                    message.error(res.message)
+                }
+            }).finally(() => {})
+        }
+        return fun()
     }
 }

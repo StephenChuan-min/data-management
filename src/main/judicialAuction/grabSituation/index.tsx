@@ -276,7 +276,7 @@ function Index() {
                         <TitleRight configList={configList} handleRadioChange={(val: any) => handleRadioChange(val, Type.left)} />
                     </div>
                     <div className="chart">
-                        <BottomLeft xAxisData={xAxis} key={String(xAxis)} params={params} />
+                        <BottomLeft xAxisData={xAxis} key={JSON.stringify(xAxis)} params={params} />
                     </div>
                 </div>
                 <div className="bottom-right">
@@ -285,7 +285,7 @@ function Index() {
                         <TitleRight configList={configList} handleRadioChange={(val: any) => handleRadioChange(val, Type.right)} />
                     </div>
                     <div className="chart">
-                        <BottomRight key={String(xAxis1)} xAxisData={xAxis1} />
+                        <BottomRight key={JSON.stringify(xAxis1)} xAxisData={xAxis1} />
                     </div>
                 </div>
             </div>
