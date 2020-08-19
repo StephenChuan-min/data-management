@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Search from "./search";
 import * as schemas from './schemas';
 import {message, Table, Pagination} from 'antd';
@@ -24,6 +24,7 @@ interface TableProps {
     paramsKey: number,
     columns: Columns[],
     setParams(obj: Object): void,
+    rowKey: string,
     defaultParams?: object, // 默认参数
 }
 
@@ -42,19 +43,27 @@ const initProps = {
 
 export const TableWithSearch: React.FunctionComponent<TableProps> = props =>{
 
-    const [loading, setLoad] = useState(false)
+    const [loading, setLoad] = useState(false);
+    const [params, setParams] = useState(props.params);
     const [data, setData] = useState([]);
     const [pageParams, setPageParams] = useState({ total: 0, current: 1, pageSize: 10});
 
     useEffect(() => {
         // 初始化时清空查询条件
-        assignDefaultParams(true)
-        props.setFresh(true)
+        assignDefaultParams(true);
+        props.setFresh(true);
     }, []);
+
+    useEffect(() => {
+        if (props.isFresh) {
+            getData()
+            props.setFresh(false)
+        }
+    }, [params])
 
     // isMounted 是否首次加载
     const assignDefaultParams = (isMounted: boolean) => {
-        const { config } = props
+        const { config } = props;
         let defaultParams:any = [];
         if (isMounted) {
             defaultParams = config.map(v => {
@@ -71,21 +80,13 @@ export const TableWithSearch: React.FunctionComponent<TableProps> = props =>{
             defaultParams = props.params
         }
         const a = {...defaultParams, ...props.defaultParams, key: 0 }
-        props.setParams(a);
-        return a;
+        setParams(a);
     };
-
-    useEffect(() => {
-        if (props.isFresh) {
-            getData()
-            props.setFresh(false)
-        }
-    }, [props.params])
 
     const getData = () => {
         setLoad(true)
         // 搜索加上默认参数
-        const reParams = {...props.params, num: pageParams.pageSize ,page: pageParams.current }
+        const reParams = {...params, num: pageParams.pageSize ,page: pageParams.current }
         delete reParams.key
         props.apiFun(reParams).then((res: any) => {
             if (res.code === 200) {
@@ -119,6 +120,9 @@ export const TableWithSearch: React.FunctionComponent<TableProps> = props =>{
         <Search config={props.config} btnList={props.btnList} key={props.paramsKey} />
         <div className="yc-table-wrapper">
             <Table
+                rowKey={(record: { [propName: string]: string }) => {
+                    return record[props.rowKey]
+                }}
                 loading={loading}
                 columns={props.columns}
                 dataSource={data}

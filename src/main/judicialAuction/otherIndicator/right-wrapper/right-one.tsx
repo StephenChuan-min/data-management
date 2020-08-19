@@ -3,7 +3,7 @@ import LineChart from "../../components/line-chart";
 import Search from "../../../../components/table-with-search/search";
 import {typeEnum} from "../../../../components/table-with-search/schemas";
 import {getDateArray} from "../../../../utils/some-time-utils";
-import api from '../../../../api/otherIndicator';
+import api from '../../../../api/other-indicator';
 import { message, Spin } from 'antd';
 import {dataToSeries} from "../../common/get-axis-by-type";
 

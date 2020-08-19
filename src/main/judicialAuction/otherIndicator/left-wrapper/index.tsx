@@ -7,9 +7,9 @@ import chartIcon from '../../../../assets/img/chartIcon.png'
 import Search from "../../../../components/table-with-search/search";
 import {Radio, message, Spin} from "antd";
 import {typeEnum} from "../../../../components/table-with-search/schemas";
-import api from '../../../../api/otherIndicator';
+import api from '../../../../api/other-indicator';
 import getAxisByType, { dataToSeries } from "../../common/get-axis-by-type";
-import { getDataTypeList } from "../../../../store/action";
+import { getDataSourceList } from "../../../../store/action";
 import {connect} from "react-redux";
 import {labelValue} from "../../../../common/schemas";
 import moment, {Moment} from "moment";
@@ -176,7 +176,7 @@ function tooltip(title: string, hour?: boolean, data?: {hour: number, countDate:
 const color = ['#FD9C26', '#0386D5', '#F03733', '#16B45C'];
 
 interface Props {
-    getDataTypeList(): void,
+    getDataSourceList(): void,
     option: labelValue[],
 }
 
@@ -194,16 +194,14 @@ function Left(props: Props) {
 
     useEffect(() => {
         getData();
-        if (props.option.length === 0) {
-            props.getDataTypeList()
-        }
+        props.getDataSourceList()
     }, []);
 
     useEffect(() => {
         if (props.option.length !== 0) {
             setTimeSlotParams({countDate: moment().format(formatType), sourceId: String(props.option[0].value) })
         }
-    }, [props.option])
+    }, [props.option]);
 
     useEffect(() => {
         getDataCountList()
@@ -398,14 +396,14 @@ function Left(props: Props) {
                                 </p>
                             </div>
                             <div className="content-center">
-                                <span className="ratio">{data.totalRatio * 100}%</span>
+                                <span className="ratio">{data.totalRatio === null ? null : `${data.totalRatio * 100}%`}</span>
                                 <p className="border-bottom">
                                     <ArrowRightOutlined />
                                 </p>
                                 <p className="border-top">
                                     <ArrowLeftOutlined />
                                 </p>
-                                <span className="lc">{data.totalDifferent > 0 ? '多' : '少'}{Math.abs(data.totalDifferent)}条</span>
+                                <span className="lc">{data.totalDifferent === 0 ? null : `${data.totalDifferent > 0 ? '多' : '少'}${Math.abs(data.totalDifferent)}条`}</span>
                             </div>
                             <div className="content-right">
                                 <p className="label">资产监控库</p>
@@ -427,14 +425,14 @@ function Left(props: Props) {
                                 </p>
                             </div>
                             <div className="content-center">
-                                <span className="ratio">{data.ratio * 100}%</span>
+                                <span className="ratio">{data.ratio === null ? null : `${data.ratio * 100}%`}</span>
                                 <p className="border-bottom">
                                     <ArrowRightOutlined />
                                 </p>
                                 <p className="border-top">
                                     <ArrowLeftOutlined />
                                 </p>
-                                <span className="lc">{data.different > 0 ? '多' : '少'}{Math.abs(data.different)}条</span>
+                                <span className="lc">{data.different === 0 ? null : `${data.different > 0 ? '多' : '少'}${Math.abs(data.different)}条`}</span>
                             </div>
                             <div className="content-right">
                                 <p className="label">资产监控库</p>
@@ -505,11 +503,11 @@ function Left(props: Props) {
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        getDataTypeList: () => {
-            dispatch(getDataTypeList())
+        getDataSourceList: () => {
+            dispatch(getDataSourceList())
         },
     }
 }
 
 
-export default connect((state: any) => ({option: state.dataTypeList }), mapDispatchToProps)(Left);
+export default connect((state: any) => ({option: state.dataSourceList }), mapDispatchToProps)(Left);

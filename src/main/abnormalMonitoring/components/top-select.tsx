@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { labelValue } from '../../../common/schemas';
 import {Select} from "antd";
 import './style.scss';
-import {getDataTypeList} from "../../../store/action";
+import {clearParams, getDataTypeList, setFresh} from "../../../store/action";
 import {connect} from "react-redux";
 
 /**
@@ -15,6 +15,9 @@ interface Props {
     getValue(val: number): void,
     getDataTypeList(): void,
     storeOption: [], // store中的下拉选项
+    paramsKey: number, // store中的key
+    clearParams(key: number): void,
+    setFresh(bol: boolean): void,
     option?: labelValue[], // 下拉选项
 }
 
@@ -25,13 +28,13 @@ function TopSelect(props: Props) {
     const selfOption = props.option || props.storeOption || []; // 本地下拉选项 优先外部传进的option
 
     useEffect(() => {
-        if (props.storeOption.length === 0) {
-            props.getDataTypeList()
-        }
+        props.getDataTypeList()
     }, [])
 
     const handleChange = (val: number):void => {
         setType(val);
+        props.clearParams(props.paramsKey + 1);
+        props.setFresh(true);
         props.getValue(val)
     }
 
@@ -59,9 +62,15 @@ const mapDispatchToProps = (dispatch: any) => {
         getDataTypeList: () => {
             dispatch(getDataTypeList())
         },
+        setFresh: (is: boolean) => {
+            dispatch(setFresh(is))
+        },
+        clearParams: (key?: number) => {
+            dispatch(clearParams(key))
+        },
     }
 }
 
-export default connect((state: any) => ({dataTypeList: state.dataTypeList, storeOption: state.dataTypeList }),
+export default connect((state: any) => ({dataTypeList: state.dataTypeList, storeOption: state.dataTypeList, paramsKey: state.params.key }),
     () => mapDispatchToProps
 )(TopSelect);

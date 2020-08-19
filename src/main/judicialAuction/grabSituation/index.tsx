@@ -3,11 +3,16 @@ import '../style.scss';
 import BottomLeft from './bottom-left-chart';
 import BottomRight from './bottom-right-chart';
 import { typeEnum } from "../../../components/table-with-search/schemas";
+import { message } from 'antd';
 import TitleRight from '../components/title-right';
 import getAxisByType from '../common/get-axis-by-type';
 import { getDateArray } from '../../../utils/some-time-utils';
-const echart =  require('echarts');
+import api from '../../../api/grab-situation';
+import {labelValue, TimeType} from '../../../common/schemas';
+import { getDataSourceList } from '../../../store/action';
+import {connect} from "react-redux";
 
+const echart =  require('echarts');
 /**
  * @author czq
  * @date 2020/8/4
@@ -23,92 +28,94 @@ const initData = [
     {
         name: '阿里司法拍卖',
         id: '10763',
-        value: 1890,
-        than: 100,
+        value: 0,
+        than: 0,
     },
     {
         name: '京东司法拍卖',
         id: '10778',
-        value: 1890,
-        than: 100000,
+        value: 0,
+        than: 0,
     },
     {
         name: '公拍司法拍卖',
         id: '10763',
-        value: 1890,
-        than: 100,
+        value: 0,
+        than: 0,
     },
     {
         name: '中拍司法拍卖',
         id: '10781',
-        value: 1890,
-        than: 100,
+        value: 0,
+        than: 0,
     },
     {
         name: '人民法院诉讼资产网',
         id: '10783',
-        value: 1890,
-        than: 100,
+        value: 0,
+        than: 0,
     },
     {
         name: '北交互联',
         id: '10857',
-        value: 1890,
-        than: 100,
+        value: 0,
+        than: 0,
     },
     {
         name: '工行融e购',
         id: '10873',
-        value: 1890,
-        than: 100,
+        value: 0,
+        than: 0,
     },
     {
         name: '阿里金融资产',
         id: '10768',
-        value: 1890,
-        than: 100000,
+        value: 0,
+        than: 0,
     },
     {
         name: '京东金融资产',
         id: '10897',
-        value: 1890,
-        than: 100,
+        value: 0,
+        than: 0,
     },
     {
         name: '中拍金融资产',
         id: '10899',
-        value: 1890,
-        than: 100,
+        value: 0,
+        than: 0,
     },
     {
         name: '公拍同步拍',
         id: '10900',
-        value: 1890,
-        than: 100,
+        value: 0,
+        than: 0,
     },
     {
         name: '公拍金融资产',
         id: '10992',
-        value: 1890,
-        than: 100,
+        value: 0,
+        than: 0,
     },
 ]
 
 
-function Index() {
+function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
     let pie:any = null;
 
     // 源网站增量与数据抓取量的xAix
-    let [xAxis, setXAxis] = useState(getDateArray(31))
+    let [xAxis, setXAxis] = useState(getDateArray(31));
 
     // 数据抓取量与源网站增量差值xAix
     let [xAxis1, setXAxis1] = useState(getDateArray(31))
 
-    const [sumData, setSumData] = useState({ yesterday: 0, less: 0, more: 0 });
+    const [sumData, setSumData] = useState({ yesterdayGraspSumNum: 0, compareSourceNetDvalue: 0, compareSourceNetAdd: 0 });
 
     const [data, setData] = useState(initData);
 
-    const [params, setParams] = useState({ status: 0 });
+    const [leftParams, setLeftParams] = useState({ dataType: 0, timeType: TimeType.day });
+
+    const [rightParams, setRightParams] = useState({ dataType: 0, timeType: TimeType.day });
 
     const col = Math.ceil(data.length / 3);
 
@@ -148,7 +155,8 @@ function Index() {
                        width: 50,
                    },
                    b: {
-                       width: 180,
+                       width: 224,
+                       // padding: [0, 20, 0, 0],
                        fontSize: 14,
                        lineHeight: 20,
                    },
@@ -167,7 +175,7 @@ function Index() {
             },
             formatter: (name: any) => {
                 const item = data.filter(v => v.name === name)[0]
-                return `{b|${name}-${item.id}}{d|${item.value}}{c|条，少}{d|${item.than}}{c|条}{a|}`
+                return `{b|${name}-${item.id}}{d|${item.value}}{c|条${item.than === 0 ? '' : '，少'}}${item.than === 0 ? '' : `{d|${Math.abs(item.than)}}{c|条}`}{a|}`
             }
         },
         series: [
@@ -197,25 +205,26 @@ function Index() {
         ]
     };
 
-    const configList = [
+    const configList = (type: string) => [
         {
             type: typeEnum.select,
             placeholder: '请选择映射字段名',
             label: '数据源',
-            field: 'status',
+            field: 'dataType',
             defaultValue: 0,
-            option: [
-                {
-                    value: 0,
-                    label: 'label-0'
-                },
-                {
-                    value: 1,
-                    label: 'label-1'
-                },
-            ],
-            onChange: (params: { status: number }) => {
-                setParams(params)
+            option: props.option,
+            onChange: (params: { dataType: number }) => {
+                if (type === 'left') {
+                    setLeftParams({
+                        ...leftParams,
+                        ...params,
+                    })
+                } else {
+                    setRightParams({
+                        ...rightParams,
+                        ...params,
+                    })
+                }
             }
         },
     ];
@@ -223,10 +232,18 @@ function Index() {
     const handleRadioChange = (val: any, type: Type) => {
        xAxis = getAxisByType(val.target.value);
        if (type === Type.left) {
-           setXAxis(xAxis)
+           setXAxis(xAxis);
+           setLeftParams({
+               ...leftParams,
+               timeType: val.target.value,
+           })
        }
        if (type === Type.right) {
-           setXAxis1(xAxis)
+           setXAxis1(xAxis);
+           setRightParams({
+               ...rightParams,
+               timeType: val.target.value,
+           })
        }
     }
 
@@ -235,61 +252,91 @@ function Index() {
             const myPie = echart.init(pie);
             myPie.setOption(option)
         }, [data]
-    )
-        return (
-            <div className="grab-situation-monitor">
-                <div className="header">
-                    <p className="header-title">抓取数据分布概览</p>
-                    <div className="header-content-top">
-                        <div className="left">
-                            <div style={{ display: 'inline-block'}}>
-                                <span className="title">昨日抓取总量</span>
-                                <div className="bottom">
-                                    <span className="number" style={{ marginLeft: 0}}>{sumData.yesterday}</span>
-                                    <span>条</span>
-                                </div>
+    );
+
+    useEffect(() => {
+        getData();
+        props.getDataSourceList()
+    },[]);
+
+    const getData = () => {
+        api.apiGetGraspDataDetail().then((res) => {
+            if (res.code === 200) {
+                setSumData(res.data)
+                const temp = res.data.everyGraspDistributions.map((v: any) => ({ name: v.dataSourceName, id: v.sourceId, value: v.everySourceGraspNum, than: v.dvalue }))
+                setData(temp)
+            } else {
+                message.error(res.message)
+            }
+        }).finally(() => {})
+    }
+
+    return (
+        <div className="grab-situation-monitor">
+            {
+                console.log(sumData)
+            }
+            <div className="header">
+                <p className="header-title">抓取数据分布概览</p>
+                <div className="header-content-top">
+                    <div className="left">
+                        <div style={{ display: 'inline-block'}}>
+                            <span className="title">昨日抓取总量</span>
+                            <div className="bottom">
+                                <span className="number" style={{ marginLeft: 0}}>{sumData.yesterdayGraspSumNum}</span>
+                                <span>条</span>
                             </div>
                         </div>
-                        <div className="right">
-                            <span className="title">与源网站增量（区分数据源）差值</span>
-                            <div>
+                    </div>
+                    <div className="right">
+                        <span className="title">与源网站增量（区分数据源）差值</span>
+                        <div>
+                            {sumData.compareSourceNetDvalue === 0 && sumData.compareSourceNetAdd === 0 ?
                                 <span className="right-bottom-left">
-                                    <span>少</span>
-                                    <span className="number">{sumData.less}</span>
-                                    <span>条</span>
+                                    <span className="number">0</span>
+                                    条
                                 </span>
-                                <span>
-                                    <span>多</span>
-                                    <span className="number">{sumData.more}</span>
-                                    <span>条</span>
-                                </span>
-                            </div>
+                                : <>
+                                    <span className="right-bottom-left">
+                                        <span>少</span>
+                                        <span className="number">{Math.abs(sumData.compareSourceNetDvalue)}</span>
+                                        <span>条</span>
+                                    </span>
+                                    <span>
+                                        <span>多</span>
+                                        <span className="number">{sumData.compareSourceNetAdd}</span>
+                                        <span>条</span>
+                                    </span>
+                            </>}
                         </div>
                     </div>
-                    <div style={{ padding: '0 20px'}}>
-                        <div id="pie" ref={dom => pie = dom} style={{ width: '100%', marginTop: 22, height: col > 4 ? col * 36 : 180 }} />
-                    </div>
                 </div>
-                <div className="bottom-left">
-                    <div className="header-title">
-                        源网站增量与数据抓取量
-                        <TitleRight configList={configList} handleRadioChange={(val: any) => handleRadioChange(val, Type.left)} />
-                    </div>
-                    <div className="chart">
-                        <BottomLeft xAxisData={xAxis} key={JSON.stringify(xAxis)} params={params} />
-                    </div>
-                </div>
-                <div className="bottom-right">
-                    <div className="header-title">
-                        数据抓取量与源网站增量差值
-                        <TitleRight configList={configList} handleRadioChange={(val: any) => handleRadioChange(val, Type.right)} />
-                    </div>
-                    <div className="chart">
-                        <BottomRight key={JSON.stringify(xAxis1)} xAxisData={xAxis1} />
-                    </div>
+                <div style={{ padding: '0 20px'}}>
+                    <div id="pie" ref={dom => pie = dom} style={{ width: '100%', marginTop: 22, height: col > 4 ? col * 36 : 180 }} />
                 </div>
             </div>
-        );
+            <div className="bottom-left">
+                <div className="header-title">
+                    源网站增量与数据抓取量
+                    <TitleRight configList={configList('left')} handleRadioChange={(val: any) => handleRadioChange(val, Type.left)} />
+                </div>
+                <div className="chart">
+                    <BottomLeft xAxisData={xAxis} params={leftParams} />
+                </div>
+            </div>
+            <div className="bottom-right">
+                <div className="header-title">
+                    数据抓取量与源网站增量差值
+                    <TitleRight configList={configList('right')} handleRadioChange={(val: any) => handleRadioChange(val, Type.right)} />
+                </div>
+                <div className="chart">
+                    <BottomRight xAxisData={xAxis1} params={rightParams} />
+                </div>
+            </div>
+        </div>
+    );
 }
 
-export default Index;
+export default connect((state: any) => ({ option: state.dataSourceList }), (dispatch: any) => ({
+    getDataSourceList: () => dispatch(getDataSourceList())
+}))(Index);

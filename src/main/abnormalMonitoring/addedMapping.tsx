@@ -3,8 +3,10 @@ import TopSelect from "./components/top-select";
 import TableWithSearch from "../../components/table-with-search";
 import {typeEnum, typeEnum1} from "../../components/table-with-search/schemas";
 import {BtnType} from "../../common/schemas";
-import {Tag} from "antd";
+import {message} from "antd";
 import { connect } from 'react-redux';
+import {clearParams, setFresh} from "../../store/action";
+import api from '../../api/added-mapping';
 
 /**
  * @author czq
@@ -14,12 +16,16 @@ import { connect } from 'react-redux';
 
 interface Props {
     option: [],
+    setFresh(is: boolean): void,
+    clearParams(key: number): void,
+    paramsKey: number,
 }
 
 
 function AddedMapping (props: Props) {
 
     const [type, setType] = useState(0)
+    const [option, setOption] = useState([ { label: '全部', value: 0 }])
 
     useEffect(() => {
         getData(type)
@@ -43,67 +49,54 @@ function AddedMapping (props: Props) {
     const btnList = [
         {
             label: '查询',
-            type: BtnType.primary
+            type: BtnType.primary,
+            onClick: () => {
+                props.setFresh(true)
+            }
         },
         {
             label: '重置',
-            type: BtnType.ghost
+            type: BtnType.ghost,
+            onClick: () => {
+                props.clearParams(props.paramsKey + 1)
+                props.setFresh(true)
+            }
         },
     ];
-
-    const dataType = [
-        {
-            value: 0,
-            label: '全部',
-        },
-        {
-            value: 1,
-            label: '555',
-        },
-    ]
 
     const columns = [
         {
             title: '更新时间',
-            dataIndex: 'name',
-            key: 'name',
-            render: (text: any) => <a>{text}</a>,
+            dataIndex: 'gmtFirstFind',
+            key: 'gmtFirstFind',
         },
         {
             title: '表名',
-            dataIndex: 'age',
-            key: 'age',
+            dataIndex: 'tableName',
+            key: 'tableName',
         },
         {
             title: '映射字段名',
-            dataIndex: 'address',
-            key: 'address',
+            dataIndex: 'mapField',
+            key: 'mapField',
         },
         {
             title: '新增名称',
-            key: 'tags',
-            dataIndex: 'tags',
-            render: (tags : any) => (
-                <>
-                    {tags.map((tag: any) => {
-                        let color = tag.length > 5 ? 'geekblue' : 'green';
-                        if (tag === 'loser') {
-                            color = 'volcano';
-                        }
-                        return (
-                            <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
-                            </Tag>
-                        );
-                    })}
-                </>
-            ),
+            key: 'fieldName',
+            dataIndex: 'fieldName',
         },
     ];
 
 
     const getData = (val: number) => {
-        console.log(val)
+        api.apiGetDataTypeList().then((res) => {
+            if (res.code === 200) {
+                const list = res.data.map((v: {id: number, typeName: string }) => ({ value: v.id, label: v.typeName }))
+                setOption(list)
+            } else {
+                message.error(res.message)
+            }
+        }).finally(() => {})
     }
 
         return (
@@ -111,14 +104,16 @@ function AddedMapping (props: Props) {
                 <div className="content-title">新增映射值</div>
                 <TopSelect
                     getValue={setType}
-                    option={props.option}
+                    option={option}
                 />
                 <div>
                     <TableWithSearch
+                        rowKey="id"
+                        defaultParams={{ sourceTypeId: type }}
                         columns={columns}
                         config={configList}
                         btnList={btnList}
-                        apiFun={() => {}}
+                        apiFun={api.apiGetNewMappingList}
                     />
                 </div>
                 <div>
@@ -127,4 +122,15 @@ function AddedMapping (props: Props) {
         );
 }
 
-export default connect((state: any) => ({ option: state.dataTypeList }),)(AddedMapping);
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        setFresh: (is: boolean) => {
+            dispatch(setFresh(is))
+        },
+        clearParams: (key?: number) => {
+            dispatch(clearParams(key))
+        },
+    }
+}
+
+export default connect((state: any) => ({ paramsKey: state.params.key }), mapDispatchToProps)(AddedMapping);

@@ -5,7 +5,6 @@ import { addUser, setToken } from '../../store/action';
 import loginLog from '../../assets/img/logo.png';
 import loginCenter from '../../assets/img/login-center.png';
 import './style.scss';
-import { UserOutlined } from '@ant-design/icons';
 import api from '../../api/login';
 import rsaEncrypt from '../../api/encryp';
 
@@ -94,11 +93,11 @@ function Index(props: Props) {
     return (
             <div className="yc-login">
                 <div className="login-header">
-                    <img className="login-header-logo" src={loginLog} />
+                    <img alt="源诚科技" className="login-header-logo" src={loginLog} />
                 </div>
                 <div className="login-center">
                     <div className="login-center-img-wrapper">
-                        <img src={loginCenter} />
+                        <img alt="数据管理平台" src={loginCenter} />
                     </div>
                     <div className="login-center-form-wrapper">
                         <div className="login-center-form-wrapper_title">用户登录</div>

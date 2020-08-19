@@ -37,6 +37,12 @@ export const apiGetDataModifiedList = async () => {
     return response.data;
 };
 
+// 【查询】状态更新异常率列表
+export const apiGetFileAnalysisList = async () => {
+    const response = await service.get('/asset/auction/otherIndex/getFileAnalysisList' );
+    return response.data;
+};
+
 
 export default {
     apiGetCurrentSourceAndGraspInfo,
@@ -44,4 +50,5 @@ export default {
     apiGetTimeSlotList,
     apiGetNullRateList,
     apiGetDataModifiedList,
+    apiGetFileAnalysisList,
 }

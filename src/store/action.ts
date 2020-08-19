@@ -2,7 +2,9 @@ import * as type from "./actionTypes";
 import { handleLocal } from '../utils/localStorage'
 import { labelValue } from '../common/schemas';
 import api from "../api/developmentAbnormal";
+import { apiGetDataSourceList } from '../api/grab-situation';
 import {message} from "antd";
+import store from './store'
 
 export function addUser(text: string) {
     handleLocal('nickName', text)
@@ -55,6 +57,13 @@ export function setDataTypeList(list: labelValue[]) {
     }
 }
 
+export function setDataSourceList(list: labelValue[]) {
+    return {
+        type: type.SET_DATA_SOURCE,
+        list,
+    }
+}
+
 export function getDataTypeList() {
     return (dispatch: any) => {
         const fun = () => {
@@ -67,6 +76,26 @@ export function getDataTypeList() {
                 }
             }).finally(() => {})
         }
-        return fun()
+        if (store.getState().dataTypeList.length === 0) {
+            fun()
+        }
+    }
+}
+// 抓取情况监控数据源下拉列表
+export function getDataSourceList() {
+    return (dispatch: any) => {
+        const fun = () => {
+            apiGetDataSourceList().then((res) => {
+                if (res.code === 200) {
+                    const val = res.data.map((v: any) => ({ value: v.sourceId, label: v.dataSourceType }));
+                    dispatch(setDataSourceList(val))
+                } else {
+                    message.error(res.message)
+                }
+            }).finally(() => {})
+        }
+        if (store.getState().dataSourceList.length === 0) {
+            fun()
+        }
     }
 }

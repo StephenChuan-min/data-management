@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { connect } from 'react-redux';
-import {addUser, setFresh, clearParams} from "../../store/action";
+import {setFresh, clearParams} from "../../store/action";
 import {BtnType} from '../../common/schemas';
 import TableWithSearch from '../../components/table-with-search'
 import { typeEnum, typeEnum1 } from '../../components/table-with-search/schemas'
@@ -28,7 +28,6 @@ export enum ClickType {
 
 interface Props {
     userName: string,
-    setUserName: (a: string) => void,
     history: any,
     setFresh(bol: boolean):void,
     clearParams(key?: number):void,
@@ -87,7 +86,7 @@ function DevelopmentAbnormal(props: Props) {
         {
             type: typeEnum.select,
             placeholder: '请选择错误类型',
-            label: '错误类型：',
+            label: '错误类型',
             field: 'errorType',
             option: errorType,
         },
@@ -226,6 +225,7 @@ function DevelopmentAbnormal(props: Props) {
                 <TopSelect getValue={setType} />
                 <div>
                     <TableWithSearch
+                        rowKey="id"
                         columns={columns}
                         config={configList}
                         btnList={btnList}
@@ -252,9 +252,6 @@ function DevelopmentAbnormal(props: Props) {
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        setUserName: (name: string) => {
-            dispatch(addUser(name))
-        },
         setFresh: (is: boolean) => {
             dispatch(setFresh(is))
         },

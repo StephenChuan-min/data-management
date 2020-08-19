@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import LineChart from "../../components/line-chart";
 import {getDateArray} from "../../../../utils/some-time-utils";
-import api from '../../../../api/otherIndicator';
+import api from '../../../../api/other-indicator';
 import { message, Spin } from 'antd';
 import {dataToSeries} from "../../common/get-axis-by-type";
 
@@ -75,7 +75,7 @@ function RightOne() {
 
     useEffect(() => {
         getData()
-    }, [])
+    }, []);
 
     const getData = () => {
         setSpin(true)

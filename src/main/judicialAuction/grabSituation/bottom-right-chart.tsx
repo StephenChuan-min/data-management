@@ -1,9 +1,14 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import LineChart, { emphasisStyle } from '../components/line-chart';
+import api from "../../../api/grab-situation";
+import {TimeType} from "../../../common/schemas";
+import {add0, getLastDay} from "../../../utils/some-time-utils";
+import {dataToSeries} from "../common/get-axis-by-type";
+import {message, Spin} from "antd";
 
-const series = [
+const initSeries = [
     {
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        data: [],
         type: 'bar',
         barWidth: 10,
         name: '多于源网站增量',
@@ -11,7 +16,7 @@ const series = [
         z: 1,
     },
     {
-        data: [-1320, -1330, -1290, -934, -901, -932, -820],
+        data: [],
         type: 'bar',
         name: '少于源网站增量',
         barWidth: 10,
@@ -20,7 +25,7 @@ const series = [
         z: 1,
     },
     {
-        data: [1320, 1330, 1290, 934, 901, 932, 820],
+        data: [],
         type: 'line',
         name: '累计差值',
         symbol: 'emptyCircle',
@@ -62,7 +67,45 @@ const tooltip = {
 
 const color = ['#0386D5', '#FD9C26', '#F03733']
 
-function BottomRight(props: { xAxisData: string[] }) {
+function BottomRight(props: { xAxisData: string[], params: { dataType: number, timeType: number }, }) {
+
+    const [data, setData] = useState();
+    const [series, setSeries] = useState(initSeries);
+    const [spin, setSpin] = useState(false);
+
+    useEffect(() => {
+        getData()
+    }, [props.params])
+
+    const getData = () => {
+        setSpin(true)
+        api.apiGetGraspAndSourceDvalue({ ...props.params }).then((res) => {
+            if (res.code === 200) {
+                let selfXAxis = props.xAxisData
+                // 当数据类型时月份统计时
+                if (props.params.timeType === TimeType.month) {
+                    selfXAxis = props.xAxisData.map((v, index) => {
+                        const [year, month] = v.split('-');
+                        const time = new Date(getLastDay(Number(year), Number(month)));
+                        let day = add0(time.getDate());
+                        // 最后一个月时 最后的日期为昨天
+                        if (index === props.xAxisData.length - 1) {
+                            day = new Date().getDate() - 1;
+                        }
+                        return `${year}-${month}-${day}`
+                    })
+                }
+                dataToSeries.call(series,'多于源网站增量', res.data, 'sourceNetIncrease', selfXAxis);
+                dataToSeries.call(series,'少于源网站增量', res.data, 'sourceNetIncrease', selfXAxis);
+                const r = dataToSeries.call(series,'累计差值', res.data, 'yesterdayGraspSumNumber', selfXAxis);
+                setSeries(r);
+            } else {
+                message.error(res.message)
+            }
+        }).finally(() => {
+            setSpin(false)
+        })
+    }
 
     const legend = {
         selectedMode: 'multiple',
@@ -73,7 +116,15 @@ function BottomRight(props: { xAxisData: string[] }) {
     };
 
     return (
-        <LineChart xAxisData={props.xAxisData} legend={legend} series={series} color={color} tooltip={tooltip} height={362} />
+        <Spin spinning={spin}>
+            <LineChart
+                key={JSON.stringify(series)}
+                xAxisData={props.xAxisData}
+                legend={legend} series={series}
+                color={color} tooltip={tooltip}
+                height={362}
+            />
+        </Spin>
     )
 }
 

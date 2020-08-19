@@ -37,3 +37,10 @@ export interface Columns {
     key: string,
     render?(text: any, r: object): any,
 }
+
+// 图表数据类型枚举
+export enum TimeType {
+    day = 1,
+    week,
+    month,
+}

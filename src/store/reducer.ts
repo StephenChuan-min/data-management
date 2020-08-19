@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes';
 import { combineReducers } from 'redux';
 import { handleLocal } from '../utils/localStorage'
+import {labelValue} from "../common/schemas";
 
 interface Action {
     type: string,
@@ -60,16 +61,25 @@ function params(state = initParams, action: { type: string, params: object, key?
 
 function isFresh(state = false, action: { type: string, is: boolean}) {
     switch(action.type) {
-        case actionTypes.SET_FRESH: // 添加请求条件
+        case actionTypes.SET_FRESH: // 设置列表刷新状态
             return action.is;
         default:
             return state;
     }
 }
 
-function dataTypeList(state = [], action: { type: string, list: boolean}) {
+function dataTypeList(state: labelValue[] = [], action: { type: string, list: labelValue[]}): labelValue[] {
     switch(action.type) {
         case actionTypes.SET_DATA_TYPE: // 设置数据类型
+            return action.list;
+        default:
+            return state;
+    }
+}
+// 数据源数组
+function dataSourceList(state: labelValue[] = [], action: { type: string, list: labelValue[]}): labelValue[] {
+    switch(action.type) {
+        case actionTypes.SET_DATA_SOURCE: // 设置数据类型
             return action.list
         default:
             return state;
@@ -83,4 +93,5 @@ export const reducers = combineReducers({
     params,
     isFresh,
     dataTypeList,
+    dataSourceList,
 })
