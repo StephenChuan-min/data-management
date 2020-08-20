@@ -51,7 +51,7 @@ function tooltip(str: string) {
                     const { value } = e;
                     let tempName = name;
 
-                    let itemLabel = `${value || value === 0 ? value : '--'}`
+                    let itemLabel = `${value || value === 0 ? `${((value * 100000) / 1000).toFixed(2)}%` : '--'}`
                     tipArray[index] = `${regMarker}${tempName}：${itemLabel}`;
             return e;
         });
@@ -168,7 +168,7 @@ function RightOne() {
                             yAxis={{
                                 axisLabel: {
                                     color: '#4F5358',
-                                    formatter: (v: number) => `${(v * 100000) / 1000} %`
+                                    formatter: (v: number) => `${((v * 100000) / 1000).toFixed(2)} %`
                                 }
                             }}
                         />

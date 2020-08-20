@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 import {setFresh, clearParams} from "../../store/action";
 import {BtnType} from '../../common/schemas';
@@ -57,6 +57,64 @@ const dealStatus = [
     ]
 
 function DevelopmentAbnormal(props: Props) {
+
+    let initColumns = [
+        {
+            title: '发布日期',
+            dataIndex: 'publishTime',
+            key: 'publishTime',
+        },
+        {
+            title: '报错日期',
+            dataIndex: 'failedTime',
+            key: 'failedTime',
+        },
+        {
+            title: '数据类型',
+            dataIndex: 'dataType',
+            key: 'dataType',
+            render: (text: any) => getItemInArray(props.option, 'value', text, 'label')
+        },
+        {
+            title: '错误类型',
+            key: 'errorType',
+            dataIndex: 'errorType',
+            render: (text: any) => getItemInArray(errorType, 'value', text, 'label')
+        },
+        {
+            title: 'source_id',
+            key: 'sourceId',
+            dataIndex: 'sourceId',
+        },{
+            title: '网站名称',
+            key: 'netName',
+            dataIndex: 'netName',
+            width: 300,
+        },
+        {
+            title: '子目录',
+            key: 'subCatalog',
+            dataIndex: 'subCatalog',
+        },
+        {
+            title: '处理状态',
+            key: 'dealStatus',
+            dataIndex: 'dealStatus',
+            render: (text: any) => getItemInArray(dealStatus, 'value', text, 'label')
+        },
+        {
+            title: '操作',
+            key: 'action',
+            className: 'column-center',
+            render: (text: any, record: any) => (
+                <div>
+                    {record.dealStatus === 0 && <Button type="ghost" onClick={() => handleClick(record, ClickType.handle)}>处理</Button>}
+                    {record.dealStatus === 1 && record.remarks &&  <Button type="ghost" onClick={() => handleClick(record, ClickType.check)}>查看备注</Button>}
+                    {record.dealStatus === 1 && !record.remarks && <Button type="ghost" onClick={() => handleClick(record, ClickType.edit)}>编辑备注</Button>}
+                </div>
+            ),
+        },
+    ];
 
     const [modalState, setModalState] = useState({
         clickType: ClickType.handle,
@@ -161,70 +219,32 @@ function DevelopmentAbnormal(props: Props) {
                 message.error(res.message)
             }
         }).finally(() => {})
-    }
+    };
 
-    const columns = [
-        {
-            title: '发布日期',
-            dataIndex: 'publishTime',
-            key: 'publishTime',
-        },
-        {
-            title: '报错日期',
-            dataIndex: 'failedTime',
-            key: 'failedTime',
-        },
-        {
-            title: '数据类型',
-            dataIndex: 'dataType',
-            key: 'dataType',
-            render: (text: any) => getItemInArray(props.option, 'value', text, 'label')
-        },
-        {
-            title: '错误类型',
-            key: 'errorType',
-            dataIndex: 'errorType',
-            render: (text: any) => getItemInArray(errorType, 'value', text, 'label')
-        },
-        {
-            title: 'source_id',
-            key: 'sourceId',
-            dataIndex: 'sourceId',
-        },{
-            title: '网站名称',
-            key: 'netName',
-            dataIndex: 'netName',
-            width: 300,
-        },
-        {
-            title: '子目录',
-            key: 'subCatalog',
-            dataIndex: 'subCatalog',
-        },
-        {
-            title: '处理状态',
-            key: 'dealStatus',
-            dataIndex: 'dealStatus',
-            render: (text: any) => getItemInArray(dealStatus, 'value', text, 'label')
-        },
-        {
-            title: '操作',
-            key: 'action',
-            className: 'column-center',
-            render: (text: any, record: any) => (
-                <div>
-                    {record.dealStatus === 0 && <Button type="ghost" onClick={() => handleClick(record, ClickType.handle)}>处理</Button>}
-                    {record.dealStatus === 1 && record.remarks &&  <Button type="ghost" onClick={() => handleClick(record, ClickType.check)}>查看备注</Button>}
-                    {record.dealStatus === 1 && !record.remarks && <Button type="ghost" onClick={() => handleClick(record, ClickType.edit)}>编辑备注</Button>}
-                </div>
-            ),
-        },
-    ];
+    const [columns, setColumns] = useState(initColumns)
+
+    useEffect(() => {
+        if (type !== 0) {
+            setColumns(initColumns.filter(v => v.title !== '数据类型'))
+        } else {
+            setColumns(initColumns)
+        }
+    }, [props.option])
+
+
+    const handleChangeType = (val: any) => {
+        setType(val)
+        if (val !== 0) {
+            setColumns(initColumns.filter(v => v.title !== '数据类型'))
+        } else {
+            setColumns(initColumns)
+        }
+    }
 
     return (
             <div className="developmentAbnormal">
                 <div className="content-title">开发异常</div>
-                <TopSelect getValue={setType} />
+                <TopSelect getValue={handleChangeType} />
                 <div>
                     <TableWithSearch
                         rowKey="id"

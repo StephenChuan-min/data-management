@@ -117,9 +117,9 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
 
     const [data, setData] = useState(initData);
 
-    const [leftParams, setLeftParams] = useState({ dataType: 0, timeType: TimeType.day });
+    const [leftParams, setLeftParams] = useState({ dataType: 0, timeType: String(TimeType.day) });
 
-    const [rightParams, setRightParams] = useState({ dataType: 0, timeType: TimeType.day });
+    const [rightParams, setRightParams] = useState({ dataType: 0, timeType: String(TimeType.day) });
 
     const col = Math.ceil(data.length / 3);
 

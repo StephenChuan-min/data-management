@@ -4,8 +4,8 @@ import api from '../../../api/grab-situation';
 import {message, Spin} from 'antd';
 import {TimeType} from "../../../common/schemas";
 import {add0, getLastDay} from "../../../utils/some-time-utils";
-import { dataToSeries } from "../common/get-axis-by-type";
-import { mathCeil } from '../../../utils/utils';
+import {dataToSeries} from "../common/get-axis-by-type";
+import {mathCeil} from '../../../utils/utils';
 
 const initSeries = [
     {
@@ -73,7 +73,7 @@ const color = ['#FD9C26', '#0386D5'];
 
 interface Props {
     xAxisData: string[],
-    params: { dataType: number, timeType: TimeType },
+    params: { dataType: number, timeType: string },
 }
 
 function BottomLeft(props: Props) {
@@ -96,8 +96,9 @@ function BottomLeft(props: Props) {
         api.apiGetGraspAndSourceAdd({ ...props.params }).then((res) => {
             if (res.code === 200) {
                 let selfXAxis = props.xAxisData
+                console.log(props.params.timeType === '3')
                 // 当数据类型时月份统计时
-                if (props.params.timeType === TimeType.month) {
+                if (props.params.timeType === '3') {
                     selfXAxis = props.xAxisData.map((v, index) => {
                         const [year, month] = v.split('-');
                         const time = new Date(getLastDay(Number(year), Number(month)));

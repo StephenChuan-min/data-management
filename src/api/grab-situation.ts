@@ -14,13 +14,13 @@ export const apiGetGraspDataDetail = async () => {
 };
 
 // 【查询】源网站增量与数据抓取量[xiahaolei]
-export const apiGetGraspAndSourceAdd = async (params: { dataType: number, timeType: TimeType,}) => {
+export const apiGetGraspAndSourceAdd = async (params: { dataType: number, timeType: string,}) => {
     const response = await service.get('/asset/auction/graspMonitoring/getGraspAndSourceAdd', { params });
     return response.data;
 };
 
 // 【查询】数据抓取量与源网站增量差值[xiahaolei]
-export const apiGetGraspAndSourceDvalue = async (params: { dataType: number, timeType: TimeType,}) => {
+export const apiGetGraspAndSourceDvalue = async (params: { dataType: number, timeType: string,}) => {
     const response = await service.get('/asset/auction/graspMonitoring/getGraspAndSourceDvalue', { params });
     return response.data;
 };

@@ -121,7 +121,7 @@ function RightOne() {
                             yAxis={{
                                 axisLabel: {
                                     color: '#4F5358',
-                                    formatter: (v: number) => `${(v * 100000) / 1000} %`
+                                    formatter: (v: number) => `${((v * 100000) / 1000).toFixed(2)} %`
                                 }
                             }}
                         />

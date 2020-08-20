@@ -49,41 +49,46 @@ function getAxisByType(type: string): string[] {
 export function dataToSeries(this: any, name: string, data: { countDate: string, [propName: string]: any }[], field: string, date: string[]){
     let index = 0;
     let that = [...this];
-    const item = this.filter((v: { name: string, index: number, data: any[] }) => {
+    const item = that.filter((v: { name: string, data: any[] }, i: number,) => {
         if (v.name === name) {
-            index = v.index;
+            index = i;
             return true
         }
         return false
     })[0];
 
+    console.log(index)
 
     item.data = [];
     date.forEach(e => {
-        data.map(v => {
-            if (v.countDate === e) {
-                // field = 'different' 特殊处理 name 为 差值 和 -差值
-                if (field === 'different') {
-                    if (name === '差值' && v[field] >= 0) {
-                        item.data.push(v[field])
-                    } else if (name === '-差值' && v[field] < 0) {
-                        item.data.push(v[field])
+        if (data.map(v => v.countDate).find(i => e === i)) {
+            data.map(v => {
+                if (v.countDate === e) {
+                    // field = 'different' 特殊处理 name 为 差值 和 -差值
+                    if (field === 'different') {
+                        if (name === '差值' && v[field] >= 0) {
+                            item.data.push(v[field])
+                        } else if (name === '-差值' && v[field] < 0) {
+                            item.data.push(v[field])
+                        } else {
+                            item.data.push(null)
+                        }
+                    } else if (field === 'accumulativeDValue') {
+                        if (name === '多于源网站增量' && v[field] >= 0) {
+                            item.data.push(v[field])
+                        } else if (name === '少于源网站增量' && v[field] < 0) {
+                            item.data.push(v[field])
+                        } else {
+                            item.data.push(null)
+                        }
                     } else {
-                        item.data.push(null)
-                    }
-                } else if (field === 'accumulativeDValue') {
-                    if (name === '多于源网站增量' && v[field] >= 0) {
                         item.data.push(v[field])
-                    } else if (name === '少于源网站增量' && v[field] < 0) {
-                        item.data.push(v[field])
-                    } else {
-                        item.data.push(null)
                     }
-                } else {
-                    item.data.push(v[field])
                 }
-            }
-        })
+            })
+        } else {
+            item.data.push(null)
+        }
     });
 
     console.log(item)

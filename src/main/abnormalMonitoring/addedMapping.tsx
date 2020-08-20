@@ -24,7 +24,8 @@ interface Props {
 
 function AddedMapping (props: Props) {
 
-    const [type, setType] = useState(0)
+    const [type, setType] = useState(0);
+    const [selectOption, setSelectOption] = useState([]);
     const [option, setOption] = useState([ { label: '全部', value: 0 }])
 
     useEffect(() => {
@@ -79,6 +80,7 @@ function AddedMapping (props: Props) {
             title: '映射字段名',
             dataIndex: 'mapField',
             key: 'mapField',
+            option: selectOption,
         },
         {
             title: '新增名称',
@@ -97,17 +99,29 @@ function AddedMapping (props: Props) {
                 message.error(res.message)
             }
         }).finally(() => {})
-    }
+    };
+    const handleSelect = (val: any) => {
+        setType(val);
+        api.apiGetMapFieldList({ sourceTypeId: val }).then((res) => {
+            if (res.code === 200) {
+                const option = res.data.map((v: any) => ({ value: v.tableName, label: v.mapField }))
+                setSelectOption(option)
+            } else {
+                message.error(res.message)
+            }
+        }).finally(() => {})
+    };
 
         return (
             <div className="addedMapping">
                 <div className="content-title">新增映射值</div>
                 <TopSelect
-                    getValue={setType}
+                    getValue={handleSelect}
                     option={option}
                 />
                 <div>
                     <TableWithSearch
+                        key={JSON.stringify(option)}
                         rowKey="id"
                         defaultParams={{ sourceTypeId: type }}
                         columns={columns}

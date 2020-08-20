@@ -73,7 +73,7 @@ const tooltip = {
 
 const color = ['#0386D5', '#FD9C26', '#F03733']
 
-function BottomRight(props: { xAxisData: string[], params: { dataType: number, timeType: number }, }) {
+function BottomRight(props: { xAxisData: string[], params: { dataType: number, timeType: string }, }) {
 
     const [data, setData] = useState([]);
     const [series, setSeries] = useState(initSeries);
@@ -89,7 +89,7 @@ function BottomRight(props: { xAxisData: string[], params: { dataType: number, t
             if (res.code === 200) {
                 let selfXAxis = props.xAxisData
                 // 当数据类型时月份统计时
-                if (props.params.timeType === TimeType.month) {
+                if (props.params.timeType === '3') {
                     selfXAxis = props.xAxisData.map((v, index) => {
                         const [year, month] = v.split('-');
                         const time = new Date(getLastDay(Number(year), Number(month)));
