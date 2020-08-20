@@ -30,6 +30,7 @@ function AddedMapping (props: Props) {
 
     useEffect(() => {
         getData(type)
+        getOption(0)
     }, [type])
 
     const configList = [
@@ -37,13 +38,14 @@ function AddedMapping (props: Props) {
             type: typeEnum.select,
             placeholder: '请选择映射字段名',
             label: '映射字段名',
-            field: 'status',
+            field: 'mapField',
+            option: selectOption,
         },
         {
             type: typeEnum1.rangePicker,
             label: '更新时间：',
             placeholder: ['起始日期', '截止日期'],
-            field: ['start1', 'start2'],
+            field: ['startTime', 'endTime'],
         },
     ];
 
@@ -80,7 +82,6 @@ function AddedMapping (props: Props) {
             title: '映射字段名',
             dataIndex: 'mapField',
             key: 'mapField',
-            option: selectOption,
         },
         {
             title: '新增名称',
@@ -102,15 +103,19 @@ function AddedMapping (props: Props) {
     };
     const handleSelect = (val: any) => {
         setType(val);
-        api.apiGetMapFieldList({ sourceTypeId: val }).then((res) => {
+        getOption(val);
+    };
+
+    const getOption = (val: number) => {
+        api.apiGetMapFieldList({ id: val }).then((res) => {
             if (res.code === 200) {
-                const option = res.data.map((v: any) => ({ value: v.tableName, label: v.mapField }))
+                const option = res.data.map((v: any) => ({ value: v.mapField, label: v.mapField }))
                 setSelectOption(option)
             } else {
                 message.error(res.message)
             }
         }).finally(() => {})
-    };
+    }
 
         return (
             <div className="addedMapping">
@@ -121,7 +126,6 @@ function AddedMapping (props: Props) {
                 />
                 <div>
                     <TableWithSearch
-                        key={JSON.stringify(option)}
                         rowKey="id"
                         defaultParams={{ sourceTypeId: type }}
                         columns={columns}

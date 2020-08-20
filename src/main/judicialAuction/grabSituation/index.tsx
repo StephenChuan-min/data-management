@@ -179,7 +179,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
             },
             formatter: (name: any) => {
                 const item = data.filter(v => v.name === name)[0]
-                return `{b|${name}-${item.id}}{d|${item.value}}{c|条${item.than === 0 ? '' : '，少'}}${item.than === 0 ? '' : `{d|${Math.abs(item.than)}}{c|条}`}{a|}`
+                return `{b|${name}-${item.id}}{d|${item.value}}{c|条${item.than === 0 ? '' : item.than < 0 ?  '，少' : '，多'}}${item.than === 0 ? '' : `{d|${Math.abs(item.than)}}{c|条}`}{a|}`
             }
         },
         series: [

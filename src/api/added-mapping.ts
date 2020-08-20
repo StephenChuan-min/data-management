@@ -21,8 +21,8 @@ export const apiGetDataTypeList = async () => {
 };
 
 // 根据数据类型获取映射字段名下拉列表
-export const apiGetMapFieldList = async (params: { sourceTypeId: number }) => {
-    const response = await service.get('/asset/abnormal/newMapping/getMapFieldList')
+export const apiGetMapFieldList = async (data: { id: number }) => {
+    const response = await service.post('/asset/abnormal/newMapping/getMapFieldList', data)
     return response.data;
 };
 

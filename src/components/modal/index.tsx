@@ -3,7 +3,7 @@ import { Modal, Button } from 'antd';
 import './style.scss'
 
 interface Props {
-    visible: boolean, // 显隐状态
+    visible: boolean | number, // 显隐状态
     title: string,
     children: any,
     loading?: boolean,
@@ -20,7 +20,7 @@ interface Props {
 
 function RemarkModal(props: Props) {
 
-    const [visible, setVisible] = useState(props.visible);
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
         setVisible(true)

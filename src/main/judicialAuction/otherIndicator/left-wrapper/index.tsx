@@ -280,11 +280,15 @@ function Left(props: Props) {
                     })[0];
                     item.data = [];
                     xAxis.forEach((e: any) => {
-                        res.data.map((v: any) => {
-                            if (String(v.hour) === e) {
-                                item.data.push(v[field])
-                            }
-                        })
+                        if (res.data.map((v: any) => String(v.hour)).find((i: string) => e === i)) {
+                            res.data.map((v: any) => {
+                                if (String(v.hour) === e) {
+                                    item.data.push(v[field])
+                                }
+                            })
+                        } else {
+                            item.data.push(null)
+                        }
                     });
                     temp[index] = item;
                     return temp;

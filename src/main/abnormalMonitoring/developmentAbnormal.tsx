@@ -58,69 +58,13 @@ const dealStatus = [
 
 function DevelopmentAbnormal(props: Props) {
 
-    let initColumns = [
-        {
-            title: '发布日期',
-            dataIndex: 'publishTime',
-            key: 'publishTime',
-        },
-        {
-            title: '报错日期',
-            dataIndex: 'failedTime',
-            key: 'failedTime',
-        },
-        {
-            title: '数据类型',
-            dataIndex: 'dataType',
-            key: 'dataType',
-            render: (text: any) => getItemInArray(props.option, 'value', text, 'label')
-        },
-        {
-            title: '错误类型',
-            key: 'errorType',
-            dataIndex: 'errorType',
-            render: (text: any) => getItemInArray(errorType, 'value', text, 'label')
-        },
-        {
-            title: 'source_id',
-            key: 'sourceId',
-            dataIndex: 'sourceId',
-        },{
-            title: '网站名称',
-            key: 'netName',
-            dataIndex: 'netName',
-            width: 300,
-        },
-        {
-            title: '子目录',
-            key: 'subCatalog',
-            dataIndex: 'subCatalog',
-        },
-        {
-            title: '处理状态',
-            key: 'dealStatus',
-            dataIndex: 'dealStatus',
-            render: (text: any) => getItemInArray(dealStatus, 'value', text, 'label')
-        },
-        {
-            title: '操作',
-            key: 'action',
-            className: 'column-center',
-            render: (text: any, record: any) => (
-                <div>
-                    {record.dealStatus === 0 && <Button type="ghost" onClick={() => handleClick(record, ClickType.handle)}>处理</Button>}
-                    {record.dealStatus === 1 && record.remarks &&  <Button type="ghost" onClick={() => handleClick(record, ClickType.check)}>查看备注</Button>}
-                    {record.dealStatus === 1 && !record.remarks && <Button type="ghost" onClick={() => handleClick(record, ClickType.edit)}>编辑备注</Button>}
-                </div>
-            ),
-        },
-    ];
-
+    let initColumns = [];
     const [modalState, setModalState] = useState({
         clickType: ClickType.handle,
-        visible: false,
+        visible: 0,
     })
     const [type, setType] = useState(0);
+    const [columns, setColumns]: any[] = useState([]);
 
     const [record, setRecord] = useState({ id: '', remarks: '' });
 
@@ -180,25 +124,6 @@ function DevelopmentAbnormal(props: Props) {
         },
     ];
 
-    const handleClick = (val: any, type: ClickType) => {
-        if (type === ClickType.handle) {
-            api.apiEditDealStatus({ id: val.id }).then((res) => {
-                if (res.code === 200) {
-                    message.success('处理成功')
-                    props.setFresh(true)
-                } else {
-                    message.error(res.message)
-                }
-            }).finally(() => {})
-        } else {
-            setRecord(val);
-            setModalState({
-                visible: !modalState.visible,
-                clickType: type
-            });
-        }
-    }
-
     const handleAddRemark = (resolve: () => void) => {
         // 当是查看时 点击编辑按钮
         if (modalState.clickType === ClickType.check) {
@@ -221,24 +146,93 @@ function DevelopmentAbnormal(props: Props) {
         }).finally(() => {})
     };
 
-    const [columns, setColumns] = useState(initColumns)
+    let handleClick = (val: any, t: ClickType) => {
+        if (t === ClickType.handle) {
+            api.apiEditDealStatus({ id: val.id }).then((res) => {
+                if (res.code === 200) {
+                    message.success('处理成功')
+                    props.setFresh(true)
+                } else {
+                    message.error(res.message)
+                }
+            }).finally(() => {})
+        } else {
+            setModalState({
+                visible: Math.random(),
+                clickType: t
+            });
+            setRecord(val);
+        }
+    }
 
     useEffect(() => {
+
+        initColumns = [
+            {
+                title: '发布日期',
+                dataIndex: 'publishTime',
+                key: 'publishTime',
+            },
+            {
+                title: '报错日期',
+                dataIndex: 'failedTime',
+                key: 'failedTime',
+            },
+            {
+                title: '数据类型',
+                dataIndex: 'dataType',
+                key: 'dataType',
+                render: (text: any) => getItemInArray(props.option, 'value', text, 'label')
+            },
+            {
+                title: '错误类型',
+                key: 'errorType',
+                dataIndex: 'errorType',
+                render: (text: any) => getItemInArray(errorType, 'value', text, 'label')
+            },
+            {
+                title: 'source_id',
+                key: 'sourceId',
+                dataIndex: 'sourceId',
+            },{
+                title: '网站名称',
+                key: 'netName',
+                dataIndex: 'netName',
+                width: 300,
+            },
+            {
+                title: '子目录',
+                key: 'subCatalog',
+                dataIndex: 'subCatalog',
+            },
+            {
+                title: '处理状态',
+                key: 'dealStatus',
+                dataIndex: 'dealStatus',
+                render: (text: any) => getItemInArray(dealStatus, 'value', text, 'label')
+            },
+            {
+                title: '操作',
+                key: 'action',
+                className: 'column-center',
+                render: (text: any, record: any) => (
+                    <div>
+                        {record.dealStatus === 0 && <Button type="ghost" onClick={() => handleClick(record, ClickType.handle)}>处理</Button>}
+                        {record.dealStatus === 1 && record.remarks &&  <Button type="ghost" onClick={() => handleClick(record, ClickType.check)}>查看备注</Button>}
+                        {record.dealStatus === 1 && !record.remarks && <Button type="ghost" onClick={() => handleClick(record, ClickType.edit)}>编辑备注</Button>}
+                    </div>
+                ),
+            },
+        ];
         if (type !== 0) {
-            setColumns(initColumns.filter(v => v.title !== '数据类型'))
-        } else {
-            setColumns(initColumns)
+            initColumns = initColumns.filter(v => v.title !== '数据类型')
         }
-    }, [props.option])
+        setColumns(initColumns);
+    }, [props.option, type])
 
 
     const handleChangeType = (val: any) => {
         setType(val)
-        if (val !== 0) {
-            setColumns(initColumns.filter(v => v.title !== '数据类型'))
-        } else {
-            setColumns(initColumns)
-        }
     }
 
     return (
@@ -263,7 +257,7 @@ function DevelopmentAbnormal(props: Props) {
                     onOk={handleAddRemark}
                     okText={modalState.clickType === ClickType.check ? <span><EditOutlined />编辑</span> : "保存"}
                     cancelText={modalState.clickType === ClickType.check ? '' :"取消"}
-                    title={modalState.clickType}
+                    title="备注"
                     visible={modalState.visible}
                 >
                     <Remark getValue={setRemark} value={record.remarks} type={modalState.clickType} />

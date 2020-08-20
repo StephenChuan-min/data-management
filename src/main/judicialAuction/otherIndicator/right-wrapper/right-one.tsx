@@ -34,7 +34,7 @@ const option = [{
 },
 ]
 
-function tooltip(str: string) {
+function tooltip(str: string, data: { countDate: string, nullRateCount: number, dbCount: number }[]) {
     return (
         {
             formatter: (params: any) => {
@@ -62,7 +62,13 @@ function tooltip(str: string) {
             }
             return e;
         });
-        tip = `${str}<br />${params[0].name}<br>${tip}`;
+
+        const item = data.find((v) => v.countDate === params[0].name);
+        let middleLabel = ''
+         if (item) {
+             middleLabel = `<br />当前数据量：${item.dbCount}<br />空值数据量：${item.nullRateCount}`
+         }
+        tip = `${str}<br />${params[0].name}${middleLabel}<br>${tip}`;
         return tip;
     }})
 }
@@ -163,7 +169,7 @@ function RightOne() {
                             legend={legend}
                             series={series}
                             color={['#0386D5']}
-                            tooltip={tooltip(selectItem.name)}
+                            tooltip={tooltip(selectItem.name, data)}
                             height={177}
                             yAxis={{
                                 axisLabel: {
