@@ -44,13 +44,19 @@ const tooltip = {
         const timeDetail = '';
         params.map((e: any) => {
             const index = e.seriesIndex;
-            const name = e.seriesName;
+            let name = e.seriesName;
+            if (name === '多于源网站增量') {
+                name = '多'
+            }
+            if (name === '少于源网站增量') {
+                name = '少'
+            }
             const { marker } = e;
             const reg = new RegExp(/10/g);
             const reg1 = new RegExp(/5/g);
             const regMarker = marker.replace(reg, '6').replace(reg1, 8);
             const { value } = e;
-            tipArray[index] = `${regMarker}${name}：${value || value === 0 ? value : '--'}`;
+            tipArray[index] = value || value === 0 ? `${regMarker}${name}：${Math.abs(value)}` : '';
             return e;
         });
         tip += timeDetail;
@@ -95,9 +101,9 @@ function BottomRight(props: { xAxisData: string[], params: { dataType: number, t
                         return `${year}-${month}-${day}`
                     })
                 }
-                dataToSeries.call(series,'多于源网站增量', res.data, 'sourceNetIncrease', selfXAxis);
-                dataToSeries.call(series,'少于源网站增量', res.data, 'sourceNetIncrease', selfXAxis);
-                const r = dataToSeries.call(series,'累计差值', res.data, 'yesterdayGraspSumNumber', selfXAxis);
+                dataToSeries.call(series,'多于源网站增量', res.data, 'accumulativeDValue', selfXAxis);
+                dataToSeries.call(series,'少于源网站增量', res.data, 'accumulativeDValue', selfXAxis);
+                const r = dataToSeries.call(series,'累计差值', res.data, 'dValue', selfXAxis);
                 setSeries(r);
             } else {
                 message.error(res.message)

@@ -71,6 +71,14 @@ export function dataToSeries(this: any, name: string, data: { countDate: string,
                     } else {
                         item.data.push(null)
                     }
+                } else if (field === 'accumulativeDValue') {
+                    if (name === '多于源网站增量' && v[field] >= 0) {
+                        item.data.push(v[field])
+                    } else if (name === '少于源网站增量' && v[field] < 0) {
+                        item.data.push(v[field])
+                    } else {
+                        item.data.push(null)
+                    }
                 } else {
                     item.data.push(v[field])
                 }
