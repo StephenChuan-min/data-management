@@ -355,6 +355,7 @@ function Left(props: Props) {
             placeholder: '请选择日期',
             label: '日期',
             field: 'countDate',
+            allowClear: false,
             timeDefault: moment(),
             disabledDate: (c: Moment) => {
                 return c.unix() > new Date().getTime()/1000
@@ -376,6 +377,7 @@ function Left(props: Props) {
             label: '数据源',
             field: 'sourceId',
             option: props.option,
+            allowClear: false,
             defaultValue: props.option.length > 0 ? props.option[0].value : undefined,
             onChange: (params: object) => {
                 setTimeSlotParams({
