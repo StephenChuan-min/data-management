@@ -26,11 +26,12 @@ function AddedMapping (props: Props) {
 
     const [type, setType] = useState(0);
     const [selectOption, setSelectOption] = useState([]);
+    // const [configList, setConfigList] = useState();
     const [option, setOption] = useState([ { label: '全部', value: 0 }])
 
     useEffect(() => {
         getData(type)
-        getOption(0)
+        getOption(type)
     }, [type])
 
     const configList = [
@@ -103,7 +104,6 @@ function AddedMapping (props: Props) {
     };
     const handleSelect = (val: any) => {
         setType(val);
-        getOption(val);
     };
 
     const getOption = (val: number) => {
