@@ -60,14 +60,27 @@ function Index(props: Props) {
             }
         }
         if (type === Type.user) {
-            setUserStatus(status);
+
+            const reg = new RegExp(/\D/)
+            if (reg.test(e.target.value)) {
+                setUserStatus(statusEnum.error);
+                setHelp1('请勿输入非数字的内容')
+            } else {
+                setUserStatus(status);
+            }
             // 如果没有密码时 则不重置校验状态
             if (getFieldValue('password') && status === statusEnum.init) {
                 setPasswordStatus(status);
             }
         }
         if (type === Type.password) {
-            setPasswordStatus(status);
+            const reg = new RegExp(/\s/)
+            if (reg.test(e.target.value)) {
+                setPasswordStatus(statusEnum.error);
+                setHelp2('请勿输入空格')
+            } else {
+                setPasswordStatus(status);
+            }
             // 如果没有账号时 则不重置校验状态
             if (getFieldValue('userName') && status === statusEnum.init) {
                 setUserStatus(status);
@@ -77,6 +90,9 @@ function Index(props: Props) {
 
     const onFinish = (values: any) => {
         let params = { ...values }
+        if (userStatus !== statusEnum.init || passwordStatus !== statusEnum.init) {
+            return
+        }
         params.password = rsaEncrypt(params.password)
         api.apiLogin(params).then((res: any) => {
             if (res.code === 200) {
@@ -115,6 +131,7 @@ function Index(props: Props) {
                                     ]}
                             >
                                 <Input
+                                    maxLength={11}
                                     onChange={(val:any) => handleChange(val, Type.user)}
                                     prefix={<i className="iconfont iconzhanghao" />}
                                     placeholder="请输入11位账号"
@@ -127,6 +144,7 @@ function Index(props: Props) {
                                 rules={[{ required: true, message: '请输入密码' }]}
                             >
                                 <Input.Password
+                                    maxLength={20}
                                     onChange={(val:any) => handleChange(val, Type.password)}
                                     prefix={<i className="iconfont iconmima" />}
                                     placeholder="请输入密码"
