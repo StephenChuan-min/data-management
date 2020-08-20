@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { message } from 'antd';
-// import { baseUrl } from './index';
+import { baseUrl } from './index';
 import store from "../store/store";
 
 let path = '';
@@ -43,7 +43,7 @@ const removeResponse = (url: string) => {
 
 // 创建axios实例
 const service = axios.create({
-    baseURL: '',
+    baseURL: baseUrl,
     timeout: 5000 * 4,
     headers: {
         'Content-Type': 'application/json;charset=utf-8',
