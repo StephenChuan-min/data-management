@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react";
 import LineChart from "../../components/line-chart";
 import {getDateArray} from "../../../../utils/some-time-utils";
 import api from '../../../../api/other-indicator';
-import { message, Spin } from 'antd';
+import { message, Spin, Tooltip } from 'antd';
 import {dataToSeries} from "../../common/get-axis-by-type";
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 function tooltip(str: string, data: {currentCount: number, abnormalCount: number, countDate: string }[]) {
     return (
@@ -96,6 +97,9 @@ function RightOne() {
         <div className="right-two">
             <p className="header-title">
                 数据更新情况监控（日）
+                <Tooltip title="start_time为三天及以前但是status仍为1的数据总量">
+                    <span><QuestionCircleOutlined /></span>
+                </Tooltip>
             </p>
                 <div className="content">
                     <Spin spinning={spin}>

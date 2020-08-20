@@ -194,6 +194,7 @@ function DevelopmentAbnormal(props: Props) {
             title: '网站名称',
             key: 'netName',
             dataIndex: 'netName',
+            width: 300,
         },
         {
             title: '子目录',
@@ -209,6 +210,7 @@ function DevelopmentAbnormal(props: Props) {
         {
             title: '操作',
             key: 'action',
+            className: 'column-center',
             render: (text: any, record: any) => (
                 <div>
                     {record.dealStatus === 0 && <Button type="ghost" onClick={() => handleClick(record, ClickType.handle)}>处理</Button>}

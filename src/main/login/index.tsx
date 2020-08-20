@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Button, Form, Input } from 'antd';
+import {Button, Form, Input, message} from 'antd';
 import { connect } from 'react-redux';
 import { addUser, setToken } from '../../store/action';
 import loginLog from '../../assets/img/logo.png';
@@ -82,10 +82,11 @@ function Index(props: Props) {
             if (res.code === 200) {
                 handleSuccess(res.data)
             } else {
-                setUserStatus(statusEnum.error);
-                setPasswordStatus(statusEnum.error);
-                setHelp1(res.message)
-                setHelp2(res.message)
+                // setUserStatus(statusEnum.error);
+                // setPasswordStatus(statusEnum.error);
+                // setHelp1(res.message)
+                // setHelp2(res.message)
+                message.error(res.message)
             }
         })
         // handleClick(values)

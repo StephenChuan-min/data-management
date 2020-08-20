@@ -114,6 +114,7 @@ export const TableWithSearch: React.FunctionComponent<TableProps> = props =>{
             ...pageParams,
             current: page
         })
+        props.setFresh(true)
     }
 
     return <React.Fragment>
