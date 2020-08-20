@@ -5,10 +5,11 @@ import {message, Spin} from 'antd';
 import {TimeType} from "../../../common/schemas";
 import {add0, getLastDay} from "../../../utils/some-time-utils";
 import { dataToSeries } from "../common/get-axis-by-type";
+import { mathCeil } from '../../../utils/utils';
 
 const initSeries = [
     {
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        data: [],
         type: 'line',
         name: '源网站增量',
         symbol: 'emptyCircle',
@@ -20,7 +21,7 @@ const initSeries = [
         },
     },
     {
-        data: [1320, 1330, 1290, 934, 901, 932, 820],
+        data: [],
         type: 'line',
         name: '数据抓取量',
         symbol: 'emptyCircle',
@@ -33,8 +34,9 @@ const initSeries = [
     },
 ];
 
-const tooltip = {
+const tooltip = (data: { countDate: string, sourceNetIncrease: number, yesterdayGraspSumNumber: number }[]) => ({
     formatter: (params: any) => {
+        const item = data.find(v => v.countDate === params[0].name)
         const tipArray:string[] = [];
         let tip = '';
         const timeDetail = '';
@@ -45,7 +47,13 @@ const tooltip = {
             const reg = new RegExp(/10/g);
             const reg1 = new RegExp(/5/g);
             const regMarker = marker.replace(reg, '6').replace(reg1, 8);
-            const { value } = e;
+            let { value } = e;
+            if (name === '源网站增量' && item) {
+                value = item.sourceNetIncrease
+            }
+            if (name === '数据抓取量' && item) {
+                value = item.yesterdayGraspSumNumber
+            }
             tipArray[index] = `${regMarker}${name}：${value || value === 0 ? value : '--'}`;
             return e;
         });
@@ -59,7 +67,7 @@ const tooltip = {
         tip = `总量<br />${params[0].name}<br>${tip}`;
         return tip;
     }
-};
+});
 
 const color = ['#FD9C26', '#0386D5'];
 
@@ -70,16 +78,21 @@ interface Props {
 
 function BottomLeft(props: Props) {
 
-    const [data, setData] = useState();
+    const [yAxis, setYaXis] = useState({
+        max: 10,
+        min: 0,
+        interval: 1,
+    });
     const [series, setSeries] = useState(initSeries);
+    const [data, setData] = useState([]);
     const [spin, setSpin] = useState(false);
 
     useEffect(() => {
         getData()
-    }, [JSON.stringify(props.params)])
+    }, [JSON.stringify(props.params)]);
 
     const getData = () => {
-        setSpin(true)
+        setSpin(true);
         api.apiGetGraspAndSourceAdd({ ...props.params }).then((res) => {
             if (res.code === 200) {
                 let selfXAxis = props.xAxisData
@@ -96,8 +109,40 @@ function BottomLeft(props: Props) {
                         return `${year}-${month}-${day}`
                     })
                 }
-                dataToSeries.call(series,'源网站增量', res.data, 'sourceNetIncrease', selfXAxis);
-                const r = dataToSeries.call(series,'数据抓取量', res.data, 'yesterdayGraspSumNumber', selfXAxis);
+                const arr = res.data.map((v: any) => v.sourceNetIncrease);
+                const arr1 = res.data.map((v: any) => v.yesterdayGraspSumNumber);
+                const allArr = [...arr, ...arr1]
+
+                const max = mathCeil(Math.max.apply(null, allArr));
+                const interval = max / 10;
+
+                let min = 0;
+
+                if (allArr.find((v) => v < 0)) {
+                    min  = -interval
+                }
+
+
+                setYaXis({
+                    min,
+                    interval,
+                    max,
+                });
+                setData(res.data);
+                const list = res.data.map((v: any) => {
+                    const temp = {...v};
+                    if (v.sourceNetIncrease < 0) {
+                        temp.sourceNetIncrease = -interval
+                    }
+                    if (v.yesterdayGraspSumNumber < 0) {
+                        temp.yesterdayGraspSumNumber = -interval
+                    }
+                    return temp
+                });
+
+
+                dataToSeries.call(series,'源网站增量', list, 'sourceNetIncrease', selfXAxis);
+                const r = dataToSeries.call(series,'数据抓取量', list, 'yesterdayGraspSumNumber', selfXAxis);
                 setSeries(r);
             } else {
                 message.error(res.message)
@@ -124,8 +169,9 @@ function BottomLeft(props: Props) {
                     legend={legend}
                     series={series}
                     color={color}
-                    tooltip={tooltip}
+                    tooltip={tooltip(data)}
                     height={362}
+                    yAxis={yAxis}
                 />
             </Spin>
         </div>
