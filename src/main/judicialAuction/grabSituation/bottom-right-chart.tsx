@@ -75,7 +75,7 @@ const color = ['#0386D5', '#FD9C26', '#F03733']
 
 function BottomRight(props: { xAxisData: string[], params: { dataType: number, timeType: number }, }) {
 
-    const [data, setData] = useState();
+    const [data, setData] = useState([]);
     const [series, setSeries] = useState(initSeries);
     const [spin, setSpin] = useState(false);
 
@@ -101,6 +101,7 @@ function BottomRight(props: { xAxisData: string[], params: { dataType: number, t
                         return `${year}-${month}-${day}`
                     })
                 }
+                setData(res.data)
                 dataToSeries.call(series,'多于源网站增量', res.data, 'accumulativeDValue', selfXAxis);
                 dataToSeries.call(series,'少于源网站增量', res.data, 'accumulativeDValue', selfXAxis);
                 const r = dataToSeries.call(series,'累计差值', res.data, 'dValue', selfXAxis);
@@ -124,6 +125,7 @@ function BottomRight(props: { xAxisData: string[], params: { dataType: number, t
     return (
         <Spin spinning={spin}>
             <LineChart
+                hasData={data.length > 0}
                 key={JSON.stringify(series)}
                 xAxisData={props.xAxisData}
                 legend={legend} series={series}

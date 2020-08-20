@@ -1,4 +1,5 @@
 import React, {useEffect} from "react";
+import NoData from "../../../components/no-data";
 
 const echart = require('echarts');
 
@@ -18,6 +19,7 @@ interface Props {
     series: object,
     legend: object,
     tooltip: {formatter(val: any): string},
+    hasData: boolean,
     yAxis?: object,
     height?: number,
     color?: string[],
@@ -120,13 +122,13 @@ function LineChart(props: Props) {
             }],
             series: props.series,
         };
-        const lineChart = echart.init(ref);
-        lineChart.setOption(option);
-    }, [])
+        if (props.hasData) {
+            const lineChart = echart.init(ref);
+            lineChart.setOption(option);
+        }
+    }, [props]);
 
-    return (
-        <div className="yc-line-chart" style={{ height: props.height || 780 }} ref={dom => ref = dom}/>
-    )
+    return props.hasData ? <div className="yc-line-chart" style={{ height: props.height || 780 }} ref={dom => ref = dom}/> : <NoData height={props.height} />
 }
 
 export default LineChart;

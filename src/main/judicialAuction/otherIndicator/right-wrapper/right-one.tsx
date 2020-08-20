@@ -93,6 +93,7 @@ function RightOne() {
         value: 1,
     });
     const [series, setSeries] = useState(seriesFun('开拍时间（start_time)'));
+    const [data, setData] = useState([]);
     const [spin, setSpin] = useState(false);
 
     const legend = {
@@ -109,6 +110,7 @@ function RightOne() {
         api.apiGetNullRateList({ monitorField: selectItem.value }).then((res) => {
             if (res.code === 200) {
                 const r = dataToSeries.call(series, selectItem.name, res.data, 'rate', initData);
+                setData(res.data)
                 setSeries(r)
             } else {
                 message.error(res.message)
@@ -154,6 +156,7 @@ function RightOne() {
                             </div>
                         </div>
                         <LineChart
+                            hasData={data.length > 0}
                             key={JSON.stringify(series)}
                             gridTop={30}
                             xAxisData={initData}

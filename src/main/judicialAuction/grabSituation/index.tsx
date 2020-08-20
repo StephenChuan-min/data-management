@@ -3,7 +3,7 @@ import '../style.scss';
 import BottomLeft from './bottom-left-chart';
 import BottomRight from './bottom-right-chart';
 import { typeEnum } from "../../../components/table-with-search/schemas";
-import { message } from 'antd';
+import {message, Spin} from 'antd';
 import TitleRight from '../components/title-right';
 import getAxisByType from '../common/get-axis-by-type';
 import { getDateArray } from '../../../utils/some-time-utils';
@@ -11,6 +11,7 @@ import api from '../../../api/grab-situation';
 import {labelValue, TimeType} from '../../../common/schemas';
 import { getDataSourceList } from '../../../store/action';
 import {connect} from "react-redux";
+import NoData from '../../../components/no-data';
 
 const echart =  require('echarts');
 /**
@@ -105,9 +106,12 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
 
     // 源网站增量与数据抓取量的xAix
     let [xAxis, setXAxis] = useState(getDateArray(31));
-
+    let [spin, setSpin] = useState(false);
     // 数据抓取量与源网站增量差值xAix
-    let [xAxis1, setXAxis1] = useState(getDateArray(31))
+    let [xAxis1, setXAxis1] = useState(getDateArray(31));
+
+    let [hasData, setHasData] = useState(false);
+
 
     const [sumData, setSumData] = useState({ yesterdayGraspSumNum: 0, compareSourceNetDvalue: 0, compareSourceNetAdd: 0 });
 
@@ -249,8 +253,10 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
 
     useEffect(
         () => {
-            const myPie = echart.init(pie);
-            myPie.setOption(option)
+            if (hasData) {
+                const myPie = echart.init(pie);
+                myPie.setOption(option)
+            }
         }, [data]
     );
 
@@ -260,60 +266,69 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
     },[]);
 
     const getData = () => {
+        setSpin(true);
         api.apiGetGraspDataDetail().then((res) => {
             if (res.code === 200) {
+                if (res.data.compareSourceNetAdd === null && res.data.compareSourceNetDvalue === null && res.data.everyGraspDistributions.length === 0 && res.data.yesterdayGraspSumNum === null) {
+                    setHasData(false)
+                } else {
+                    setHasData(true)
+                }
                 setSumData(res.data)
                 const temp = res.data.everyGraspDistributions.map((v: any) => ({ name: v.dataSourceName, id: v.sourceId, value: v.everySourceGraspNum, than: v.dvalue }))
                 setData(temp)
             } else {
                 message.error(res.message)
             }
-        }).finally(() => {})
+        }).finally(() => {
+            setSpin(false);
+        })
     }
 
     return (
         <div className="grab-situation-monitor">
-            {
-                console.log(sumData)
-            }
             <div className="header">
                 <p className="header-title">抓取数据分布概览</p>
-                <div className="header-content-top">
-                    <div className="left">
-                        <div style={{ display: 'inline-block'}}>
-                            <span className="title">昨日抓取总量</span>
-                            <div className="bottom">
-                                <span className="number" style={{ marginLeft: 0}}>{sumData.yesterdayGraspSumNum}</span>
-                                <span>条</span>
+                <Spin spinning={spin}>
+                    {hasData ? <>
+                        <div className="header-content-top">
+                            <div className="left">
+                                <div style={{ display: 'inline-block'}}>
+                                    <span className="title">昨日抓取总量</span>
+                                    <div className="bottom">
+                                        <span className="number" style={{ marginLeft: 0}}>{sumData.yesterdayGraspSumNum}</span>
+                                        <span>条</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="right">
+                                <span className="title">与源网站增量（区分数据源）差值</span>
+                                <div>
+                                    {sumData.compareSourceNetDvalue === 0 && sumData.compareSourceNetAdd === 0 ?
+                                        <span className="right-bottom-left">
+                                            <span className="number">0</span>
+                                            条
+                                        </span>
+                                        : <>
+                                            <span className="right-bottom-left">
+                                                <span>少</span>
+                                                <span className="number">{Math.abs(sumData.compareSourceNetDvalue)}</span>
+                                                <span>条</span>
+                                            </span>
+                                            <span>
+                                                <span>多</span>
+                                                <span className="number">{sumData.compareSourceNetAdd}</span>
+                                                <span>条</span>
+                                            </span>
+                                    </>}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="right">
-                        <span className="title">与源网站增量（区分数据源）差值</span>
-                        <div>
-                            {sumData.compareSourceNetDvalue === 0 && sumData.compareSourceNetAdd === 0 ?
-                                <span className="right-bottom-left">
-                                    <span className="number">0</span>
-                                    条
-                                </span>
-                                : <>
-                                    <span className="right-bottom-left">
-                                        <span>少</span>
-                                        <span className="number">{Math.abs(sumData.compareSourceNetDvalue)}</span>
-                                        <span>条</span>
-                                    </span>
-                                    <span>
-                                        <span>多</span>
-                                        <span className="number">{sumData.compareSourceNetAdd}</span>
-                                        <span>条</span>
-                                    </span>
-                            </>}
+                        <div style={{ padding: '0 20px'}}>
+                            <div id="pie" ref={dom => pie = dom} style={{ width: '100%', marginTop: 22, height: col > 4 ? col * 36 : 180 }} />
                         </div>
-                    </div>
-                </div>
-                <div style={{ padding: '0 20px'}}>
-                    <div id="pie" ref={dom => pie = dom} style={{ width: '100%', marginTop: 22, height: col > 4 ? col * 36 : 180 }} />
-                </div>
+                    </> : <NoData height={258} />}
+                </Spin>
             </div>
             <div className="bottom-left">
                 <div className="header-title">

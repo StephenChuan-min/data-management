@@ -97,6 +97,7 @@ function RightOne() {
 
     const [series, setSeries] = useState(initSeries)
     const [spin, setSpin] = useState(false)
+    const [data, setData] = useState([])
 
     useEffect(() => {
         getData()
@@ -110,12 +111,14 @@ function RightOne() {
                 dataToSeries.call(series,'附件解析量', res.data, 'fileAnalysisCount', initData);
                 dataToSeries.call(series,'差值', res.data, 'different', initData);
                 const r = dataToSeries.call(series,'-差值', res.data, 'different', initData);
-                setSpin(false)
                 setSeries(r);
+                setData(res.data)
             } else {
                 message.error(res.message)
             }
-        }).finally(() => {})
+        }).finally(() => {
+            setSpin(false)
+        })
     }
 
     const legend = {
@@ -151,6 +154,7 @@ function RightOne() {
                         </div>
                     </div>
                     <LineChart
+                        hasData={data.length > 0}
                         key={JSON.stringify(series)}
                         gridTop={70}
                         xAxisData={initData}

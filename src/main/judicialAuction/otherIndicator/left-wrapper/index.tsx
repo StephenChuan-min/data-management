@@ -188,9 +188,10 @@ function Left(props: Props) {
     const [fourthSpin, setFourthSpin] = useState(false);
     const [xAxis1, setXAxis1] = useState(getDateArray(31));
     const [series, setSeries] = useState(initSeries);
+    const [chartData, sethCartData] = useState([]);
     const [series1, setSeries1] = useState(initSeries1);
     const [timeSlotList, setTimeSlotList] = useState([]); // 数据增量时间段分布返回数据
-    const [timeSlotParams, setTimeSlotParams] = useState({ countDate: moment().format(formatType), sourceId: '' }); // 数据增量时间段分布查询参数
+    const [timeSlotParams, setTimeSlotParams] = useState({ countDate: moment().format(formatType), sourceId: props.option[0] ? props.option[0].value : '' }); // 数据增量时间段分布查询参数
 
     useEffect(() => {
         getData();
@@ -199,7 +200,7 @@ function Left(props: Props) {
 
     useEffect(() => {
         if (props.option.length !== 0) {
-            setTimeSlotParams({countDate: moment().format(formatType), sourceId: String(props.option[0].value) })
+            setTimeSlotParams({countDate: moment().format(formatType), sourceId: props.option[0].value })
         }
     }, [props.option]);
 
@@ -208,7 +209,7 @@ function Left(props: Props) {
     }, [dateType]);
 
     useEffect(() => {
-        if (props.option.length !== 0) {
+        if (timeSlotParams.sourceId !== '') {
             getTimeSlotList()
         }
     }, [JSON.stringify(timeSlotParams)])
@@ -246,6 +247,7 @@ function Left(props: Props) {
                         return `${year}-${month}-${day}`
                     })
                 }
+                sethCartData(res.data)
                 dataToSeries.call(series,'爬虫库', res.data, 'assetCount', selfXAxis);
                 dataToSeries.call(series,'资产监控库', res.data, 'labModelCount', selfXAxis);
                 dataToSeries.call(series,'差值', res.data, 'different', selfXAxis);
@@ -463,6 +465,7 @@ function Left(props: Props) {
                         </div>
                         <div key={JSON.stringify(series)}>
                             <LineChart
+                                hasData={chartData.length > 0}
                                 gridTop={70}
                                 xAxisData={xAxis1}
                                 legend={legend}
@@ -483,6 +486,7 @@ function Left(props: Props) {
                             </div>
                         </div>
                         <LineChart
+                            hasData={timeSlotList.length > 0}
                             key={JSON.stringify(series1)}
                             gridTop={70}
                             xAxisData={xAxis}

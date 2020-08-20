@@ -122,7 +122,6 @@ function BottomLeft(props: Props) {
                     min  = -interval
                 }
 
-
                 setYaXis({
                     min,
                     interval,
@@ -139,8 +138,6 @@ function BottomLeft(props: Props) {
                     }
                     return temp
                 });
-
-
                 dataToSeries.call(series,'源网站增量', list, 'sourceNetIncrease', selfXAxis);
                 const r = dataToSeries.call(series,'数据抓取量', list, 'yesterdayGraspSumNumber', selfXAxis);
                 setSeries(r);
@@ -164,6 +161,7 @@ function BottomLeft(props: Props) {
         <div>
             <Spin spinning={spin}>
                 <LineChart
+                    hasData={data.length > 0}
                     key={JSON.stringify(series)}
                     xAxisData={props.xAxisData}
                     legend={legend}

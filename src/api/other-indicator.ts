@@ -19,7 +19,7 @@ export const apiGetDataCountList = async (params: { dateType: string}) => {
 };
 
 // 【查询】数据增量时间段分布列表[liangxiquan] sourceId 数据源ID countDate 统计时间
-export const apiGetTimeSlotList = async (params: { sourceId: string, countDate: string}) => {
+export const apiGetTimeSlotList = async (params: { sourceId: string | number, countDate: string}) => {
     const response = await service.get('/asset/auction/otherIndex/getTimeSlotList', { params });
     return response.data;
 };

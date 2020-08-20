@@ -72,7 +72,7 @@ function RightOne() {
 
     const [series, setSeries] = useState(initSeries);
     const [spin, setSpin] = useState(false);
-    const [data, setData] = useState([{abnormalCount: 0, currentCount: 0, countDate: '' }]);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         getData()
@@ -109,6 +109,7 @@ function RightOne() {
                             </div>
                         </div>
                         <LineChart
+                            hasData={data.length > 0}
                             key={JSON.stringify(series)}
                             gridTop={30}
                             xAxisData={initData}
