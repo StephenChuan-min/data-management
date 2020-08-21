@@ -66,17 +66,9 @@ export function dataToSeries(this: any, name: string, data: { countDate: string,
                 if (v.countDate === e) {
                     // field = 'different' 特殊处理 name 为 差值 和 -差值
                     if (field === 'different') {
-                        if (name === '差值' && v[field] >= 0) {
+                        if ((name === '差值' || name === '多于源网站增量') && v[field] >= 0) {
                             item.data.push(v[field])
-                        } else if (name === '-差值' && v[field] < 0) {
-                            item.data.push(v[field])
-                        } else {
-                            item.data.push(null)
-                        }
-                    } else if (field === 'accumulativeDValue') {
-                        if (name === '多于源网站增量' && v[field] >= 0) {
-                            item.data.push(v[field])
-                        } else if (name === '少于源网站增量' && v[field] < 0) {
+                        } else if ((name === '-差值' || name === '少于源网站增量') && v[field] < 0) {
                             item.data.push(v[field])
                         } else {
                             item.data.push(null)

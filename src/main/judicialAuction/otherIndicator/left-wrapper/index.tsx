@@ -426,12 +426,12 @@ function Left(props: Props) {
                         <p className="second-title">昨日增量</p>
                         <div className="content">
                             <div className="content-left">
-                                <p className="label">爬虫库</p>
-                                <p className="value">
-                                    <span className="number">{data.assetCount}</span>
-                                    <span className="lc">条</span>
-                                </p>
-                            </div>
+                                    <p className="label">爬虫库</p>
+                                    <p className="value">
+                                        <span className="number">{data.assetCount}</span>
+                                        <span className="lc">条</span>
+                                    </p>
+                                </div>
                             <div className="content-center">
                                 <span className="ratio">{data.ratio === null ? null : `${data.ratio * 100}%`}</span>
                                 <p className="border-bottom">

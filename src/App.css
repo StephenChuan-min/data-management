@@ -1,7 +1,7 @@
 @import '~antd/dist/antd.css';
 .App {
   background: #EDEFF3;
-  min-width: 1600px;
+  min-width: 1920px;
   color: #293038;
   overflow: auto;
 }

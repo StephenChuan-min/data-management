@@ -102,9 +102,9 @@ function BottomRight(props: { xAxisData: string[], params: { dataType: number, t
                     })
                 }
                 setData(res.data)
-                dataToSeries.call(series,'多于源网站增量', res.data, 'accumulativeDValue', selfXAxis);
-                dataToSeries.call(series,'少于源网站增量', res.data, 'accumulativeDValue', selfXAxis);
-                const r = dataToSeries.call(series,'累计差值', res.data, 'dValue', selfXAxis);
+                dataToSeries.call(series,'多于源网站增量', res.data, 'different', selfXAxis);
+                dataToSeries.call(series,'少于源网站增量', res.data, 'different', selfXAxis);
+                const r = dataToSeries.call(series,'累计差值', res.data, 'accumulativeDValue', selfXAxis);
                 setSeries(r);
             } else {
                 message.error(res.message)
