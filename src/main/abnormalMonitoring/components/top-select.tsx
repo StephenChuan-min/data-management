@@ -4,6 +4,7 @@ import {Select} from "antd";
 import './style.scss';
 import {clearParams, getDataTypeList, setFresh} from "../../../store/action";
 import {connect} from "react-redux";
+import { CaretDownOutlined } from '@ant-design/icons';
 
 /**
  * @author czq
@@ -44,6 +45,7 @@ function TopSelect(props: Props) {
                 当前的数据类型：
             </p>
             <Select
+                suffixIcon={<CaretDownOutlined />}
                 value={type}
                 getPopupContainer={(t) => t.parentNode}
                 onChange={handleChange}

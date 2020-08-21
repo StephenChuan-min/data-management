@@ -49,3 +49,15 @@
     min-width: 180px !important;
   }
 }
+.modal-remarks {
+  .input-textarea-wrapper {
+    position: relative;
+    .num {
+      color: #7D8699;
+      line-height: 14px;
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+    }
+  }
+}

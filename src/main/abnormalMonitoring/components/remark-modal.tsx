@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import { Input } from 'antd';
 import { ClickType } from '../developmentAbnormal';
+import './style.scss';
 
 interface Props {
     type: string, //弹窗类型
@@ -10,17 +11,31 @@ interface Props {
 
 function Remark(props: Props) {
 
+    const [num, setNum] = useState(0)
+
     const handleChange = (e: any) => {
-        e.persist()
-        props.getValue(e.target.value)
-    }
+        e.persist();
+        setNum(e.target.value.length)
+        props.getValue(e.target.value);
+    };
+
+
     return (
-        <div>
+        <div className="modal-remarks">
             {props.type === ClickType.check ?
                 <div>{
                     props.value
                 }</div> :
-                <Input.TextArea rows={8} onChange={handleChange} defaultValue={props.value} />}
+                <div className="input-textarea-wrapper">
+                    <Input.TextArea
+                        maxLength={160}
+                        placeholder="请输入备注"
+                        rows={8} onChange={handleChange}
+                        defaultValue={props.value}
+                    />
+                    <span className="num">{`${num}/160`}</span>
+                </div>
+                }
         </div>
     )
 }

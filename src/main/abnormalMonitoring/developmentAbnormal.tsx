@@ -120,6 +120,7 @@ function DevelopmentAbnormal(props: Props) {
             type: BtnType.ghost,
             onClick: () => {
                 props.clearParams(props.paramsKey + 1)
+                props.setFresh(true)
             }
         },
     ];

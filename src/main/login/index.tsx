@@ -34,6 +34,7 @@ function Index(props: Props) {
     const [form] = Form.useForm();
     const { getFieldValue } = form;
 
+    const [loading, setLoading] = useState(false)
     const [userStatus, setUserStatus] = useState(statusEnum.init); // 账号校验状态
     const [passwordStatus, setPasswordStatus] = useState(statusEnum.init); // 密码校验状态
     const [help1, setHelp1] = useState(''); // 账号校验信息
@@ -93,8 +94,10 @@ function Index(props: Props) {
         if (userStatus !== statusEnum.init || passwordStatus !== statusEnum.init) {
             return
         }
-        params.password = rsaEncrypt(params.password)
+        params.password = rsaEncrypt(params.password);
+        setLoading(true);
         api.apiLogin(params).then((res: any) => {
+            setLoading(false);
             if (res.code === 200) {
                 handleSuccess(res.data)
             } else {
@@ -104,6 +107,8 @@ function Index(props: Props) {
                 // setHelp2(res.message)
                 message.error(res.message)
             }
+        }).catch(() => {
+            setLoading(false);
         })
         // handleClick(values)
     }
@@ -151,7 +156,7 @@ function Index(props: Props) {
                                 />
                             </Form.Item>
                             <Form.Item>
-                                <Button type="primary" htmlType="submit" className="login-form-button">
+                                <Button loading={loading} type="primary" htmlType="submit" className="login-form-button">
                                     登录
                                 </Button>
                             </Form.Item>

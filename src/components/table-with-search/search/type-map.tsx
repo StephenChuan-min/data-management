@@ -5,6 +5,7 @@ import store from "../../../store/store";
 import { setParams } from "../../../store/action";
 import { formatType } from '../../../utils/some-time-utils';
 import {Moment} from "moment";
+import { CaretDownOutlined } from '@ant-design/icons';
 
 /**
  * @author czq
@@ -40,13 +41,14 @@ interface rangePickerProps{
     onChange?(val: object):void,
 }
 
-function handleChange(props: {val: any, field: string }) {
-    store.dispatch(setParams({ [props.field]: props.val }))
+function handleChange(props: {val: any, field: string }, isTrim: boolean = false) {
+    store.dispatch(setParams({ [props.field]: isTrim ? props.val.trim() : props.val }))
 }
 
 const typeMap = {
     select: (props: selectProps) => {
         return <Select
+            suffixIcon={<CaretDownOutlined />}
             allowClear={props.allowClear !== undefined ? props.allowClear : true}
             placeholder={props.placeholder || '请选择'}
             className={`yc-search-select ${props.className}`}
@@ -71,7 +73,7 @@ const typeMap = {
             if (props.onChange) {
                 props.onChange({[props.field]: val})
             }
-            handleChange({val: val.target.value, field: props.field})
+            handleChange({val: val.target.value, field: props.field}, true)
         }}
     />),
     datepicker: (props: datePickProps) => <DatePicker

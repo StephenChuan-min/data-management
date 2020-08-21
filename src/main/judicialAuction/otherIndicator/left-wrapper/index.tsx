@@ -477,7 +477,7 @@ function Left(props: Props) {
                                 legend={legend}
                                 series={series}
                                 color={color}
-                                tooltip={tooltip('各表数据总量', false)}
+                                tooltip={tooltip('各表数据增量', false)}
                                 height={265}
                             />
                         </div>
