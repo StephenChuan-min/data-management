@@ -18,7 +18,7 @@ const option = [{
     label: '法院（court）'
 },{
     value: 4,
-    label: '产类型（sub_category）'
+    label: '资产类型（sub_category）'
 },{
     value: 5,
     label: '竞买人'
