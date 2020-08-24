@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import LeftWrapper from './left-wrapper';
 import RightWrapper from './right-wrapper';
 
+
 /**
  * @author czq
  * @date 2020/8/4

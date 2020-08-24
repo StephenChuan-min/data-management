@@ -1,4 +1,4 @@
-import * as type from "./actionTypes";
+import * as type from "./action-types";
 import { handleLocal } from '../utils/localStorage'
 import { labelValue } from '../common/schemas';
 import api from "../api/developmentAbnormal";

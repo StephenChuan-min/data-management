@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { Input } from 'antd';
-import { ClickType } from '../developmentAbnormal';
+import { ClickType } from '../development-abnormal';
 import './style.scss';
 
 interface Props {

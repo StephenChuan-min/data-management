@@ -1,4 +1,4 @@
-import * as actionTypes from './actionTypes';
+import * as actionTypes from './action-types';
 import { combineReducers } from 'redux';
 import { handleLocal } from '../utils/localStorage'
 import {labelValue} from "../common/schemas";
