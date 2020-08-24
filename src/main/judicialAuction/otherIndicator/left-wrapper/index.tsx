@@ -404,7 +404,7 @@ function Left(props: Props) {
                                 </p>
                             </div>
                             <div className="content-center">
-                                <span className="ratio">{data.totalRatio === null ? null : `${data.totalRatio * 100}%`}</span>
+                                <span className="ratio">{data.totalRatio === null ? null : `${(data.totalRatio * 100).toFixed(2)}%`}</span>
                                 <p className="border-bottom">
                                     <ArrowRightOutlined />
                                 </p>
@@ -433,7 +433,7 @@ function Left(props: Props) {
                                     </p>
                                 </div>
                             <div className="content-center">
-                                <span className="ratio">{data.ratio === null ? null : `${data.ratio * 100}%`}</span>
+                                <span className="ratio">{data.ratio === null ? null : `${(data.ratio * 100).toFixed(2)}%`}</span>
                                 <p className="border-bottom">
                                     <ArrowRightOutlined />
                                 </p>

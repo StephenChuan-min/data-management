@@ -23,7 +23,7 @@ function tooltip(str: string, data: {currentCount: number, abnormalCount: number
                     const { value } = e;
                     let tempName = name;
 
-                    let itemLabel = `${value || value === 0 ? `${(value * 100000) / 1000} %` : '--'}`
+                    let itemLabel = `${value || value === 0 ? `${(value * 100).toFixed(2)} %` : '--'}`
                     tipArray[index] = `${regMarker}${tempName}：${itemLabel}`;
                     return e;
                 });
