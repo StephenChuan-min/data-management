@@ -94,7 +94,7 @@ service.interceptors.response.use(
                     item.f('取消剩余请求');
                 });
                 pending = [];
-                window.location.href = '/login';
+                window.location.href = '/';
                 // Modal.warning({
                 // 	title: '登陆验证失效',
                 // 	content: '你的登陆验证已经失效，可以取消继续留在该页面，或者重新登录',
@@ -108,7 +108,7 @@ service.interceptors.response.use(
             }
             if (res.code === 5005) {
                 message.error('管理员重置密码');
-                window.location.href = '/login';
+                window.location.href = '/';
             }
         } else {
             response.data = null;

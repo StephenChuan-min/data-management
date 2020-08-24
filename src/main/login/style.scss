@@ -48,6 +48,14 @@
         background: #0E68C2;
         height: 44px;
       }
+      .ant-form-item-has-error{
+        .ant-input-affix-wrapper {
+          border-color: #F03733;
+        }
+        .ant-form-item-explain, .ant-form-item-has-error .ant-form-item-split {
+          color: #F03733;
+        }
+      }
     }
   }
   .login-bottom:before {

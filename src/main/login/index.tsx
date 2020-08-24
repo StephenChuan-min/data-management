@@ -75,10 +75,10 @@ function Index(props: Props) {
             }
         }
         if (type === Type.password) {
-            const reg = new RegExp(/\s/)
+            const reg = new RegExp(/\s|[\u4e00-\u9fa5]/)
             if (reg.test(e.target.value)) {
                 setPasswordStatus(statusEnum.error);
-                setHelp2('请勿输入空格')
+                setHelp2('请勿输入空格或中文')
             } else {
                 setPasswordStatus(status);
             }
