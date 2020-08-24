@@ -5,7 +5,7 @@ import {typeEnum, typeEnum1} from "../../components/table-with-search/schemas";
 import {BtnType} from "../../common/schemas";
 import {message} from "antd";
 import { connect } from 'react-redux';
-import {clearParams, setFresh} from "../../store/action";
+import {clearParams, setFresh, setParams} from "../../store/action";
 import api from '../../api/added-mapping';
 
 /**
@@ -19,6 +19,7 @@ interface Props {
     setFresh(is: boolean): void,
     clearParams(key: number): void,
     paramsKey: number,
+    setParams(obj: object): void,
 }
 
 
@@ -55,6 +56,7 @@ function AddedMapping (props: Props) {
             label: '查询',
             type: BtnType.primary,
             onClick: () => {
+                props.setParams({ page: 1 });
                 props.setFresh(true)
             }
         },
@@ -147,6 +149,9 @@ const mapDispatchToProps = (dispatch: any) => {
         },
         clearParams: (key?: number) => {
             dispatch(clearParams(key))
+        },
+        setParams: (obj: object) => {
+            dispatch(setParams(obj))
         },
     }
 }

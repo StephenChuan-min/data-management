@@ -16,6 +16,7 @@ interface Props {
     onOk?(callback: () => void): void,
     onCancel?(): void,
     className?: string,
+    okStyle?: {},
 }
 
 function RemarkModal(props: Props) {
@@ -53,7 +54,7 @@ function RemarkModal(props: Props) {
             visible={visible}
             onCancel={handleCancel}
             footer={<>
-                {props.cancelText && <Button key="back" {...props.cancelButtonProps} onClick={handleCancel}>
+                {props.cancelText && <Button className="cancel-btn" key="back" {...props.cancelButtonProps} onClick={handleCancel}>
                     {props.cancelText}
                 </Button>}
                 {props.okText && <Button key="submit" {...props.okButtonProps} type="primary" loading={props.loading} onClick={handleOk}>

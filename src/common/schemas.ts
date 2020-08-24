@@ -36,6 +36,7 @@ export interface Columns {
     dataIndex?: string,
     key: string,
     render?(text: any, r: object): any,
+    [propsName: string]: any,
 }
 
 // 图表数据类型枚举

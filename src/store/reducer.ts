@@ -53,7 +53,7 @@ function params(state = initParams, action: { type: string, params: object, key?
         case actionTypes.SET_PARAMS: // 添加请求条件
             return Object.assign({}, state, action.params);
         case actionTypes.CLEAR_PARAMS: // 清空请求条件
-            return {key: action.key};
+            return {key: action.key, page: 1, num: 10 };
         default:
             return state;
     }

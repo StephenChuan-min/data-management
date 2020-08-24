@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Search from "./search";
 import * as schemas from './schemas';
 import {message, Table, Pagination} from 'antd';
@@ -16,7 +16,7 @@ export interface BtnProps {
 interface TableProps {
     config: (schemas.Props | schemas.Props1)[],
     btnList: BtnProps[],
-    params: { key: number },
+    params: { key: number, [propsName: string]: any },
     clearParams(key?: number): void,
     apiFun(params: object): any,
     setFresh(bol: boolean):void,
@@ -24,6 +24,7 @@ interface TableProps {
     paramsKey: number,
     columns: Columns[],
     rowKey: string,
+    setParams(obj: object): void,
     defaultParams?: object, // 默认参数
 }
 
@@ -40,13 +41,14 @@ const initProps = {
     paramsKey: 0,
 };
 
+const num = 10
+
 export const TableWithSearch: React.FunctionComponent<TableProps> = props =>{
 
     const [loading, setLoad] = useState(false);
     const [params, setParams] = useState(props.params);
     const [data, setData] = useState([]);
-    const [isFirst, setIsFirst] = useState(true);
-    const [pageParams, setPageParams] = useState({ total: 0, current: 1, pageSize: 10});
+    const [pageParams, setPageParams] = useState({ total: 0, current: 1, pageSize: num});
 
     useEffect(() => {
         // 初始化时清空查询条件
@@ -83,16 +85,17 @@ export const TableWithSearch: React.FunctionComponent<TableProps> = props =>{
         setParams(a);
     };
 
-    const getData = (page: { num: number, page: number} = { num: 10, page: 1 }) => {
+    const getData = () => {
         setLoad(true)
         // 搜索加上默认参数
-        const reParams = {...params, ...page }
-        delete reParams.key
+        let reParams = {page: pageParams.current, num: pageParams.pageSize, ...params }
+        delete reParams.key;
         props.apiFun(reParams).then((res: any) => {
             if (res.code === 200) {
                 setData(res.data.list)
                 setPageParams({
-                    ...pageParams,
+                    current: res.data.page,
+                    pageSize: res.data.num,
                     total: res.data.total
                 })
             } else {
@@ -104,24 +107,22 @@ export const TableWithSearch: React.FunctionComponent<TableProps> = props =>{
     };
 
     useEffect(() => {
-        if (!isFirst && !props.isFresh) {
-            getData({num: pageParams.pageSize, page: pageParams.current });
-        }
-        setIsFirst(false);
-    }, [pageParams.current, pageParams.pageSize])
-
-    useEffect(() => {
         if (props.isFresh) {
             assignDefaultParams(false);
-            setPageParams({ total: 0, current: 1, pageSize: 10})
         }
     }, [props.isFresh]);
 
     const handlePageChange = (page: number) => {
         setPageParams({
             ...pageParams,
-            current: page
-        })
+            current: page,
+        });
+        props.setParams({ page });
+        setParams({
+            ...params,
+            page
+        });
+        props.setFresh(true)
     }
 
     return <React.Fragment>
@@ -140,6 +141,7 @@ export const TableWithSearch: React.FunctionComponent<TableProps> = props =>{
                 <Pagination
                     total={pageParams.total}
                     showQuickJumper
+                    showSizeChanger={false}
                     pageSize={pageParams.pageSize}
                     showTotal={v => `共${v}条`}
                     current={pageParams.current}
@@ -158,6 +160,9 @@ const mapDispatchToProps = (dispatch: any) => {
         },
         setFresh: (is: boolean) => {
             dispatch(setFresh(is))
+        },
+        setParams: (obj: object) => {
+            dispatch(setParams(obj))
         },
     }
 };

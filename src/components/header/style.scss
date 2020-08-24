@@ -31,5 +31,9 @@
     .ant-dropdown-trigger {
       height: 50px;
     }
+    .ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover {
+      background: #EAF7FF;
+      color: #016AA9;
+    }
   }
 }

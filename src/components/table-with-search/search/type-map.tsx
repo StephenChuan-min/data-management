@@ -6,13 +6,14 @@ import { setParams } from "../../../store/action";
 import { formatType } from '../../../utils/some-time-utils';
 import {Moment} from "moment";
 import { CaretDownOutlined } from '@ant-design/icons';
+import locale from 'antd/lib/date-picker/locale/zh_CN';
+
 
 /**
  * @author czq
  * @date 2020/8/10
  * @Description: 搜索栏，搜索条件类型
 */
-
 
 interface commonProps {
     field: string,
@@ -77,6 +78,7 @@ const typeMap = {
         }}
     />),
     datepicker: (props: datePickProps) => <DatePicker
+        locale={locale}
         allowClear={props.allowClear !== undefined ? props.allowClear : true}
         defaultValue={props.timeDefault}
         getPopupContainer={(t) => t}
@@ -95,6 +97,11 @@ const typeMap = {
     />,
     rangePicker: (props: rangePickerProps) => <React.Fragment>
         <DatePicker
+            locale={locale}
+            disabledDate={(c) => {
+                return c.unix() >= new Date(store.getState().params[props.field[1]]).getTime() / 1000
+            }}
+            getPopupContainer={t => t }
             allowClear={props.allowClear !== undefined ? props.allowClear : true}
             placeholder={props.placeholder ? props.placeholder[0] : '请选择开始时间'}
             defaultValue={props.defaultValue ? props.defaultValue[0] : undefined}
@@ -111,9 +118,14 @@ const typeMap = {
         />
         <span className="conjunctions">{props.conjunctions || '至'}</span>
         <DatePicker
+            locale={locale}
             allowClear={props.allowClear !== undefined ? props.allowClear : true}
             placeholder={props.placeholder ? props.placeholder[1] : '请选择结束时间'}
             defaultValue={props.defaultValue ? props.defaultValue[1] : undefined}
+            getPopupContainer={t => t}
+            disabledDate={(c) => {
+                return c.unix() <= new Date(store.getState().params[props.field[0]]).getTime() / 1000
+            }}
             onChange={(val) => {
                 let time = undefined
                 if (val) {

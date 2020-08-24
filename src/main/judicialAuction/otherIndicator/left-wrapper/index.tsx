@@ -340,6 +340,7 @@ function Left(props: Props) {
     const legend1 = {
         selectedMode: 'multiple',
         itemGap: 30,
+        top: 18,
         itemWidth: 16,
         itemHeight: 8,
         data: [{

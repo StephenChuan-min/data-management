@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { connect } from 'react-redux';
-import {setFresh, clearParams} from "../../store/action";
+import {setFresh, clearParams, setParams} from "../../store/action";
 import {BtnType} from '../../common/schemas';
 import TableWithSearch from '../../components/table-with-search'
 import { typeEnum, typeEnum1 } from '../../components/table-with-search/schemas'
@@ -31,8 +31,10 @@ interface Props {
     history: any,
     setFresh(bol: boolean):void,
     clearParams(key?: number):void,
+    setParams(object: object):void,
     paramsKey: number,
     option: any
+    params: { page: number },
 }
 
 const errorType = [
@@ -112,6 +114,7 @@ function DevelopmentAbnormal(props: Props) {
             label: '查询',
             type: BtnType.primary,
             onClick: () => {
+                props.setParams({ page: 1 });
                 props.setFresh(true)
             }
         },
@@ -124,6 +127,8 @@ function DevelopmentAbnormal(props: Props) {
             }
         },
     ];
+
+
 
     const handleAddRemark = (resolve: () => void) => {
         // 当是查看时 点击编辑按钮
@@ -256,7 +261,8 @@ function DevelopmentAbnormal(props: Props) {
                     className="developmentAbnormal-remark-modal"
                     loading={loading}
                     onOk={handleAddRemark}
-                    okText={modalState.clickType === ClickType.check ? <span><EditOutlined />编辑</span> : "保存"}
+                    okButtonProps={{ style: { width: modalState.clickType === ClickType.check ? 90 : 'unset', padding: modalState.clickType === ClickType.check ? 0 : '' }}}
+                    okText={modalState.clickType === ClickType.check ? <span><EditOutlined style={{ marginRight: 6 }} />编辑</span> : "保存"}
                     cancelText={modalState.clickType === ClickType.check ? '' :"取消"}
                     title="备注"
                     visible={modalState.visible}
@@ -275,6 +281,9 @@ const mapDispatchToProps = (dispatch: any) => {
         clearParams: (key?: number) => {
             dispatch(clearParams(key))
         },
+        setParams: (params: object) => {
+            dispatch(setParams(params))
+        },
     }
 }
 
@@ -284,6 +293,7 @@ export default connect(
         userName: state.user.userName,
         paramsKey: state.params.key,
         option: state.dataTypeList,
+        params: state.params,
     }),
     mapDispatchToProps,
 )(DevelopmentAbnormal)

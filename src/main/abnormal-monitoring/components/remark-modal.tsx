@@ -23,7 +23,7 @@ function Remark(props: Props) {
     return (
         <div className="modal-remarks">
             {props.type === ClickType.check ?
-                <div>{
+                <div style={{ color: '#293038' }}>{
                     props.value
                 }</div> :
                 <div className="input-textarea-wrapper">

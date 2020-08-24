@@ -127,7 +127,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
         color: ['#2858B9', '#148CD5', '#75CA4D', '#F99754', '#EC3434', '#A757F9', '#1371D1', '#23B477', '#F4BF67', '#FF5E41', '#D41E7F', '#6661E9'],
         title: {
             text: '数据源分布',
-            left: 160,
+            left: 110,
             textStyle: {
                 color: '#293038',
                 fontSize: 14,
@@ -146,7 +146,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
         },
         legend: {
             orient: 'vertical',
-            left: 386,
+            left: 326,
             top: data.length > 12 ? 0 : 40,
             icon: 'circle',
             data: data.map(v => v.name),
@@ -159,8 +159,8 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
                        width: 50,
                    },
                    b: {
-                       width: 224,
-                       // padding: [0, 20, 0, 0],
+                       width: 240,
+                       padding: [0, 0, 0, 5],
                        fontSize: 14,
                        lineHeight: 20,
                    },
@@ -187,7 +187,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
                 name: '数据源分布',
                 type: 'pie',
                 radius: '55%',
-                center: ['78%', '41%'],
+                center: [150, 100],
                 data: data,
                 width: 250,
                 height: 250,

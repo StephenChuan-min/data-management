@@ -153,7 +153,7 @@ function RightOne() {
                 <p className="header-title">空值率监控（日）</p>
                 <div className="content">
                     <Spin spinning={spin}>
-                        <div className="third-content" style={{ marginTop: 29 }}>
+                        <div className="third-content">
                             <div className="second-title">
                                 重要字段空值率折线图
                                 <div className="title-right">

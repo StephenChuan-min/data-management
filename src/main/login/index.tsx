@@ -49,9 +49,12 @@ function Index(props: Props) {
     const handleChange = (e: any, type: Type) => {
         let status: statusEnum;
         if (e.target.value) {
-            status = statusEnum.init
-            setHelp1('');
-            setHelp2('');
+            status = statusEnum.init;
+            if (type === Type.user) {
+                setHelp1('');
+            } else {
+                setHelp2('');
+            }
         } else {
             status = statusEnum.error
             if (type === Type.user) {
@@ -69,10 +72,6 @@ function Index(props: Props) {
             } else {
                 setUserStatus(status);
             }
-            // 如果没有密码时 则不重置校验状态
-            if (getFieldValue('password') && status === statusEnum.init) {
-                setPasswordStatus(status);
-            }
         }
         if (type === Type.password) {
             const reg = new RegExp(/\s|[\u4e00-\u9fa5]/)
@@ -82,10 +81,7 @@ function Index(props: Props) {
             } else {
                 setPasswordStatus(status);
             }
-            // 如果没有账号时 则不重置校验状态
-            if (getFieldValue('userName') && status === statusEnum.init) {
-                setUserStatus(status);
-            }
+
         }
     }
 

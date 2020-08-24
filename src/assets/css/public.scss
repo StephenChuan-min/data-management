@@ -79,4 +79,36 @@
   .ant-message {
     z-index: 1052;
   }
+.ant-radio-group.ant-radio-group-outline {
+  .ant-radio-button-wrapper-checked {
+    border-color: #016AA9;
+    color: #016AA9;
+  }
+.ant-radio-button-wrapper-checked.ant-radio-button-wrapper:first-of-type {
 
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+  .ant-radio-button-wrapper-checked.ant-radio-button-wrapper:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
+    background-color: #016AA9;
+  }
+}
+
+.input-textarea-wrapper {
+  textarea {
+    color: #293038;
+    font-size: 14px;
+    line-height: 21px;
+    padding: 12px 16px;
+  }
+}
+  .ant-modal-mask {
+    z-index: 2053;
+  }
+  .ant-modal-wrap {
+    z-index: 2053;
+  }

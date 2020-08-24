@@ -98,7 +98,7 @@ function RightOne() {
             <p className="header-title">
                 数据更新情况监控（日）
                 <Tooltip title="start_time为三天及以前但是status仍为1的数据总量">
-                    <span><QuestionCircleOutlined /></span>
+                    <span style={{ color: '#7D8699' }}><QuestionCircleOutlined /></span>
                 </Tooltip>
             </p>
                 <div className="content">
