@@ -152,7 +152,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
             top: data.length > 12 ? 0 : 40,
             icon: 'circle',
             data: data.map(v => v.name),
-            width: 490,
+            width: '80%',
             itemWidth: 8,
             itemHeight: 8,
             textStyle: {
@@ -171,11 +171,11 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
                        fontSize: 14,
                    },
                     d: {
-                       align: 'left',
+                        align: 'left',
                        color: '#293038',
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        padding: [0, 6, 0, 6],
+                       fontSize: 16,
+                       fontWeight: 'bold',
+                       padding: [0, 6, 0, 6],
                     }
                 },
             },
@@ -276,7 +276,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
                 } else {
                     setHasData(true)
                 }
-                setSumData(res.data)
+                setSumData(res.data);
                 const temp = res.data.everyGraspDistributions.map((v: any) => ({ name: v.dataSourceName, id: v.sourceId, value: v.everySourceGraspNum, than: v.dvalue }))
                 setData(temp)
             } else {
