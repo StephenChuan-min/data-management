@@ -52,7 +52,7 @@ function tooltip(str: string, data: { countDate: string, nullRateCount: number, 
                     let tempName = name;
 
                     let itemLabel = `${value || value === 0 ? `${((value * 100000) / 1000).toFixed(2)}%` : '--'}`
-                    tipArray[index] = `${regMarker}${tempName}：${itemLabel}`;
+                    tipArray[index] = `${regMarker}空值率：${itemLabel}`;
             return e;
         });
         tip += timeDetail;

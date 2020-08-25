@@ -126,6 +126,11 @@ const initSeries1 = [
 function tooltip(title: string, hour?: boolean, data?: {hour: number, countDate: string}[]): { formatter(p: any): string} {
    return ({
        formatter: (params: any) => {
+           if (data) {
+               if (!data.map((v: any) => String(v.hour)).includes(params[0].name)) {
+                   return '';
+               }
+           }
            const tipArray:string[] = [];
            let tip = '';
            const timeDetail = '';
@@ -183,6 +188,7 @@ interface Props {
 function Left(props: Props) {
 
     const [dateType, setDataType] = useState('1');
+    const [str, setStr] = useState('全部'); // 浮窗标题
     const [firstSpin, setFirstSpin] = useState(false);
     const [thirdSpin, setThirdSpin] = useState(false);
     const [fourthSpin, setFourthSpin] = useState(false);
@@ -350,6 +356,13 @@ function Left(props: Props) {
         },],
     };
 
+    useEffect(() => {
+        const item = props.option.find(v => v.value === timeSlotParams.sourceId)
+            if (item) {
+                setStr(item.label)
+            }
+    }, [timeSlotParams.sourceId, props.option])
+
     const configList1 = [
         {
             type: typeEnum.datepicker,
@@ -502,7 +515,7 @@ function Left(props: Props) {
                             series={series1}
                             yAxis={yAxis}
                             color={['#0386D5', '#FD9C26']}
-                            tooltip={tooltip('数据增量时间段分布', true, timeSlotList)}
+                            tooltip={tooltip(str, true, timeSlotList)}
                             height={286}
                         />
                     </div>
