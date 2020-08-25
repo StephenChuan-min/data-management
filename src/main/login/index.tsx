@@ -149,7 +149,7 @@ function Index(props: Props) {
                                     placeholder="请输入密码"
                                 />
                             </Form.Item>
-                            <Form.Item>
+                            <Form.Item style={{ marginTop: 50 }}>
                                 <Button loading={loading} type="primary" htmlType="submit" className="login-form-button">
                                     登录
                                 </Button>

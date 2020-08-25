@@ -124,7 +124,9 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
     const col = Math.ceil(data.length / 3);
 
     const option = {
-        color: ['#2858B9', '#148CD5', '#75CA4D', '#F99754', '#EC3434', '#A757F9', '#1371D1', '#23B477', '#F4BF67', '#FF5E41', '#D41E7F', '#6661E9'],
+        color: ['#2858B9', '#148CD5', '#75CA4D', '#F99754', '#EC3434', '#A757F9', '#1371D1', '#23B477', '#F4BF67', '#FF5E41', '#D41E7F',
+            '#6661E9', '#148CD5', '#F4BF67', '#EC3434', '#6661E9', '#DC0000', '#6FE1AE',
+        ],
         title: {
             text: '数据源分布',
             left: 110,

@@ -19,9 +19,11 @@
     margin-left: 6px;
     font-weight: bold;
   }
+  .header-user-name:hover {
+    background: #017AC2;
+  }
   .header-user-name {
     float: right;
-    background: #017AC2;
     padding: 0 20px;
     height: 50px;
     cursor: pointer;

@@ -42,7 +42,7 @@ function TopSelect(props: Props) {
     return (<div className="abnormal-monitoring-top-select">
             <p className="label">
                 <i className="iconfont iconshujuleixing"/>
-                当前的数据类型：
+                当前的数据类型
             </p>
             <Select
                 suffixIcon={<CaretDownOutlined />}

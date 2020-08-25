@@ -1,9 +1,10 @@
 .yc-search-line {
   margin-bottom: 8px;
   .yc-search-line-item:hover {
-    border-color: #0E68C2;
+    border-color: #016AA9;
   }
   .yc-search-line-item {
+    border-radius: 2px;
     display: inline-block;
     border: 1px solid #DDE0E7;
     padding: 0 0 0 14px;
@@ -66,7 +67,7 @@
     }
     .ant-btn-ghost {
       color: #293038;
-      border-color: #EDEFF3;
+      border-color: #DDE0E7;
     }
     .ant-btn-ghost:hover {
       color: #016AA9;

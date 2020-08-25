@@ -43,13 +43,11 @@ function tooltip(str: string, data: { countDate: string, nullRateCount: number, 
                 const timeDetail = '';
                 params.map((e: any) => {
                     const index = e.seriesIndex;
-                    const name = e.seriesName;
                     const { marker } = e;
                     const reg = new RegExp(/10/g);
                     const reg1 = new RegExp(/5/g);
                     const regMarker = marker.replace(reg, '6').replace(reg1, 8);
                     const { value } = e;
-                    let tempName = name;
 
                     let itemLabel = `${value || value === 0 ? `${((value * 100000) / 1000).toFixed(2)}%` : '--'}`
                     tipArray[index] = `${regMarker}空值率：${itemLabel}`;

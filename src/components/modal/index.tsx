@@ -53,6 +53,7 @@ function RemarkModal(props: Props) {
             title={props.title}
             visible={visible}
             onCancel={handleCancel}
+            closeIcon={<i className="iconfont iconclose" />}
             footer={<>
                 {props.cancelText && <Button className="cancel-btn" key="back" {...props.cancelButtonProps} onClick={handleCancel}>
                     {props.cancelText}
