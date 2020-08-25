@@ -91,7 +91,7 @@ function RightOne() {
         }).finally(() => {
             setSpin(false)
         })
-    }
+    };
 
     return (
         <div className="right-two">

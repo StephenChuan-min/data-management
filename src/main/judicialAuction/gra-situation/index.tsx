@@ -178,7 +178,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
                 },
             },
             formatter: (name: any) => {
-                const item = data.filter(v => v.name === name)[0]
+                const item = data.filter(v => v.name === name)[0];
                 return `{b|${name}-${item.id}}{d|${item.value}}{c|条${item.than === 0 ? '' : item.than < 0 ?  '，少' : '，多'}}${item.than === 0 ? '' : `{d|${Math.abs(item.than)}}{c|条}`}{a|}`
             }
         },
@@ -255,7 +255,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
         () => {
             if (hasData) {
                 const myPie = echart.init(pie);
-                myPie.setOption(option)
+                myPie.setOption(option);
             }
         }, [data]
     );

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import NoData from "../../../components/no-data";
 
 const echart = require('echarts');
@@ -16,7 +16,7 @@ export const emphasisStyle = {
 
 interface Props {
     xAxisData: string[],
-    series: object,
+    series: object[],
     legend: object,
     tooltip: {formatter(val: any): string},
     hasData: boolean,
@@ -28,107 +28,128 @@ interface Props {
     grid?: {},
 }
 
-function LineChart(props: Props) {
+function LineChart(this: { ref: any }, props: Props) {
 
-    let ref: any = null;
+    const [ref, setRef]:any = useState();
+
+    let lineChart: any;
 
     useEffect(() => {
-        const option = {
-            tooltip: {
-                trigger: 'axis',
-                backgroundColor: 'rgba(0,0,0,0.7)',
-                extraCssText: 'line-height: 24px',
+        if (props.hasData && ref) {
+            lineChart = echart.init(ref);
+            const option = {
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    extraCssText: 'line-height: 24px',
+                    axisPointer: {
+                        z: 2,
+                    },
+                    padding: 12,
+                    formatter: props.tooltip.formatter,
+                },
+                grid: {
+                    top: props.gridTop || 40,
+                    bottom: 50,
+                    right: 10,
+                    ...props.grid,
+                },
+                color: props.color,
+                legend: props.legend,
+                xAxis: [
+                    {
+                        nameTextStyle: {
+                            color: '#4F5358',
+                            fontSize: 12,
+                        },
+                        type: 'category',
+                        axisLabel: {
+                            color: '#4F5358',
+                        },
+                        axisLine: {// 坐标轴样式
+                            onZero: false,
+                            lineStyle: {
+                                color: '#E2E4E9',
+                                width: 1,
+                            },
+
+                        },
+                        axisTick: {
+                            show: true,
+                            alignWithLabel: true,
+                            color: '#E2E4E9',
+                        },
+                        splitLine: {
+                            show: false,
+                        },
+                        data: props.xAxisData,
+                        ...props.xAxisConfig,
+                    },
+                ],
                 axisPointer: {
                     z: 2,
-                },
-                padding: 12,
-                formatter: props.tooltip.formatter,
-            },
-            // toolbox: {
-            //     show: true,
-            //     feature: {
-            //         saveAsImage: { show: true },
-            //     },
-            // },
-            grid: {
-                top: props.gridTop || 40,
-                bottom: 50,
-                right: 10,
-                ...props.grid,
-            },
-            color: props.color,
-            legend: props.legend,
-            xAxis: [
-                {
-                    nameTextStyle: {
-                        color: '#4F5358',
-                        fontSize: 12,
+                    lineStyle: {
+                        color: '#333',
                     },
-                    type: 'category',
+                },
+                yAxis: [{
+                    type: 'value',
+                    name: '',
                     axisLabel: {
                         color: '#4F5358',
+                        formatter: '{value}',
                     },
-                    axisLine: {// 坐标轴样式
+                    axisTick: {
+                        show: false,
+                    },
+                    axisLine: {
                         onZero: false,
                         lineStyle: {
                             color: '#E2E4E9',
                             width: 1,
                         },
-
-                    },
-                    axisTick: {
-                        show: true,
-                        alignWithLabel: true,
-                        color: '#E2E4E9',
                     },
                     splitLine: {
-                        show: false,
+                        show: true,
+                        lineStyle: {
+                            width: 1,
+                            type: 'dashed',
+                        },
                     },
-                    data: props.xAxisData,
-                    ...props.xAxisConfig,
-                },
-            ],
-            axisPointer: {
-                z: 2,
-                lineStyle: {
-                    color: '#333',
-                },
-            },
-            yAxis: [{
-                type: 'value',
-                name: '',
-                axisLabel: {
-                    color: '#4F5358',
-                    formatter: '{value}',
-                },
-                axisTick: {
-                    show: false,
-                },
-                axisLine: {
-                    onZero: false,
-                    lineStyle: {
-                        color: '#E2E4E9',
-                        width: 1,
-                    },
-                },
-                splitLine: {
-                    show: true,
-                    lineStyle: {
-                        width: 1,
-                        type: 'dashed',
-                    },
-                },
-                ...props.yAxis
-            }],
-            series: props.series,
-        };
-        if (props.hasData) {
-            const lineChart = echart.init(ref);
+                    ...props.yAxis
+                }],
+                series: props.series,
+            };
             lineChart.setOption(option);
+            lineChart.on('legendselectchanged', handleClick);
         }
     }, [props]);
 
-    return props.hasData ? <div className="yc-line-chart" style={{ height: props.height || 780 }} ref={dom => ref = dom}/> : <NoData height={props.height} />
+    const handleClick = (params: any) => {
+        if (params.name === '差值') {
+            if (!params.selected[params.name]) {
+                lineChart.dispatchAction({
+                    type: 'legendUnSelect',
+                    name: '差值',
+                })
+                lineChart.dispatchAction({
+                    type: 'legendUnSelect',
+                    name: '-差值',
+                })
+            } else {
+                lineChart.dispatchAction({
+                    type: 'legendSelect',
+                    name: '差值',
+                })
+                lineChart.dispatchAction({
+                    type: 'legendSelect',
+                    name: '-差值',
+                })
+            }
+        }
+    }
+
+    return props.hasData ? <div ref={dom => dom ? setRef(dom) : ''} style={{ height: props.height || 780 }}/> : <NoData height={props.height} />
 }
 
 export default LineChart;
