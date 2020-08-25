@@ -33,7 +33,7 @@ const initSeries = [
     },
 ];
 
-const tooltip = (data: { countDate: string, sourceNetIncrease: number, yesterdayGraspSumNumber: number }[]) => ({
+const tooltip = (data: { countDate: string, sourceNetIncrease: number, yesterdayGraspSumNumber: number }[], str: string) => ({
     formatter: (params: any) => {
         const item = data.find(v => v.countDate === params[0].name)
         const tipArray:string[] = [];
@@ -63,7 +63,7 @@ const tooltip = (data: { countDate: string, sourceNetIncrease: number, yesterday
             }
             return e;
         });
-        tip = `总量<br />${params[0].name}<br>${tip}`;
+        tip = `${str}<br />${params[0].name}<br>${tip}`;
         return tip;
     }
 });
@@ -73,6 +73,7 @@ const color = ['#FD9C26', '#0386D5'];
 interface Props {
     xAxisData: string[],
     params: { dataType: number, timeType: string },
+    title: string,
 }
 
 function BottomLeft(props: Props) {
@@ -87,7 +88,7 @@ function BottomLeft(props: Props) {
     const [spin, setSpin] = useState(false);
 
     useEffect(() => {
-        getData()
+        getData();
     }, [JSON.stringify(props.params)]);
 
     const getData = () => {
@@ -167,7 +168,7 @@ function BottomLeft(props: Props) {
                     legend={legend}
                     series={series}
                     color={color}
-                    tooltip={tooltip(data)}
+                    tooltip={tooltip(data, props.title)}
                     height={362}
                     yAxis={yAxis}
                 />

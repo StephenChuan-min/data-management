@@ -112,6 +112,8 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
 
     let [hasData, setHasData] = useState(false);
 
+    let [leftTitle, setLeftTitle] = useState('总量');
+    let [rightTitle, setRightTitle] = useState('总量');
 
     const [sumData, setSumData] = useState({ yesterdayGraspSumNum: 0, compareSourceNetDvalue: 0, compareSourceNetAdd: 0 });
 
@@ -219,13 +221,23 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
             field: 'dataType',
             defaultValue: 0,
             option: props.option,
+            allowClear: false,
             onChange: (params: { dataType: number }) => {
+
+                const item = props.option.find(v => v.value === params.dataType)
+
                 if (type === 'left') {
                     setLeftParams({
                         ...leftParams,
                         ...params,
                     })
+                    if (item) {
+                        setLeftTitle(item.label)
+                    }
                 } else {
+                    if (item) {
+                        setRightTitle(item.label)
+                    }
                     setRightParams({
                         ...rightParams,
                         ...params,
@@ -338,7 +350,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
                     <TitleRight configList={configList('left')} handleRadioChange={(val: any) => handleRadioChange(val, Type.left)} />
                 </div>
                 <div className="chart">
-                    <BottomLeft xAxisData={xAxis} params={leftParams} />
+                    <BottomLeft title={leftTitle} xAxisData={xAxis} params={leftParams} />
                 </div>
             </div>
             <div className="bottom-right">
@@ -347,7 +359,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
                     <TitleRight configList={configList('right')} handleRadioChange={(val: any) => handleRadioChange(val, Type.right)} />
                 </div>
                 <div className="chart">
-                    <BottomRight xAxisData={xAxis1} params={rightParams} />
+                    <BottomRight title={rightTitle} xAxisData={xAxis1} params={rightParams} />
                 </div>
             </div>
         </div>

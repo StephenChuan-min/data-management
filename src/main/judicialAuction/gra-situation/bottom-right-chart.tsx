@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import LineChart, { emphasisStyle } from '../components/line-chart';
 import api from "../../../api/grab-situation";
-import {TimeType} from "../../../common/schemas";
 import {add0, getLastDay} from "../../../utils/some-time-utils";
 import {dataToSeries} from "../common/get-axis-by-type";
 import {message, Spin} from "antd";
@@ -37,43 +36,45 @@ const initSeries = [
     },
 ];
 
-const tooltip = {
-    formatter: (params: any) => {
-        const tipArray:string[] = [];
-        let tip = '';
-        const timeDetail = '';
-        params.map((e: any) => {
-            const index = e.seriesIndex;
-            let name = e.seriesName;
-            if (name === '多于源网站增量') {
-                name = '多'
-            }
-            if (name === '少于源网站增量') {
-                name = '少'
-            }
-            const { marker } = e;
-            const reg = new RegExp(/10/g);
-            const reg1 = new RegExp(/5/g);
-            const regMarker = marker.replace(reg, '6').replace(reg1, 8);
-            const { value } = e;
-            tipArray[index] = value || value === 0 ? `${regMarker}${name}：${Math.abs(value)}` : '';
-            return e;
-        });
-        tip += timeDetail;
-        tipArray.map((e) => {
-            if (e) {
-                tip = `${tip + e}<br>`;/* 组合所有提示信息 */
-            }
-            return e;
-        });
-        tip = `总量<br />${params[0].name}<br>${tip}`;
-        return tip;
-    }
+function tooltip (title: string) {
+    return ({
+        formatter: (params: any) => {
+            const tipArray:string[] = [];
+            let tip = '';
+            const timeDetail = '';
+            params.map((e: any) => {
+                const index = e.seriesIndex;
+                let name = e.seriesName;
+                if (name === '多于源网站增量') {
+                    name = '多'
+                }
+                if (name === '少于源网站增量') {
+                    name = '少'
+                }
+                const { marker } = e;
+                const reg = new RegExp(/10/g);
+                const reg1 = new RegExp(/5/g);
+                const regMarker = marker.replace(reg, '6').replace(reg1, 8);
+                const { value } = e;
+                tipArray[index] = value || value === 0 ? `${regMarker}${name}：${Math.abs(value)}` : '';
+                return e;
+            });
+            tip += timeDetail;
+            tipArray.map((e) => {
+                if (e) {
+                    tip = `${tip + e}<br>`;/* 组合所有提示信息 */
+                }
+                return e;
+            });
+            tip = `${title}<br />${params[0].name}<br>${tip}`;
+            return tip;
+        }
+    })
 };
 
 const color = ['#0386D5', '#FD9C26', '#F03733']
 
-function BottomRight(props: { xAxisData: string[], params: { dataType: number, timeType: string }, }) {
+function BottomRight(props: { xAxisData: string[], params: { dataType: number, timeType: string }, title: string }) {
 
     const [data, setData] = useState([]);
     const [series, setSeries] = useState(initSeries);
@@ -129,7 +130,7 @@ function BottomRight(props: { xAxisData: string[], params: { dataType: number, t
                 key={JSON.stringify(series)}
                 xAxisData={props.xAxisData}
                 legend={legend} series={series}
-                color={color} tooltip={tooltip}
+                color={color} tooltip={tooltip(props.title)}
                 height={362}
             />
         </Spin>
