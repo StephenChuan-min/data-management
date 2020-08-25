@@ -30,7 +30,7 @@ function TopSelect(props: Props) {
 
     useEffect(() => {
         props.getDataTypeList()
-    }, [])
+    }, []);
 
     const handleChange = (val: number):void => {
         setType(val);

@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import LineChart from '../components/line-chart';
 import api from '../../../api/grab-situation';
 import {message, Spin} from 'antd';
-import {TimeType} from "../../../common/schemas";
 import {add0, getLastDay} from "../../../utils/some-time-utils";
 import {dataToSeries} from "../common/get-axis-by-type";
 import {mathCeil} from '../../../utils/utils';

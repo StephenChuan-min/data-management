@@ -117,7 +117,7 @@ function RightOne() {
                             series={series}
                             color={['#F03733']}
                             tooltip={tooltip('状态更新异常率', data)}
-                            height={177}
+                            height={182}
                             yAxis={{
                                 axisLabel: {
                                     color: '#4F5358',

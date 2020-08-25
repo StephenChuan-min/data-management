@@ -32,9 +32,7 @@ enum Type {
 function Index(props: Props) {
     const { setToken, setUserName, history } = props;
     const [form] = Form.useForm();
-    const { getFieldValue } = form;
-
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
     const [userStatus, setUserStatus] = useState(statusEnum.init); // 账号校验状态
     const [passwordStatus, setPasswordStatus] = useState(statusEnum.init); // 密码校验状态
     const [help1, setHelp1] = useState(''); // 账号校验信息

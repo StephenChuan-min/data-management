@@ -9,7 +9,7 @@ enum Type {
 
 function getAxisByType(type: string): string[] {
     const now = new Date();
-    let r: string[] = []
+    let r: string[] = [];
     // 日
     if (type === Type.day) {
         r = getDateArray(31)
@@ -57,12 +57,10 @@ export function dataToSeries(this: any, name: string, data: { countDate: string,
         return false
     })[0];
 
-    console.log(index)
-
     item.data = [];
     date.forEach(e => {
         if (data.map(v => v.countDate).find(i => e === i)) {
-            data.map(v => {
+            data.forEach(v => {
                 if (v.countDate === e) {
                     // field = 'different' 特殊处理 name 为 差值 和 -差值
                     if (field === 'different') {

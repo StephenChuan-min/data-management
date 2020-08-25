@@ -5,16 +5,11 @@ import React from "react";
 import Login from "../main/login";
 
 function Router(){
-    const mainList = Main()
-
-    const r = <Switch>
+    return <Switch>
         {login()}
         <Route path="/main" component={Main} />
         <Route component={Login} />
     </Switch>
-
-
-    return r;
 }
 
 export default Router;

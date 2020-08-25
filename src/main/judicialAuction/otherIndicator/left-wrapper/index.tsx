@@ -263,7 +263,7 @@ function Left(props: Props) {
 
     // 获取数据增量时间段分布
     const getTimeSlotList = () => {
-        setFourthSpin(true)
+        setFourthSpin(true);
         api.apiGetTimeSlotList(timeSlotParams).then((res) => {
             if (res.code === 200) {
                 let index: number = 0;
@@ -281,7 +281,7 @@ function Left(props: Props) {
                     item.data = [];
                     xAxis.forEach((e: any) => {
                         if (res.data.map((v: any) => String(v.hour)).find((i: string) => e === i)) {
-                            res.data.map((v: any) => {
+                            res.data.forEach((v: any) => {
                                 if (String(v.hour) === e) {
                                     item.data.push(v[field])
                                 }

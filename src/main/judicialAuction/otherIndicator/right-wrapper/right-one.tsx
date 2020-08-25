@@ -170,7 +170,7 @@ function RightOne() {
                             series={series}
                             color={['#0386D5']}
                             tooltip={tooltip(selectItem.name, data)}
-                            height={177}
+                            height={181}
                             yAxis={{
                                 axisLabel: {
                                     color: '#4F5358',

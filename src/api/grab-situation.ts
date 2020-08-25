@@ -1,5 +1,4 @@
 import service from "./service";
-import { TimeType } from '../common/schemas';
 
 /**
  * @author czq
