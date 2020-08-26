@@ -33,9 +33,12 @@ const initSeries = [
     },
 ];
 
-const tooltip = (data: { countDate: string, sourceNetIncrease: number, yesterdayGraspSumNumber: number }[], str: string) => ({
+const tooltip = (data: { countDate: string, sourceNetIncrease: number, yesterdayGraspSumNumber: number }[], str: string, timeType: string) => ({
     formatter: (params: any) => {
-        const item = data.find(v => v.countDate === params[0].name)
+        let item = data.find(v => v.countDate === params[0].name);
+        if (timeType === '3') {
+            item = data.find(v => new Date(v.countDate).getMonth() === new Date(params[0].name).getMonth())
+        }
         const tipArray:string[] = [];
         let tip = '';
         const timeDetail = '';
@@ -168,7 +171,7 @@ function BottomLeft(props: Props) {
                     legend={legend}
                     series={series}
                     color={color}
-                    tooltip={tooltip(data, props.title)}
+                    tooltip={tooltip(data, props.title, props.params.timeType)}
                     height={362}
                     yAxis={yAxis}
                 />
