@@ -26,6 +26,7 @@ interface Props {
     xAxisConfig?: object
     gridTop?: number,
     grid?: {},
+    handleClick?(isNoSelect?: boolean): void,
 }
 
 function LineChart(this: { ref: any }, props: Props) {
@@ -121,6 +122,7 @@ function LineChart(this: { ref: any }, props: Props) {
                 series: props.series,
             };
             lineChart.setOption(option);
+            lineChart.off('legendselectchanged');
             lineChart.on('legendselectchanged', handleClick);
         }
     }, [props]);
@@ -145,6 +147,18 @@ function LineChart(this: { ref: any }, props: Props) {
                     type: 'legendSelect',
                     name: '-差值',
                 })
+            }
+        }
+        const item = Object.keys(params.selected).find((key: string) => params.selected[key])
+        if (props.handleClick) {
+            if (params.name === '源网站增量' || params.name === '数据抓取量') {
+                if (!item) {
+                    props.handleClick(true)
+                } else {
+                    props.handleClick(false)
+                }
+            } else {
+                props.handleClick()
             }
         }
     }

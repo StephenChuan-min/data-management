@@ -94,57 +94,81 @@ function BottomLeft(props: Props) {
         getData();
     }, [JSON.stringify(props.params)]);
 
+   const handleClick = (e: any[]) => {
+        const arr = e.map((v: any) => v.sourceNetIncrease);
+        const arr1 = e.map((v: any) => v.yesterdayGraspSumNumber);
+        const allArr = [...arr, ...arr1]
+
+        const max = mathCeil(Math.max.apply(null, allArr));
+        const interval = max / 10;
+
+        let min = 0;
+
+        if (allArr.find((v) => v < 0)) {
+            min  = -interval
+        }
+
+        setYaXis({
+            min,
+            interval,
+            max,
+        });
+    }
+
+    const toSetYaXis = (e: any[]) => {
+        let selfXAxis = props.xAxisData
+        // 当数据类型时月份统计时
+        if (props.params.timeType === '3') {
+            selfXAxis = props.xAxisData.map((v, index) => {
+                const [year, month] = v.split('-');
+                const time = new Date(getLastDay(Number(year), Number(month)));
+                let day = add0(time.getDate());
+                // 最后一个月时 最后的日期为昨天
+                if (index === props.xAxisData.length - 1) {
+                    day = new Date().getDate() - 1;
+                }
+                return `${year}-${month}-${day}`
+            })
+        }
+        const arr = e.map((v: any) => v.sourceNetIncrease);
+        const arr1 = e.map((v: any) => v.yesterdayGraspSumNumber);
+        const allArr = [...arr, ...arr1]
+
+        const max = mathCeil(Math.max.apply(null, allArr));
+        const interval = max / 10;
+
+        let min = 0;
+
+        if (allArr.find((v) => v < 0)) {
+            min  = -interval
+        }
+
+        setYaXis({
+            min,
+            interval,
+            max,
+        });
+        const list = e.map((v: any) => {
+            const temp = {...v};
+            if (v.sourceNetIncrease < 0) {
+                temp.sourceNetIncrease = -interval
+            }
+            if (v.yesterdayGraspSumNumber < 0) {
+                temp.yesterdayGraspSumNumber = -interval
+            }
+            return temp
+        });
+        dataToSeries.call(series,'源网站增量', list, 'sourceNetIncrease', selfXAxis);
+        const r = dataToSeries.call(series,'数据抓取量', list, 'yesterdayGraspSumNumber', selfXAxis);
+        setSeries(r);
+    }
+
     const getData = () => {
         setSpin(true);
         api.apiGetGraspAndSourceAdd({ ...props.params }).then((res) => {
             if (res.code === 200) {
-                let selfXAxis = props.xAxisData
-                console.log(props.params.timeType === '3')
-                // 当数据类型时月份统计时
-                if (props.params.timeType === '3') {
-                    selfXAxis = props.xAxisData.map((v, index) => {
-                        const [year, month] = v.split('-');
-                        const time = new Date(getLastDay(Number(year), Number(month)));
-                        let day = add0(time.getDate());
-                        // 最后一个月时 最后的日期为昨天
-                        if (index === props.xAxisData.length - 1) {
-                            day = new Date().getDate() - 1;
-                        }
-                        return `${year}-${month}-${day}`
-                    })
-                }
-                const arr = res.data.map((v: any) => v.sourceNetIncrease);
-                const arr1 = res.data.map((v: any) => v.yesterdayGraspSumNumber);
-                const allArr = [...arr, ...arr1]
-
-                const max = mathCeil(Math.max.apply(null, allArr));
-                const interval = max / 10;
-
-                let min = 0;
-
-                if (allArr.find((v) => v < 0)) {
-                    min  = -interval
-                }
-
-                setYaXis({
-                    min,
-                    interval,
-                    max,
-                });
+                toSetYaXis(res.data)
                 setData(res.data);
-                const list = res.data.map((v: any) => {
-                    const temp = {...v};
-                    if (v.sourceNetIncrease < 0) {
-                        temp.sourceNetIncrease = -interval
-                    }
-                    if (v.yesterdayGraspSumNumber < 0) {
-                        temp.yesterdayGraspSumNumber = -interval
-                    }
-                    return temp
-                });
-                dataToSeries.call(series,'源网站增量', list, 'sourceNetIncrease', selfXAxis);
-                const r = dataToSeries.call(series,'数据抓取量', list, 'yesterdayGraspSumNumber', selfXAxis);
-                setSeries(r);
             } else {
                 message.error(res.message)
             }
@@ -174,6 +198,17 @@ function BottomLeft(props: Props) {
                     tooltip={tooltip(data, props.title, props.params.timeType)}
                     height={362}
                     yAxis={yAxis}
+                    handleClick={(isNoSelect) => {
+                        if (isNoSelect) {
+                            setYaXis({
+                                min: 0,
+                                interval: 0,
+                                max: 0,
+                            });
+                        } else {
+                            handleClick(data)
+                        }
+                    }}
                 />
             </Spin>
         </div>

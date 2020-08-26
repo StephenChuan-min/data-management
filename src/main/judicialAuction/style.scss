@@ -19,8 +19,18 @@
         width: 350px;
         text-align: center;
         display: inline-block;
+        position: relative;
         .bottom {
           text-align: left;
+        }
+        .cover-wrapper {
+          position: absolute;
+          bottom: -200px;
+          height: 180px;
+          width: 180px;
+          background: white;
+          left: 80px;
+          z-index: 1;
         }
       }
       .right {

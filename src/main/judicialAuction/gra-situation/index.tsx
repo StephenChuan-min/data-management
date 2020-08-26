@@ -175,13 +175,13 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
                        color: '#7D8699',
                        fontSize: 14,
                    },
-                    d: {
-                        align: 'left',
+                   d: {
+                       align: 'left',
                        color: '#293038',
                        fontSize: 16,
                        fontWeight: 'bold',
                        padding: [0, 6, 0, 6],
-                    },
+                   },
                 },
             },
             formatter: (name: any) => {
@@ -318,6 +318,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
                                         <span>条</span>
                                     </div>
                                 </div>
+                                {/*/!*{sumData.yesterdayGraspSumNum === 0 ? <div className="cover-wrapper"/> : null} *!/ 遮挡饼图*/}
                             </div>
                             <div className="right">
                                 <span className="title">与源网站增量（区分数据源）差值</span>
