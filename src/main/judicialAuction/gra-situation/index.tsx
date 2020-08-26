@@ -155,7 +155,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
         legend: {
             orient: 'vertical',
             left: 326,
-            top: data.length > 12 ? 0 : 40,
+            top: data.length > 15 ? 0 : data.length > 12 ? 20 : 40,
             icon: 'circle',
             data: data.map(v => ({
                 name: v.name,
@@ -348,7 +348,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
                             </div>
                         </div>
                         <div style={{ padding: '0 20px'}}>
-                            <div id="pie" ref={dom => pie = dom} style={{ width: '100%', marginTop: 22, height: col > 4 ? col * 36 : 180 }} />
+                            <div id="pie" ref={dom => pie = dom} style={{ width: '100%', marginTop: 22, height: col > 4 ? col * 30 : 180, minHeight: 180 }} />
                         </div>
                     </> : <NoData height={258} />}
                 </Spin>
