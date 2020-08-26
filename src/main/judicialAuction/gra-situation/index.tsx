@@ -328,16 +328,16 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
                                             条
                                         </span>
                                         : <>
-                                            <span className="right-bottom-left">
+                                            {sumData.compareSourceNetDvalue === 0 ? null : <span className="right-bottom-left">
                                                 <span>少</span>
                                                 <span className="number">{Math.abs(sumData.compareSourceNetDvalue)}</span>
                                                 <span>条</span>
-                                            </span>
-                                            <span>
+                                            </span>}
+                                            {sumData.compareSourceNetAdd === 0 ? null : <span>
                                                 <span>多</span>
                                                 <span className="number">{sumData.compareSourceNetAdd}</span>
                                                 <span>条</span>
-                                            </span>
+                                            </span>}
                                     </>}
                                 </div>
                             </div>
