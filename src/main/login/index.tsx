@@ -137,6 +137,7 @@ function Index(props: Props) {
                                 />
                             </Form.Item>
                             <Form.Item
+                                className="login-password"
                                 name="password"
                                 validateStatus={passwordStatus}
                                 help={help2 || undefined}

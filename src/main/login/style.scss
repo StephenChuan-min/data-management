@@ -63,6 +63,13 @@
         }
         .ant-form-item-explain, .ant-form-item-has-error .ant-form-item-split {
           color: #F03733;
+          font-size: 12px;
+        }
+      }
+      .login-password {
+        .ant-form-item-explain {
+          position: absolute;
+          bottom: -24px;
         }
       }
     }

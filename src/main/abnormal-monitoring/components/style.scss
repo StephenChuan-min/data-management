@@ -33,6 +33,9 @@
     .ant-select-selector {
       padding-left: 0 !important;
     }
+    .ant-select-arrow {
+      color: #7D8699;
+    }
   }
 
   //.ant-select-focused {
@@ -43,9 +46,6 @@
   .ant-select:hover {
     .ant-select-selector {
       border-color: #0E68C2;
-    }
-    .ant-select-arrow {
-      color: #7D8699;
     }
   }
   .ant-select-dropdown {

@@ -153,7 +153,10 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
             left: 326,
             top: data.length > 12 ? 0 : 40,
             icon: 'circle',
-            data: data.map(v => v.name),
+            data: data.map(v => ({
+                name: v.name,
+                icon: 'circle',
+            })),
             width: '80%',
             itemWidth: 8,
             itemHeight: 8,
@@ -178,12 +181,13 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
                        fontSize: 16,
                        fontWeight: 'bold',
                        padding: [0, 6, 0, 6],
-                    }
+                    },
                 },
             },
             formatter: (name: any) => {
                 const item = data.filter(v => v.name === name)[0];
-                return `{b|${name}-${item.id}}{d|${item.value}}{c|条${item.than === 0 ? '' : item.than < 0 ?  '，少' : '，多'}}${item.than === 0 ? '' : `{d|${Math.abs(item.than)}}{c|条}`}{a|}`
+                const str = `{b|${name}-${item.id}}{d|${item.value}}{c|条${item.than === 0 ? '' : item.than < 0 ?  '，少' : '，多'}}${item.than === 0 ? '' : `{d|${Math.abs(item.than)}}{c|条}`}`;
+                return `${str}`
             }
         },
         series: [

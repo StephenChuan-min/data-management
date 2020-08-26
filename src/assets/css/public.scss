@@ -162,19 +162,24 @@
     }
   }
 
+  .ant-select-selection-placeholder {
+    color: #B2B8C9 !important;
+    opacity: 1;
+  }
+
   input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
-    color:#B2B8C9;
-    }
+    color: #B2B8C9 !important;
+  }
 
   input:-moz-placeholder,textarea:-moz-placeholder{
-    color:#B2B8C9;
+    color:#B2B8C9 !important;
     }
 
   input::-moz-placeholder,textarea::-moz-placeholder{
-    color:#B2B8C9;
+    color:#B2B8C9 !important;
   }
   input:-ms-input-placeholder,textarea:-ms-input-placeholder{
-    color:#B2B8C9;
+    color:#B2B8C9 !important;
    }
 
   .ant-picker-dropdown {
