@@ -146,7 +146,11 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
                 z: 2,
             },
             padding: 12,
-            formatter: '{b}<br/>{c}<br/> {d}%'
+            formatter: (params: any) => {
+                const { data } = params
+                const name = data.name.split('-')[0]
+                return `${name}<br/>${data.value}条<br/>${params.percent}%`
+            }
         },
         legend: {
             orient: 'vertical',
@@ -186,7 +190,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
             },
             formatter: (name: any) => {
                 const item = data.filter(v => v.name === name)[0];
-                const str = `{b|${name}-${item.id}}{d|${item.value}}{c|条${item.than === 0 ? '' : item.than < 0 ?  '，少' : '，多'}}${item.than === 0 ? '' : `{d|${Math.abs(item.than)}}{c|条}`}{a|}`;
+                const str = `{b|${name}}{d|${item.value}}{c|条${item.than === 0 ? '' : item.than < 0 ?  '，少' : '，多'}}${item.than === 0 ? '' : `{d|${Math.abs(item.than)}}{c|条}`}{a|}`;
                 return `${str}`
             }
         },
@@ -293,7 +297,7 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
                     setHasData(true)
                 }
                 setSumData(res.data);
-                const temp = res.data.everyGraspDistributions.map((v: any) => ({ name: v.dataSourceName, id: v.sourceId, value: v.everySourceGraspNum, than: v.dvalue }))
+                const temp = res.data.everyGraspDistributions.map((v: any) => ({ name: `${v.dataSourceName}-${v.sourceId}`, id: v.sourceId, value: v.everySourceGraspNum, than: v.dvalue }))
                 setData(temp)
             } else {
                 message.error(res.message)
