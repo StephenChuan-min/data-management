@@ -84,6 +84,7 @@ function Index(props: Props) {
     }
 
     const onFinish = (values: any) => {
+        debugger
         let params = { ...values }
         if (userStatus !== statusEnum.init || passwordStatus !== statusEnum.init) {
             return
@@ -106,6 +107,22 @@ function Index(props: Props) {
         })
         // handleClick(values)
     }
+
+    const onFinishFailed = (err: any) => {
+        const e = err.errorFields;
+        e.forEach((v: { name: string[], errors: string[]}) => {
+            if (v.name.includes('userName')) {
+                setUserStatus(statusEnum.error);
+                setHelp1(v.errors[0])
+            }
+            if (v.name.includes('password')) {
+                setPasswordStatus(statusEnum.error);
+                setHelp2(v.errors[0])
+            }
+        })
+        console.log(err)
+    }
+
     return (
             <div className="yc-login">
                 <div className="login-header">
@@ -120,6 +137,7 @@ function Index(props: Props) {
                         <Form
                             form={form}
                             onFinish={onFinish}
+                            onFinishFailed={onFinishFailed}
                         >
                             <Form.Item
                                 name="userName"
@@ -151,7 +169,12 @@ function Index(props: Props) {
                                 />
                             </Form.Item>
                             <Form.Item style={{ marginTop: 50 }}>
-                                <Button loading={loading} type="primary" htmlType="submit" className="login-form-button">
+                                <Button
+                                    loading={loading}
+                                    type="primary"
+                                    htmlType="submit"
+                                    className="login-form-button"
+                                >
                                     登录
                                 </Button>
                             </Form.Item>
