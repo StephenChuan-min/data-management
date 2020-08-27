@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import NoData from "../../../components/no-data";
 
 const echart = require('echarts');
@@ -31,13 +31,13 @@ interface Props {
 
 function LineChart(this: { ref: any }, props: Props) {
 
-    const [ref, setRef]:any = useState();
+    const ref = useRef(null);
 
     let lineChart: any;
 
     useEffect(() => {
-        if (props.hasData && ref) {
-            lineChart = echart.init(ref);
+        if (props.hasData && ref.current) {
+            lineChart = echart.init(ref.current);
             const option = {
                 tooltip: {
                     trigger: 'axis',
@@ -125,6 +125,11 @@ function LineChart(this: { ref: any }, props: Props) {
             lineChart.off('legendselectchanged');
             lineChart.on('legendselectchanged', handleClick);
         }
+        return () => {
+            if (lineChart) {
+                lineChart.off('legendselectchanged');
+            }
+        }
     }, [props]);
 
     const handleClick = (params: any) => {
@@ -163,7 +168,7 @@ function LineChart(this: { ref: any }, props: Props) {
         }
     }
 
-    return props.hasData ? <div ref={dom => dom ? setRef(dom) : ''} style={{ height: props.height || 780 }}/> : <NoData height={props.height} />
+    return props.hasData ? <div ref={ref} style={{ height: props.height || 780 }}/> : <NoData height={props.height} />
 }
 
 export default LineChart;
