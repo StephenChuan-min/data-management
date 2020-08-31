@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import LineChart, { emphasisStyle } from '../components/line-chart';
 import api from "../../../api/grab-situation";
-import {add0, getLastDay} from "../../../utils/some-time-utils";
+import {add0, format, getLastDay} from "../../../utils/some-time-utils";
 import {dataToSeries} from "../common/get-axis-by-type";
 import {message, Spin} from "antd";
 
@@ -36,7 +36,7 @@ const initSeries = [
     },
 ];
 
-function tooltip (title: string) {
+function tooltip (title: string, data: any, timeType: string) {
     return ({
         formatter: (params: any) => {
             const tipArray:string[] = [];
@@ -66,7 +66,19 @@ function tooltip (title: string) {
                 }
                 return e;
             });
-            tip = `${title}<br />${params[0].name}<br>${tip}`;
+            let name1 = params[0].name
+            // 选择周时
+            if (timeType === '2') {
+                const index = data.findIndex((v: any) => v.countDate === params[0].name)
+                if (index === 0) {
+                    const time = new Date(data[0].countDate).getTime()
+                    const before = time - 7 * 86400000
+                    name1 = `${format(before)} ~ ${name1}`
+                } else {
+                    name1 = `${data[index - 1].countDate} ~ ${name1}`
+                }
+            }
+            tip = `${title}<br />${name1}<br>${tip}`;
             return tip;
         }
     })
@@ -130,7 +142,7 @@ function BottomRight(props: { xAxisData: string[], params: { dataType: number, t
                 key={JSON.stringify(series)}
                 xAxisData={props.xAxisData}
                 legend={legend} series={series}
-                color={color} tooltip={tooltip(props.title)}
+                color={color} tooltip={tooltip(props.title, data, props.params.timeType)}
                 height={362}
             />
         </Spin>

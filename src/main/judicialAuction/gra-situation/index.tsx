@@ -112,8 +112,8 @@ function Index(props: { getDataSourceList(): any, option: labelValue[] }) {
 
     let [hasData, setHasData] = useState(false);
 
-    let [leftTitle, setLeftTitle]:any = useState('总量');
-    let [rightTitle, setRightTitle]:any = useState('总量');
+    let [leftTitle, setLeftTitle]:any = useState('全部');
+    let [rightTitle, setRightTitle]:any = useState('全部');
 
     const [sumData, setSumData] = useState({ yesterdayGraspSumNum: 0, compareSourceNetDvalue: 0, compareSourceNetAdd: 0 });
 

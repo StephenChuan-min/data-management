@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import LineChart from '../components/line-chart';
 import api from '../../../api/grab-situation';
 import {message, Spin} from 'antd';
-import {add0, getLastDay} from "../../../utils/some-time-utils";
+import {add0, format, getLastDay} from "../../../utils/some-time-utils";
 import {dataToSeries} from "../common/get-axis-by-type";
 import {mathCeil} from '../../../utils/utils';
 
@@ -39,12 +39,13 @@ const tooltip = (data: { countDate: string, sourceNetIncrease: number, yesterday
         if (timeType === '3') {
             item = data.find(v => new Date(v.countDate).getMonth() === new Date(params[0].name).getMonth())
         }
+
         const tipArray:string[] = [];
         let tip = '';
         const timeDetail = '';
         params.map((e: any) => {
             const index = e.seriesIndex;
-            const name = e.seriesName;
+            let name = e.seriesName;
             const { marker } = e;
             const reg = new RegExp(/10/g);
             const reg1 = new RegExp(/5/g);
@@ -56,6 +57,7 @@ const tooltip = (data: { countDate: string, sourceNetIncrease: number, yesterday
             if (name === '数据抓取量' && item) {
                 value = item.yesterdayGraspSumNumber
             }
+
             tipArray[index] = `${regMarker}${name}：${value || value === 0 ? value : '--'}`;
             return e;
         });
@@ -66,7 +68,19 @@ const tooltip = (data: { countDate: string, sourceNetIncrease: number, yesterday
             }
             return e;
         });
-        tip = `${str}<br />${params[0].name}<br>${tip}`;
+        let title = params[0].name
+        // 选择周时
+        if (timeType === '2') {
+            const index = data.findIndex(v => v.countDate === params[0].name)
+            if (index === 0) {
+                const time = new Date(data[0].countDate).getTime()
+                const before = time - 7 * 86400000
+                title = `${format(before)} ~ ${title}`
+            } else {
+                title = `${data[index - 1].countDate} ~ ${title}`
+            }
+        }
+        tip = `${str}<br />${title}<br>${tip}`;
         return tip;
     }
 });

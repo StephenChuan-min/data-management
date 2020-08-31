@@ -5,7 +5,7 @@ import './styles.scss';
 /**
  * @author czq
  * @date 2020/8/31
- * @Description: 超出部分省略
+ * @Description: 超出部分省略并提示
 */
 
 interface Props {
