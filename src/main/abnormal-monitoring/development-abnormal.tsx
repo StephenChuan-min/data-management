@@ -178,11 +178,13 @@ function DevelopmentAbnormal(props: Props) {
                 title: '发布日期',
                 dataIndex: 'publishTime',
                 key: 'publishTime',
+                sorter: true,
             },
             {
                 title: '报错日期',
                 dataIndex: 'failedTime',
                 key: 'failedTime',
+                sorter: true,
             },
             {
                 title: '数据类型',

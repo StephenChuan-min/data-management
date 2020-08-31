@@ -85,10 +85,10 @@ export const TableWithSearch: React.FunctionComponent<TableProps> = props =>{
         setParams(a);
     };
 
-    const getData = () => {
+    const getData = (otherParams?: {}) => {
         setLoad(true)
         // 搜索加上默认参数
-        let reParams = {page: pageParams.current, num: pageParams.pageSize, ...params }
+        let reParams = {page: pageParams.current, num: pageParams.pageSize, ...params, ...otherParams }
         delete reParams.key;
         props.apiFun(reParams).then((res: any) => {
             if (res.code === 200) {
@@ -123,6 +123,18 @@ export const TableWithSearch: React.FunctionComponent<TableProps> = props =>{
             page
         });
         props.setFresh(true)
+    };
+
+    const handleTableChange = (p: any, filters: any, sorter: any) => {
+        if (sorter.order === 'ascend') {
+            getData({SorterKey: sorter.columnKey, order: 'ASC'})
+        }
+        if (sorter.order === 'descend') {
+            getData({SorterKey: sorter.columnKey, order: 'DES'})
+        }
+        if (!sorter.order) {
+            getData()
+        }
     }
 
     return <React.Fragment>
@@ -132,6 +144,8 @@ export const TableWithSearch: React.FunctionComponent<TableProps> = props =>{
                 rowKey={(record: { [propName: string]: string }) => {
                     return record[props.rowKey]
                 }}
+                onChange={handleTableChange}
+                showSorterTooltip={false}
                 loading={loading}
                 columns={props.columns}
                 dataSource={data}

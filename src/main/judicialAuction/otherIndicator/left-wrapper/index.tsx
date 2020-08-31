@@ -21,7 +21,8 @@ import moment, {Moment} from "moment";
 */
 
 const xAxis= (() => {
-    const arr = new Array(25).fill(0);
+    const hour = new Date().getHours()
+    const arr = new Array(hour+1).fill(0);
     const r: string[] = [];
     arr.forEach((v, i) => {
         r.push(String(i));
@@ -168,7 +169,7 @@ function tooltip(title: string, hour?: boolean, data?: {hour: number, countDate:
            if (hour && data) {
                const item = data.filter(v => String(v.hour) === name)[0];
                if (item) {
-                   name = `${item.countDate} ${name}时`
+                   name = `${item.countDate} ${name-1}时~${name}时`
                }
            }
 
@@ -505,6 +506,7 @@ function Left(props: Props) {
                                 <Search config={configList1} />
                             </div>
                         </div>
+                        <p style={{ textAlign: 'center', marginTop: -8, height: 8 }}>{`截止到${new Date().getHours()}时`}</p>
                         <LineChart
                             hasData={timeSlotList.length > 0}
                             key={JSON.stringify(series1)}

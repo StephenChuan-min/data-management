@@ -45,7 +45,13 @@ function AddedMapping (props: Props) {
         },
         {
             type: typeEnum1.rangePicker,
-            label: '更新时间：',
+            label: '更新日期：',
+            placeholder: ['起始日期', '截止日期'],
+            field: ['startTime', 'endTime'],
+        },
+        {
+            type: typeEnum1.rangePicker,
+            label: '发布日期：',
             placeholder: ['起始日期', '截止日期'],
             field: ['startTime', 'endTime'],
         },
@@ -72,9 +78,16 @@ function AddedMapping (props: Props) {
 
     const columns = [
         {
-            title: '更新时间',
+            title: '更新日期',
             dataIndex: 'gmtFirstFind',
             key: 'gmtFirstFind',
+            sorter: true,
+        },
+        {
+            title: '发布日期',
+            dataIndex: 'gmtFirstFind',
+            key: 'gmtFirstFind',
+            sorter: true,
         },
         {
             title: '表名',
