@@ -36,6 +36,9 @@
       .ant-select-selector {
         width: 171px;
         height: 30px;
+        .ant-select-selection-item > span {
+          display: inline !important;
+        }
       }
     }
   }

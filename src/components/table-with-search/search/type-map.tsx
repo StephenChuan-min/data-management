@@ -7,6 +7,7 @@ import { formatType } from '../../../utils/some-time-utils';
 import {Moment} from "moment";
 import { CaretDownOutlined } from '@ant-design/icons';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
+import ShowTooltip from "../../show-tooltip";
 
 
 /**
@@ -63,7 +64,9 @@ const typeMap = {
             }}
         >
         {props.option ? props.option.map(v => (
-                <Select.Option key={v.value} value={v.value}>{v.label}</Select.Option>
+            <Select.Option key={v.value} value={v.value}>
+                <ShowTooltip>{v.label}</ShowTooltip>
+            </Select.Option>
             )) : null}
         </Select>
 

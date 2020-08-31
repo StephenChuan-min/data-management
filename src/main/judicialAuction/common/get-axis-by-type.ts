@@ -80,9 +80,6 @@ export function dataToSeries(this: any, name: string, data: { countDate: string,
             item.data.push(null)
         }
     });
-
-    console.log(item)
-
     if (item) {
         that[index] = item;
     }

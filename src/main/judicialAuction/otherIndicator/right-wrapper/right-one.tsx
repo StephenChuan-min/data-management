@@ -4,21 +4,22 @@ import Search from "../../../../components/table-with-search/search";
 import {typeEnum} from "../../../../components/table-with-search/schemas";
 import {getDateArray} from "../../../../utils/some-time-utils";
 import api from '../../../../api/other-indicator';
-import { message, Spin } from 'antd';
+import { message, Spin, Tooltip } from 'antd';
 import {dataToSeries} from "../../common/get-axis-by-type";
+import ShowTooltip from '../../../../components/show-tooltip';
 
 const option = [{
     value: 1,
-    label: '开拍时间（start_time）'
+    label: "开拍时间（start_time）"
 },{
     value: 2,
-    label: '评估价（consult_price）'
+    label: "评估价（consult_price）"
 },{
     value: 3,
-    label: '法院（court）'
+    label: "法院（court）"
 },{
     value: 4,
-    label: '资产类型（sub_category）'
+    label: "资产类型（sub_category）"
 },{
     value: 5,
     label: '竞买人'
@@ -30,7 +31,10 @@ const option = [{
     label: '标题（title）'
 },{
     value: 8,
-    label: '当前价格（current_price）'
+    label: "当前价格（current_price）"
+},{
+    value: 9,
+    label: '轮次（round）'
 },
 ]
 
@@ -71,7 +75,7 @@ function tooltip(str: string, data: { countDate: string, nullRateCount: number, 
     }})
 }
 
-function seriesFun(str: string): {}[] {
+function seriesFun(str: string|JSX.Element): {}[] {
     return [
         {
             data: [],
@@ -92,7 +96,7 @@ const initData = getDateArray(31);
 
 function RightOne() {
 
-    const [selectItem, setItem] = useState({
+    const [selectItem, setItem]: any = useState({
         name: '开拍时间（start_time)',
         value: 1,
     });

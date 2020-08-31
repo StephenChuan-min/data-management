@@ -16,7 +16,7 @@ export interface Table {
 
 export interface labelValue {
     value: string | number,
-    label: string,
+    label: string | JSX.Element | Element,
 }
 
 // btn Type

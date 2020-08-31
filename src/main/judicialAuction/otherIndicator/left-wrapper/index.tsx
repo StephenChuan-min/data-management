@@ -189,7 +189,7 @@ interface Props {
 function Left(props: Props) {
 
     const [dateType, setDataType] = useState('1');
-    const [str, setStr] = useState('全部'); // 浮窗标题
+    const [str, setStr]:any = useState('全部'); // 浮窗标题
     const [firstSpin, setFirstSpin] = useState(false);
     const [thirdSpin, setThirdSpin] = useState(false);
     const [fourthSpin, setFourthSpin] = useState(false);
