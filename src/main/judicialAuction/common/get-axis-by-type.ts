@@ -9,7 +9,7 @@ enum Type {
 
 function getAxisByType(type: string): string[] {
     const now = new Date();
-    let r: string[] = []
+    let r: string[] = [];
     // 日
     if (type === Type.day) {
         r = getDateArray(31)
@@ -44,6 +44,46 @@ function getAxisByType(type: string): string[] {
         }
     }
     return r;
+}
+
+export function dataToSeries(this: any, name: string, data: { countDate: string, [propName: string]: any }[], field: string, date: string[]){
+    let index = 0;
+    let that = [...this];
+    const item = that.filter((v: { name: string, data: any[] }, i: number,) => {
+        if (v.name === name) {
+            index = i;
+            return true
+        }
+        return false
+    })[0];
+
+    item.data = [];
+    date.forEach(e => {
+        if (data.map(v => v.countDate).find(i => e === i)) {
+            data.forEach(v => {
+                if (v.countDate === e) {
+                    // field = 'different' 特殊处理 name 为 差值 和 -差值
+                    if (field === 'different') {
+                        if ((name === '差值' || name === '多于源网站增量') && v[field] >= 0) {
+                            item.data.push(v[field])
+                        } else if ((name === '-差值' || name === '少于源网站增量') && v[field] < 0) {
+                            item.data.push(v[field])
+                        } else {
+                            item.data.push(null)
+                        }
+                    } else {
+                        item.data.push(v[field])
+                    }
+                }
+            })
+        } else {
+            item.data.push(null)
+        }
+    });
+    if (item) {
+        that[index] = item;
+    }
+    return that;
 }
 
 export default getAxisByType

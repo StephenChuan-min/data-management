@@ -1,9 +1,9 @@
 @import '~antd/dist/antd.css';
 .App {
   background: #EDEFF3;
-  min-width: 1280px;
-  min-height: 680px;
+  min-width: 1920px;
   color: #293038;
+  overflow: auto;
 }
 #root, .App {
   height: 100%;
@@ -52,7 +52,6 @@ code, kbd, pre, samp { font-family:couriernew, courier, monospace; }
 small{ font-size:12px; }
 ul, ol { list-style:none; }
 a { text-decoration:none; }
-a:hover { text-decoration:underline; }
 sup { vertical-align:text-top; }
 sub{ vertical-align:text-bottom; }
 legend { color:#000; }

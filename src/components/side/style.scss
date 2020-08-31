@@ -1,10 +1,14 @@
 .yc-main-side {
+  z-index: 2;
   .ant-menu {
     .ant-menu-submenu-title {
       padding-left: 20px !important;
       .iconfont {
         margin-right: 6px;
       }
+    }
+    .ant-menu-item {
+      margin: 0;
     }
   }
 }

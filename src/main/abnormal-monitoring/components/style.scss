@@ -1,5 +1,5 @@
 .abnormal-monitoring-top-select {
-  padding: 20px 0;
+  padding: 20px 0 12px 0;
   .iconshujuleixing {
     font-size: 20px;
     color: #FD9C26;
@@ -7,9 +7,8 @@
     margin-right: 10px;
   }
   .label {
-    font-size: 18px;
-    color: #000000;
-    font-weight: bold;
+    font-size: 16px;
+    color: #4E5566;
   }
   .ant-select {
     width: auto;
@@ -29,6 +28,16 @@
     font-weight: bold;
     color: #000000;
   }
+  .ant-select {
+    margin-top: 5px !important;
+    .ant-select-selector {
+      padding-left: 0 !important;
+    }
+    .ant-select-arrow {
+      color: #7D8699;
+    }
+  }
+
   //.ant-select-focused {
   //  .ant-select-selector {
   //    border: 1px solid #0E68C2 !important;
@@ -37,6 +46,22 @@
   .ant-select:hover {
     .ant-select-selector {
       border-color: #0E68C2;
+    }
+  }
+  .ant-select-dropdown {
+    min-width: 180px !important;
+  }
+}
+.modal-remarks {
+  .input-textarea-wrapper {
+    position: relative;
+    .num {
+      color: #7D8699;
+      line-height: 14px;
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      font-size: 12px;
     }
   }
 }

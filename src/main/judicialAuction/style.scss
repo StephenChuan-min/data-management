@@ -2,6 +2,9 @@
   background: #EDEFF3;
   margin: 0 -20px;
   min-height: 100%;
+  .ant-select {
+    color: #293038;
+  }
   .header {
     margin-bottom: 16px;
     padding-bottom: 22px;
@@ -13,11 +16,21 @@
         color: #7D8699;
       }
       .left {
-        width: 410px;
+        width: 330px;
         text-align: center;
         display: inline-block;
+        position: relative;
         .bottom {
           text-align: left;
+        }
+        .cover-wrapper {
+          position: absolute;
+          bottom: -200px;
+          height: 180px;
+          width: 180px;
+          background: white;
+          left: 80px;
+          z-index: 1;
         }
       }
       .right {
@@ -40,6 +53,7 @@
     box-sizing: border-box;
     margin-right: 16px;
     background: #ffffff;
+    vertical-align: top;
     .chart {
       padding-right: 20px;
       width: 100%;
@@ -63,9 +77,13 @@
   background: #EDEFF3;
   margin: 0 -20px;
   min-height: 100%;
+  .ant-select {
+    color: #293038;
+  }
   .header-title {
     line-height: 57px;
     height: 57px;
+    font-size: 16px;
   }
   .left-wrapper {
     display: inline-block;
@@ -76,5 +94,8 @@
     display: inline-block;
     width: calc(50% - 8px);
     vertical-align: top;
+  }
+  .second-title .title-right {
+    font-weight: normal;
   }
 }

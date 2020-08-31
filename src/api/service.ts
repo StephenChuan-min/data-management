@@ -94,21 +94,13 @@ service.interceptors.response.use(
                     item.f('取消剩余请求');
                 });
                 pending = [];
-                window.location.href = '/login';
-                // Modal.warning({
-                // 	title: '登陆验证失效',
-                // 	content: '你的登陆验证已经失效，可以取消继续留在该页面，或者重新登录',
-                // 	okText: '确定',
-                // 	onOk() {
-                // 		/* 跳转到登陆页面 */
-                // 		navigate('/login');
-                // 	},
-                // });
-                return Promise.reject(new Error('token失效'));
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000)
             }
             if (res.code === 5005) {
                 message.error('管理员重置密码');
-                window.location.href = '/login';
+                window.location.href = '/';
             }
         } else {
             response.data = null;

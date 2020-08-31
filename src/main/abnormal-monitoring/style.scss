@@ -4,6 +4,14 @@
       width: 83px;
     }
   }
+  .ant-table-cell {
+    .ant-btn {
+      width: 80px;
+    }
+    .ant-btn-ghost {
+      padding: 0 11px;
+    }
+  }
 }
 .addedMapping, .developmentAbnormal {
   .content-title {
@@ -16,5 +24,10 @@
     padding: 0 20px;
     margin-left: -20px;
     margin-right: -20px;
+  }
+}
+.developmentAbnormal-remark-modal {
+  .ant-modal-body {
+    min-height: 250px;
   }
 }

@@ -1,7 +1,10 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import LineChart, { emphasisStyle } from "../../components/line-chart";
 import {getDateArray} from "../../../../utils/some-time-utils";
+import {message, Spin} from 'antd';
 import chartIcon from "../../../../assets/img/chartIcon.png";
+import api from '../../../../api/other-indicator';
+import {dataToSeries} from "../../common/get-axis-by-type";
 
 function tooltip(str: string) {
     return (
@@ -44,9 +47,9 @@ function tooltip(str: string) {
             }})
 }
 
-const series = [
+const initSeries = [
     {
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        data: [],
         type: 'line',
         name: '附件抓取量',
         symbol: 'emptyCircle',
@@ -58,7 +61,7 @@ const series = [
         },
     },
     {
-        data: [1320, 1330, 1290, 934, 901, 932, 820],
+        data: [],
         type: 'line',
         name: '附件解析量',
         symbol: 'emptyCircle',
@@ -70,7 +73,7 @@ const series = [
         },
     },
     {
-        data: [null, 1320, null, 1330, null, 1290, null, 934, null, 901, null, 932, null, 820],
+        data: [],
         name: '差值',
         type: 'bar',
         barWidth: 4,
@@ -79,7 +82,7 @@ const series = [
         barGap: '-100%',
     },
     {
-        data: [-1320, null, -1330, null, -1290, null, -934, null, -901, null, -932, null, -820, null],
+        data: [],
         name: '-差值',
         type: 'bar',
         barWidth: 4,
@@ -92,6 +95,31 @@ const initData = getDateArray(31);
 
 function RightOne() {
 
+    const [series, setSeries] = useState(initSeries)
+    const [spin, setSpin] = useState(false)
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        getData()
+    }, [])
+
+    const getData = () => {
+        setSpin(true)
+        api.apiGetFileAnalysisList().then((res) => {
+            if (res.code === 200) {
+                dataToSeries.call(series,'附件抓取量', res.data, 'fileDbCount', initData);
+                dataToSeries.call(series,'附件解析量', res.data, 'fileAnalysisCount', initData);
+                dataToSeries.call(series,'差值', res.data, 'different', initData);
+                const r = dataToSeries.call(series,'-差值', res.data, 'different', initData);
+                setSeries(r);
+                setData(res.data)
+            } else {
+                message.error(res.message)
+            }
+        }).finally(() => {
+            setSpin(false)
+        })
+    }
 
     const legend = {
         selectedMode: 'multiple',
@@ -119,12 +147,24 @@ function RightOne() {
         <div className="right-three">
             <p className="header-title">附件解析情况（日）</p>
             <div className="content">
-                <div className="third-content" style={{ marginTop: 29 }}>
-                    <div className="second-title">
-                        附件抓取量与附件解析量
+                <Spin spinning={spin}>
+                    <div className="third-content" style={{ marginTop: 29 }}>
+                        <div className="second-title">
+                            附件抓取量与附件解析量
+                        </div>
                     </div>
-                </div>
-                <LineChart xAxisData={initData} legend={legend} series={series} color={['#0386D5', '#FD9C26', '#F03733', '#16B45C']} tooltip={tooltip('附件解析')} height={240} />
+                    <LineChart
+                        hasData={data.length > 0}
+                        key={JSON.stringify(series)}
+                        gridTop={70}
+                        xAxisData={initData}
+                        legend={legend}
+                        series={series}
+                        color={['#0386D5', '#FD9C26', '#F03733', '#16B45C']}
+                        tooltip={tooltip('附件解析')}
+                        height={265}
+                    />
+                </Spin>
             </div>
         </div>
     )

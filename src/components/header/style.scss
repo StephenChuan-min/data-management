@@ -1,4 +1,9 @@
 .yc-header {
+  z-index: 1051;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   color: white;
   height: 50px;
   line-height: 50px;
@@ -14,14 +19,23 @@
     margin-left: 6px;
     font-weight: bold;
   }
+  .header-user-name:hover {
+    background: #017AC2;
+  }
   .header-user-name {
     float: right;
-    width: 122px;
-    background: #017AC2;
     padding: 0 20px;
     height: 50px;
+    cursor: pointer;
     .anticon {
       font-size: 8px;
+    }
+    .ant-dropdown-trigger {
+      height: 50px;
+    }
+    .ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover {
+      background: #EAF7FF;
+      color: #016AA9;
     }
   }
 }

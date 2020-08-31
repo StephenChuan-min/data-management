@@ -52,9 +52,11 @@ export default class Side extends Component<Props, {}>{
                                             if (item.role){
                                                const a = <Menu.Item key={!has ? header : item.path}>
                                                     <Link to={!has ? header : item.path}>{item.name}</Link>
-                                                </Menu.Item>
-                                                has = true
+                                                </Menu.Item>;
+                                                has = true;
                                                 return a;
+                                            } else {
+                                                return null
                                             }
                                         })
                                     }

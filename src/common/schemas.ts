@@ -8,10 +8,15 @@ export interface inputTarget {
         value: string
     }
 }
+// 列表公共分页参数
+export interface Table {
+    page: number,
+    num: number,
+}
 
 export interface labelValue {
     value: string | number,
-    label: string,
+    label: string | JSX.Element | Element,
 }
 
 // btn Type
@@ -22,4 +27,19 @@ export enum BtnType {
     ghost = 'ghost',
     default = "default",
     dashed = "dashed"
+}
+
+export interface Columns {
+    title: string,
+    dataIndex?: string,
+    key: string,
+    render?(text: any, r: object): any,
+    [propsName: string]: any,
+}
+
+// 图表数据类型枚举
+export enum TimeType {
+    day = 1,
+    week,
+    month,
 }

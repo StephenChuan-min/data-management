@@ -29,8 +29,25 @@ function getDateArray(n: number, is: boolean = false): string[] {
     return r
 }
 
+// 获得某月的最后一天
+function getLastDay(year: number, month: number) {
+    let newYear = year; // 取当前的年份
+    let newMonth = month;// 取下一个月的第一天，方便计算（最后一天不固定）
+    if (month > 12) {
+        newMonth = 12; // 月份减
+        newYear += 1; // 年份增
+    }
+    const newDay = new Date(newYear, newMonth, 1); // 取当年当月中的第一天
+    return (newDay.getTime() - 1000 * 60 * 60 * 24);// 获取当月最后一天日期
+}
+
+const formatType = 'YYYY-MM-DD'
+
+
 export {
     getDateArray,
     format,
     add0,
+    formatType,
+    getLastDay,
 }
