@@ -5,18 +5,34 @@
       <a-layout-sider><LeftMenu /></a-layout-sider>
       <a-layout-content>
         <div class="yc-main-wrapper"><router-view /></div>
+        <InitPwdModal :visible="state.visible" @handleClose="handleClose" />
       </a-layout-content>
     </a-layout>
   </a-layout>
 </template>
 
 <script lang="ts">
+import { reactive } from 'vue';
 import TopMenu from '@/components/layout/top-menu.vue';
 import LeftMenu from '@/components/layout/left-menu.vue';
+import InitPwdModal from '@/components/modal/init-pwd-modal.vue';
 
 export default {
   name: 'Home',
-  components: { TopMenu, LeftMenu },
+  components: { TopMenu, LeftMenu, InitPwdModal },
+  setup() {
+    const state = reactive({
+      visible: true,
+    });
+    const handleClose = () => {
+      console.log(111);
+      state.visible = false;
+    };
+    return {
+      state,
+      handleClose,
+    };
+  },
 };
 </script>
 

@@ -72,7 +72,6 @@ export default defineComponent({
         .validate()
         .then(() => {
           confirmLoading.value = true;
-          console.log(toRaw(formState));
           setTimeout(() => {
             confirmLoading.value = false;
             vThis.emit('handleClose');

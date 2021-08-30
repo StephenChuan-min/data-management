@@ -17,6 +17,7 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-plusplus': 'off',
     'no-undef': 'off',
+    'prefer-promise-reject-errors': 'off',
   },
   overrides: [
     {
