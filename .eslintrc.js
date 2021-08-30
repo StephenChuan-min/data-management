@@ -16,6 +16,7 @@ module.exports = {
     'import/extensions': 'off',
     'no-param-reassign': 'off',
     'no-plusplus': 'off',
+    'no-undef': 'off',
   },
   overrides: [
     {

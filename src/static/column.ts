@@ -9,8 +9,8 @@ const accountColumn = (sign: string) => {
     },
     {
       title: '账号',
-      dataIndex: 'account',
-      key: 'account',
+      dataIndex: 'phone',
+      key: 'phone',
     },
     {
       title: '姓名',
@@ -19,15 +19,13 @@ const accountColumn = (sign: string) => {
     },
     flag && {
       title: '处理中异常数',
-      dataIndex: 'wrong',
-      key: 'wrong',
-      sorter: true,
+      dataIndex: 'abnormalNum',
+      key: 'abnormalNum',
     },
     {
       title: `${text}映射数`,
-      dataIndex: 'mapNum',
-      key: 'mapNum',
-      sorter: true,
+      dataIndex: 'editField',
+      key: 'editField',
     },
     {
       title: '操作',

@@ -24,7 +24,6 @@ export default {
 .ant-layout {
   height: 100%;
   min-width: 1200px;
-  min-height: 800px;
   &-header {
     background-color: #016aa9;
     height: 50px;
@@ -41,9 +40,10 @@ export default {
     .ant-layout-content {
       background: #edeff3;
       padding: 20px;
+      box-sizing: border-box;
+      overflow: auto;
       .yc-main-wrapper {
         background-color: #fff;
-        height: 100%;
       }
     }
   }
