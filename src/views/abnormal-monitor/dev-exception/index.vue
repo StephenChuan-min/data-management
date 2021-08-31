@@ -26,13 +26,16 @@
           :loading="state.loading"
           :pagination="pagination"
         >
-          <template #errorDetail="{ record }">
-            <a-button type="link" @click="handleAction('reset', record.id)">
-              详情
-            </a-button>
-          </template>
+          <!--          <template #errorDetail="{ record }">-->
+          <!--            <a-button type="link" @click="handleAction('errorContent', record.id)">-->
+          <!--              详情-->
+          <!--            </a-button>-->
+          <!--          </template>-->
           <template #action="{ record }">
-            <a-button type="link" @click="handleAction('reset', record.id)">
+            <a-button
+              type="link"
+              @click="handleAction('errorContent', record.id)"
+            >
               详情
             </a-button>
             <a-divider type="vertical" />
@@ -43,6 +46,10 @@
         </a-table>
       </div>
     </div>
+    <ErrorContentModal
+      :visible="state.visible === 'errorContent'"
+      @handleClose="state.visible = false"
+    />
   </div>
 </template>
 
@@ -51,11 +58,13 @@ import { computed, defineComponent, onMounted, reactive } from 'vue';
 import Query from '../query/index.vue';
 import createPaginationProps from '@/utils/pagination';
 import { devExceptionColumn } from '@/static/column';
+import ErrorContentModal from '@/components/modal/error-content-modal.vue';
 
 export default defineComponent({
   name: 'devException',
   components: {
     Query,
+    ErrorContentModal,
   },
   setup() {
     const state = reactive({
@@ -64,6 +73,7 @@ export default defineComponent({
       loading: false,
       page: 1,
       total: 100,
+      visible: '',
     });
     const pagination = computed(() =>
       createPaginationProps(state.page, state.total)
@@ -93,6 +103,7 @@ export default defineComponent({
     };
     const columns = computed(() => devExceptionColumn(state.tabKey));
     const handleAction = (sign: string, id: number) => {
+      state.visible = sign;
       console.log(id);
     };
     onMounted(() => getList());

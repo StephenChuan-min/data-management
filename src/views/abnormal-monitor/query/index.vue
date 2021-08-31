@@ -3,7 +3,10 @@
     <div class="dev-exception-wrapper-query-type">
       <div class="dev-exception-wrapper-query-type-all">
         <span>数据类型：</span>
-        <span :class="state.allChecked ? 'active type-label' : 'type-label'">
+        <span
+          :class="state.allChecked ? 'active type-label' : 'type-label'"
+          @click="allClick"
+        >
           全部
         </span>
       </div>
@@ -304,6 +307,13 @@ export default {
     const handleSearch = () => {
       console.log(toRaw(formState));
     };
+    const allClick = () => {
+      if (!state.allChecked) {
+        const { list } = state;
+        state.list = list.map((i) => ({ ...i, class: '' }));
+        state.checkedList = [];
+      }
+    };
     return {
       state,
       handleToggle,
@@ -313,6 +323,7 @@ export default {
       handleSearch,
       handleReset,
       formRef,
+      allClick,
     };
   },
 };

@@ -23,6 +23,7 @@ import {
   ConfigProvider,
   Tabs,
   Divider,
+  Timeline,
 } from 'ant-design-vue';
 
 const plugins = [
@@ -48,6 +49,7 @@ const plugins = [
   ConfigProvider,
   Tabs,
   Divider,
+  Timeline,
 ];
 
 const antdInstall: Plugin = function (app) {
