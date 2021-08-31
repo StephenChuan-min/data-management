@@ -39,7 +39,10 @@
               详情
             </a-button>
             <a-divider type="vertical" />
-            <a-button type="link" @click="handleAction('del', record.id)">
+            <a-button
+              type="link"
+              @click="handleAction('handleError', record.id)"
+            >
               处理
             </a-button>
           </template>
@@ -48,7 +51,11 @@
     </div>
     <ErrorContentModal
       :visible="state.visible === 'errorContent'"
-      @handleClose="state.visible = false"
+      @handleClose="state.visible = ''"
+    />
+    <handleErrorModal
+      :visible="state.visible === 'handleError'"
+      @handleClose="state.visible = ''"
     />
   </div>
 </template>
@@ -59,12 +66,14 @@ import Query from '../query/index.vue';
 import createPaginationProps from '@/utils/pagination';
 import { devExceptionColumn } from '@/static/column';
 import ErrorContentModal from '@/components/modal/error-content-modal.vue';
+import handleErrorModal from '@/components/modal/handle-error-modal.vue';
 
 export default defineComponent({
   name: 'devException',
   components: {
     Query,
     ErrorContentModal,
+    handleErrorModal,
   },
   setup() {
     const state = reactive({
