@@ -1,11 +1,119 @@
 <template>
-  <div>开发异常</div>
+  <div class="dev-exception-wrapper">
+    <Query :tabKey="state.tabKey" />
+    <div class="dev-exception-wrapper-table">
+      <div class="dev-exception-wrapper-table-tabs-content">
+        <a-tabs v-model:activeKey="state.tabKey">
+          <a-tab-pane key="0">
+            <template #tab>
+              <span>待处理（7）</span>
+            </template>
+          </a-tab-pane>
+          <a-tab-pane key="1">
+            <template #tab>
+              <span>处理中（9）</span>
+            </template>
+          </a-tab-pane>
+          <a-tab-pane key="2" tab="已处理" />
+        </a-tabs>
+      </div>
+      <div class="dev-exception-wrapper-table-table-content">
+        <a-table
+          :row-key="(record) => record.id"
+          :dataSource="state.dataSource"
+          :columns="columns"
+          @change="handleTableChange"
+          :loading="state.loading"
+          :pagination="pagination"
+        >
+          <template #errorDetail="{ record }">
+            <a-button type="link" @click="handleAction('reset', record.id)">
+              详情
+            </a-button>
+          </template>
+          <template #action="{ record }">
+            <a-button type="link" @click="handleAction('reset', record.id)">
+              详情
+            </a-button>
+            <a-divider type="vertical" />
+            <a-button type="link" @click="handleAction('del', record.id)">
+              处理
+            </a-button>
+          </template>
+        </a-table>
+      </div>
+    </div>
+  </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { computed, defineComponent, onMounted, reactive } from 'vue';
+import Query from '../query/index.vue';
+import createPaginationProps from '@/utils/pagination';
+import { devExceptionColumn } from '@/static/column';
+
+export default defineComponent({
   name: 'devException',
-};
+  components: {
+    Query,
+  },
+  setup() {
+    const state = reactive({
+      tabKey: '0',
+      dataSource: [],
+      loading: false,
+      page: 1,
+      total: 100,
+    });
+    const pagination = computed(() =>
+      createPaginationProps(state.page, state.total)
+    );
+    const handleTableChange = ({ current }) => {
+      state.page = parseInt(current, 10);
+    };
+    const getList = () => {
+      const obj = {
+        gmtPublish: '2022-1-1',
+        gmtFailed: '2022-3-3',
+        gmtHandle: '2022-5-5',
+        id: '1',
+        priority: 32,
+        sourceType: '西湖区湖底公园1号',
+        failedType: '西湖区湖底公园1号',
+        sourceName: '房产',
+        sourceId: '1231',
+        childCatalog: '目录',
+        crawlerName: '爬虫名称非军事打击开发商',
+        handler: '张雨法撒旦雨',
+        errorDetail: '1',
+      };
+      for (let i = 0; i < 100; i++) {
+        state.dataSource = [...state.dataSource, { ...obj, id: i }];
+      }
+    };
+    const columns = computed(() => devExceptionColumn(state.tabKey));
+    const handleAction = (sign: string, id: number) => {
+      console.log(id);
+    };
+    onMounted(() => getList());
+    return {
+      state,
+      pagination,
+      handleTableChange,
+      handleAction,
+      columns,
+    };
+  },
+});
 </script>
 
-<style scoped></style>
+<style lang="less">
+.dev-exception-wrapper {
+  width: 100%;
+  background-color: #edeff3;
+  &-table {
+    margin-top: 20px;
+    background-color: #fff;
+  }
+}
+</style>

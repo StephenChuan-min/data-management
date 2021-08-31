@@ -22,7 +22,7 @@ export default {
   components: { TopMenu, LeftMenu, InitPwdModal },
   setup() {
     const state = reactive({
-      visible: true,
+      visible: false,
     });
     const handleClose = () => {
       console.log(111);

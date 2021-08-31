@@ -36,6 +36,77 @@ const accountColumn = (sign: string) => {
   ].filter((i) => i);
 };
 
-const otherColumn: any[] = [];
+const devExceptionColumn = (tabKey: string) => {
+  const flag = tabKey !== '2';
+  const handerDisplay = tabKey !== '0' && !localStorage.getItem('role');
+  return [
+    flag && {
+      title: '发布日期',
+      dataIndex: 'gmtPublish',
+      key: 'gmtPublish',
+    },
+    flag && {
+      title: '报错日期',
+      dataIndex: 'gmtFailed',
+      key: 'gmtFailed',
+    },
+    !flag && {
+      title: '最新处理时间',
+      dataIndex: 'gmtHandle',
+      key: 'gmtHandle',
+    },
+    {
+      title: '优先级',
+      dataIndex: 'priority',
+      key: 'priority',
+    },
+    {
+      title: '数据类型',
+      dataIndex: 'sourceType',
+      key: 'sourceType',
+    },
+    {
+      title: '错误类型',
+      dataIndex: 'failedType',
+      key: 'failedType',
+    },
+    {
+      title: 'source_id',
+      dataIndex: 'sourceId',
+      key: 'sourceId',
+    },
+    {
+      title: '网站名称',
+      dataIndex: 'sourceName',
+      key: 'sourceUrl',
+    },
+    {
+      title: '子目录',
+      dataIndex: 'childCatalog',
+      key: 'catalogUrl',
+    },
+    {
+      title: '爬虫名称',
+      dataIndex: 'crawlerName',
+      key: 'crawlerName',
+    },
+    handerDisplay && {
+      title: '处理人',
+      dataIndex: 'handler',
+      key: 'handler',
+    },
+    // {
+    //   title: '报错内容',
+    //   key: 'errorDetail',
+    //   slots: { customRender: 'errorDetail' },
+    // },
+    {
+      title: '操作',
+      dataIndex: 'action',
+      key: 'action',
+      slots: { customRender: 'action' },
+    },
+  ].filter((i) => i);
+};
 
-export { accountColumn, otherColumn };
+export { accountColumn, devExceptionColumn };
