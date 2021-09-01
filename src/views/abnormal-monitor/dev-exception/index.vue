@@ -138,7 +138,6 @@ export default defineComponent({
   &-query {
     width: 100%;
     background-color: #fff;
-    padding: 20px;
   }
   &-table {
     margin-top: 20px;

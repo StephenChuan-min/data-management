@@ -2,7 +2,7 @@
   <div class="query-type-wrapper">
     <div class="query-type-wrapper-all">
       <span>
-        <svg class="icon" aria-hidden="true" style="font-size: 20px">
+        <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-shuguan-shujuleixing"></use>
         </svg>
       </span>
@@ -36,8 +36,18 @@
       </template>
     </div>
     <div class="query-type-wrapper-btn">
-      <span v-if="state.toggle" key="up" @click="handleToggle">展开 +</span>
-      <span v-else key="down" @click="handleToggle">收起 -</span>
+      <span v-if="state.toggle" key="up" @click="handleToggle">
+        展开
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-shuguan-jiantou_xia"></use>
+        </svg>
+      </span>
+      <span v-else key="down" @click="handleToggle">
+        收起
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-shuguan-jiantou_shang"></use>
+        </svg>
+      </span>
     </div>
   </div>
 </template>
@@ -52,7 +62,7 @@ export default {
       default: '0',
     },
   },
-  setup(props) {
+  setup() {
     const state = reactive({
       toggle: false,
       list: [
@@ -226,6 +236,7 @@ export default {
 .query-type-wrapper {
   display: flex;
   border-bottom: 1px solid #dde0e7;
+  padding: 20px 20px 10px;
   .type-label() {
     line-height: 28px;
     display: inline-block;
@@ -236,7 +247,21 @@ export default {
     .type-label();
   }
   &-all {
-    min-width: 198px;
+    min-width: 178px;
+    position: relative;
+    .icon {
+      font-size: 20px;
+      margin-right: 10px;
+    }
+    &:after {
+      content: '';
+      width: 1px;
+      height: 16px;
+      background-color: #dde0e7;
+      position: absolute;
+      right: 0;
+      top: 10px;
+    }
   }
   &-main {
     width: 1426px;
@@ -246,6 +271,7 @@ export default {
   }
   &-btn {
     min-width: 66px;
+    padding-top: 6px;
   }
   .active {
     border-radius: 14px;
