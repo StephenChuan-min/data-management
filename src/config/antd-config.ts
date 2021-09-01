@@ -24,6 +24,7 @@ import {
   Tabs,
   Divider,
   Timeline,
+  Popover,
 } from 'ant-design-vue';
 
 const plugins = [
@@ -50,6 +51,7 @@ const plugins = [
   Tabs,
   Divider,
   Timeline,
+  Popover,
 ];
 
 const antdInstall: Plugin = function (app) {

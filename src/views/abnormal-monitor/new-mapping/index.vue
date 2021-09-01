@@ -23,35 +23,27 @@
           :loading="state.loading"
           :pagination="pagination"
         >
-          <!--          <template #errorDetail="{ record }">-->
-          <!--            <a-button type="link" @click="handleAction('errorContent', record.id)">-->
-          <!--              详情-->
-          <!--            </a-button>-->
-          <!--          </template>-->
           <template #action="{ record }">
-            <a-button
-              type="link"
-              @click="handleAction('errorContent', record.id)"
-            >
-              详情
+            <a-button type="link" @click="handleAction('editMap', record.id)">
+              添加映射关系
             </a-button>
             <a-divider type="vertical" />
             <a-button
               type="link"
-              @click="handleAction('handleError', record.id)"
+              @click="handleAction('historyMap', record.id)"
             >
-              处理
+              查看历史映射
             </a-button>
           </template>
         </a-table>
       </div>
     </div>
-    <ErrorContentModal
-      :visible="state.visible === 'errorContent'"
+    <HistoryMapModal
+      :visible="state.visible === 'historyMap'"
       @handleClose="state.visible = ''"
     />
-    <handleErrorModal
-      :visible="state.visible === 'handleError'"
+    <EditMapModal
+      :visible="state.visible === 'editMap'"
       @handleClose="state.visible = ''"
     />
   </div>
@@ -62,17 +54,17 @@ import { computed, defineComponent, onMounted, reactive } from 'vue';
 
 import createPaginationProps from '@/utils/pagination';
 import { newMappingColumn } from '@/static/column';
-import ErrorContentModal from '@/components/modal/error-content-modal.vue';
-import handleErrorModal from '@/components/modal/handle-error-modal.vue';
+import HistoryMapModal from '@/components/modal/history-map-modal.vue';
 import { QueryMapOptions, QueryType } from '@/views/abnormal-monitor/query';
+import EditMapModal from '@/components/modal/edit-map-modal.vue';
 
 export default defineComponent({
   name: 'devException',
   components: {
+    EditMapModal,
     QueryType,
     QueryMapOptions,
-    ErrorContentModal,
-    handleErrorModal,
+    HistoryMapModal,
   },
   setup() {
     const state = reactive({

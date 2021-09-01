@@ -1,5 +1,9 @@
 import { newMapDisplay } from '@/utils';
 
+/**
+ * 账号管理列表
+ * @param sign dev:'开发人员' test:'测试人员'
+ */
 const accountColumn = (sign: string) => {
   const flag = sign === 'dev';
   const text = flag ? '待修改' : '待复核';
@@ -37,7 +41,10 @@ const accountColumn = (sign: string) => {
     },
   ].filter((i) => i);
 };
-
+/**
+ * 开发异常列表
+ * @param tabKey
+ */
 const devExceptionColumn = (tabKey: string) => {
   const flag = tabKey !== '2';
   const handerDisplay = tabKey !== '0' && !localStorage.getItem('role');
@@ -110,7 +117,10 @@ const devExceptionColumn = (tabKey: string) => {
     },
   ].filter((i) => i);
 };
-
+/**
+ * 新增映射值列表
+ * @param tabKey
+ */
 const newMappingColumn = (tabKey: string) => {
   const { flagA, flagB, flagC, flagD, flagE, flagF } = newMapDisplay(tabKey);
   return [
@@ -182,4 +192,30 @@ const newMappingColumn = (tabKey: string) => {
     },
   ].filter((i) => i);
 };
-export { accountColumn, devExceptionColumn, newMappingColumn };
+
+const historyMapColumn = [
+  {
+    title: '原始值',
+    dataIndex: 'primitive',
+    key: 'primitive',
+    slots: { customRender: 'primitive' },
+  },
+  {
+    title: '映射结果',
+    dataIndex: 'result',
+    key: 'result',
+    slots: { customRender: 'result' },
+  },
+  {
+    title: '映射码值',
+    dataIndex: 'code',
+    key: 'code',
+    slots: { customRender: 'code' },
+  },
+];
+export {
+  accountColumn,
+  devExceptionColumn,
+  newMappingColumn,
+  historyMapColumn,
+};
