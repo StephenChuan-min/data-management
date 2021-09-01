@@ -1,4 +1,4 @@
-export const createPaginationProps = (
+const createPaginationProps = (
   current = 1,
   total,
   showQuickJumper = true,
@@ -13,3 +13,26 @@ export const createPaginationProps = (
     showSizeChanger: false,
   };
 };
+
+const newMapDisplay = (tabKey: string) => {
+  const role = localStorage.getItem('role');
+  const flagA = tabKey === '1'; // 是否为已处理
+  const flagB = ['4', '2'].includes(tabKey); // 处理时间显示
+  const flagC = tabKey === '3'; // 退回时间显示
+  const flagD = tabKey === '5'; // 上传时间显示
+  const flagE = role !== 'normal' && tabKey !== '1'; // 处理人显示
+  const flagF =
+    (role === 'normal' && tabKey === '3') ||
+    (role === 'admin' && ['3', '4', '5'].includes(tabKey)); // 测试人员显示
+  const dynamicDisplay = {
+    flagA,
+    flagB,
+    flagC,
+    flagD,
+    flagE,
+    flagF,
+  };
+  return dynamicDisplay;
+};
+
+export { newMapDisplay, createPaginationProps };

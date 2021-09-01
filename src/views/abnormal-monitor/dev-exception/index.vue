@@ -1,6 +1,9 @@
 <template>
   <div class="dev-exception-wrapper">
-    <Query :tabKey="state.tabKey" />
+    <div class="dev-exception-wrapper-query">
+      <QueryType />
+      <QueryDevOptions :tabKey="state.tabKey" />
+    </div>
     <div class="dev-exception-wrapper-table">
       <div class="dev-exception-wrapper-table-tabs-content">
         <a-tabs v-model:activeKey="state.tabKey">
@@ -62,7 +65,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive } from 'vue';
-import Query from '../query/index.vue';
+import { QueryType, QueryDevOptions } from '../query';
 import createPaginationProps from '@/utils/pagination';
 import { devExceptionColumn } from '@/static/column';
 import ErrorContentModal from '@/components/modal/error-content-modal.vue';
@@ -71,7 +74,8 @@ import handleErrorModal from '@/components/modal/handle-error-modal.vue';
 export default defineComponent({
   name: 'devException',
   components: {
-    Query,
+    QueryType,
+    QueryDevOptions,
     ErrorContentModal,
     handleErrorModal,
   },
@@ -131,6 +135,11 @@ export default defineComponent({
 .dev-exception-wrapper {
   width: 100%;
   background-color: #edeff3;
+  &-query {
+    width: 100%;
+    background-color: #fff;
+    padding: 20px;
+  }
   &-table {
     margin-top: 20px;
     background-color: #fff;

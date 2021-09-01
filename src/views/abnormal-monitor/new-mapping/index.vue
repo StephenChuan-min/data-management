@@ -1,8 +1,11 @@
 <template>
-  <div class="dev-exception-wrapper">
-    <Query :tabKey="state.tabKey" />
-    <div class="dev-exception-wrapper-table">
-      <div class="dev-exception-wrapper-table-tabs-content">
+  <div class="new-mapping-wrapper">
+    <div class="new-mapping-wrapper-query">
+      <QueryType />
+      <QueryMapOptions :tabKey="state.tabKey" />
+    </div>
+    <div class="new-mapping-wrapper-table">
+      <div class="new-mapping-wrapper-table-tabs-content">
         <a-tabs v-model:activeKey="state.tabKey">
           <a-tab-pane v-for="item in tabPanes" :key="item.status.toString()">
             <template #tab>
@@ -11,7 +14,7 @@
           </a-tab-pane>
         </a-tabs>
       </div>
-      <div class="dev-exception-wrapper-table-table-content">
+      <div class="new-mapping-wrapper-table-table-content">
         <a-table
           :row-key="(record) => record.id"
           :dataSource="state.dataSource"
@@ -56,16 +59,18 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive } from 'vue';
-import Query from '../query/index.vue';
+
 import createPaginationProps from '@/utils/pagination';
 import { newMappingColumn } from '@/static/column';
 import ErrorContentModal from '@/components/modal/error-content-modal.vue';
 import handleErrorModal from '@/components/modal/handle-error-modal.vue';
+import { QueryMapOptions, QueryType } from '@/views/abnormal-monitor/query';
 
 export default defineComponent({
   name: 'devException',
   components: {
-    Query,
+    QueryType,
+    QueryMapOptions,
     ErrorContentModal,
     handleErrorModal,
   },
@@ -99,7 +104,7 @@ export default defineComponent({
       { title: '已处理', total: 'no', rule: 'normal', status: 2 },
       { title: '待修改', total: true, rule: 'normal', status: 3 },
     ];
-    const role = 'normal';
+    const role = 'test';
     const tabPanes = data.filter((i) => i.rule === role);
     const pagination = computed(() =>
       createPaginationProps(state.page, state.total)
@@ -133,6 +138,9 @@ export default defineComponent({
       console.log(id);
     };
     onMounted(() => {
+      if (localStorage.getItem('role') === 'check') {
+        state.tabKey = '2';
+      }
       getList();
     });
     return {
@@ -148,9 +156,14 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-.dev-exception-wrapper {
+.new-mapping-wrapper {
   width: 100%;
   background-color: #edeff3;
+  &-query {
+    width: 100%;
+    background-color: #fff;
+    padding: 20px;
+  }
   &-table {
     margin-top: 20px;
     background-color: #fff;

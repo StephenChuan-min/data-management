@@ -1,3 +1,5 @@
+import { newMapDisplay } from '@/utils';
+
 const accountColumn = (sign: string) => {
   const flag = sign === 'dev';
   const text = flag ? '待修改' : '待复核';
@@ -110,15 +112,7 @@ const devExceptionColumn = (tabKey: string) => {
 };
 
 const newMappingColumn = (tabKey: string) => {
-  const role = 'normal';
-  const flagA = tabKey === '1'; // 是否为已处理
-  const flagB = ['4', '2'].includes(tabKey); // 处理时间显示
-  const flagC = tabKey === '3'; // 退回时间显示
-  const flagD = tabKey === '5'; // 上传时间显示
-  const flagE = role !== 'normal' && tabKey !== '1'; // 处理人显示
-  const flagF =
-    (role === 'normal' && tabKey === '3') ||
-    (role === 'admin' && ['3', '4', '5'].includes(tabKey)); // 测试人员显示
+  const { flagA, flagB, flagC, flagD, flagE, flagF } = newMapDisplay(tabKey);
   return [
     flagB && {
       title: '处理时间',
