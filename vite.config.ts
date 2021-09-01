@@ -22,6 +22,9 @@ export default defineConfig({
           'text-color': '#20242e',
           'border-radius-base': '2px',
           'tabs-horizontal-padding': '14px 16px',
+          'table-header-bg': '#EDF0F9',
+          'table-header-color': '#4E5566',
+          'table-row-hover-bg': '#F2F8FF',
         },
         javascriptEnabled: true, // 使用 antd 的 less 样式 需要开启
       },

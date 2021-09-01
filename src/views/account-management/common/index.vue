@@ -1,8 +1,16 @@
 <template>
   <div class="dev-account-wrapper">
     <header>
-      {{ title }}
-      <a-button @click="() => (state.visible = true)">
+      <span>
+        <svg class="icon" aria-hidden="true" v-if="mark === 'dev'">
+          <use xlink:href="#icon-shuguan-kaifazhanghao"></use>
+        </svg>
+        <svg class="icon" aria-hidden="true" v-else>
+          <use xlink:href="#icon-shuguan-ceshizhanghao"></use>
+        </svg>
+      </span>
+      <span> {{ title }}</span>
+      <a-button @click="() => (state.visible = true)" type="primary">
         <template #icon><PlusOutlined /></template>添加账号
       </a-button>
     </header>
@@ -34,7 +42,7 @@
 
 <script lang="ts">
 import { reactive, onMounted, createVNode, computed } from 'vue';
-import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons-vue';
+import { PlusOutlined, ExclamationCircleFilled } from '@ant-design/icons-vue';
 import { Modal } from 'ant-design-vue';
 import { accountColumn } from '@/static/column';
 import AddAccountModal from '@/components/modal/add-account-modal.vue';
@@ -84,7 +92,7 @@ export default {
               text: '点击确定，密码将被重置为账号的后六位数字？',
             };
       Modal.confirm({
-        icon: createVNode(ExclamationCircleOutlined),
+        icon: createVNode(ExclamationCircleFilled),
         title: obj.title,
         content: obj.text,
         okText: '确认',
@@ -128,11 +136,10 @@ export default {
   height: 100%;
 
   header {
-    height: 64px;
-    border-bottom: 1px solid #edeff3;
+    height: 66px;
     font-weight: bold;
     color: #293038;
-    line-height: 64px;
+    line-height: 66px;
     position: relative;
     padding-left: 20px;
     .ant-btn {
@@ -141,10 +148,16 @@ export default {
       top: 18px;
       height: 30px;
     }
+    .icon {
+      font-size: 18px;
+      margin-right: 9px;
+      position: relative;
+      top: 1px;
+    }
   }
 
   .table-content {
-    padding: 24px 20px 0;
+    padding: 0 20px 0;
   }
 }
 </style>
