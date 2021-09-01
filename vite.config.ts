@@ -18,8 +18,8 @@ export default defineConfig({
       less: {
         modifyVars: {
           // antd主题修改
-          'primary-color': '#016AA9',
-          'text-color': '#293038',
+          'primary-color': '#2F7EEC',
+          'text-color': '#20242e',
           'border-radius-base': '2px',
           'tabs-horizontal-padding': '14px 16px',
         },

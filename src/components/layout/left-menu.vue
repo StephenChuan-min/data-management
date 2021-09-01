@@ -1,6 +1,6 @@
 <template>
   <a-menu
-    style="width: 190px"
+    style="width: 220px"
     mode="inline"
     :openKeys="openKeys"
     v-model:selectedKeys="selectedKeys"

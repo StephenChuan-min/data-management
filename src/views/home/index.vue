@@ -41,17 +41,17 @@ export default {
   height: 100%;
   min-width: 1200px;
   &-header {
-    background-color: #016aa9;
+    background-color: #fff;
     height: 50px;
     width: 100%;
-    padding: 0 20px;
+    padding: 0 20px 0 0;
     line-height: 50px;
   }
   &-has-sider {
     .ant-layout-sider {
-      min-width: 190px !important;
-      max-width: 190px !important;
-      width: 190px !important;
+      min-width: 220px !important;
+      max-width: 220px !important;
+      width: 220px !important;
     }
     .ant-layout-content {
       background: #edeff3;
