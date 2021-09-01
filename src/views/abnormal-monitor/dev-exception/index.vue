@@ -141,6 +141,7 @@ export default defineComponent({
   }
   &-table {
     margin-top: 20px;
+    padding: 20px;
     background-color: #fff;
   }
 }

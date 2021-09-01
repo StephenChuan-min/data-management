@@ -163,5 +163,14 @@ export default {
 </script>
 <style lang="less">
 .new-mapping-wrapper-query-options {
+  padding: 20px 20px 0;
+  .ant-form {
+    &-item {
+      margin: 0 24px 20px 0;
+    }
+    .ant-calendar-picker-input {
+      width: 140px;
+    }
+  }
 }
 </style>
