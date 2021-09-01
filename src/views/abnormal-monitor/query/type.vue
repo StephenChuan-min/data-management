@@ -1,6 +1,11 @@
 <template>
   <div class="query-type-wrapper">
     <div class="query-type-wrapper-all">
+      <span>
+        <svg class="icon" aria-hidden="true" style="font-size: 20px">
+          <use xlink:href="#icon-shuguan-shujuleixing"></use>
+        </svg>
+      </span>
       <span>数据类型：</span>
       <span
         :class="state.allChecked ? 'active type-label' : 'type-label'"

@@ -4,5 +4,6 @@ import App from './App.vue';
 import antd from './config/antd-config';
 import store from '@/store';
 import '@/assets/style/index.less';
+import '@/assets/font/iconfont';
 
 createApp(App).use(antd).use(router).use(store).mount('#app');
