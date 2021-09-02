@@ -1,0 +1,57 @@
+
+.ellipsis(@line){
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: @line;
+}
+// 加粗
+.yc-bold{
+  font-weight: bold;
+}
+// 手势
+.yc-pointer{
+  cursor: pointer;
+}
+
+// 超出显示省略号
+.yc-ellipsis-one{
+  .ellipsis(1);
+}
+
+.yc-ellipsis-two {
+  .ellipsis(2);
+}
+
+.yc-ellipsis-three {
+  .ellipsis(3);
+}
+
+// 滚动条
+.yc-scoll{
+  &::-webkit-scrollbar {
+    width:4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    width: 4px;
+    background-color:#FFF;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color:#B2B8C9;
+    background-clip:padding-box;
+    min-height:49px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius:5px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover{
+    background-color:#B2B8C9;
+  }
+  &::-webkit-scrollbar-track:hover{
+    background-color:#E2E4E9;
+  }
+}
